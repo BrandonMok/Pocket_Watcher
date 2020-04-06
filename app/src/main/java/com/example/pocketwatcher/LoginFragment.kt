@@ -114,7 +114,7 @@ class LoginFragment : Fragment() {
      */
     fun signUpOnClick(v: View){
         // Change fragments
-        changeFragment(v, RegistrationFragment())
+//        changeFragment(v, RegistrationFragment())
     }
 
     /**
@@ -124,11 +124,11 @@ class LoginFragment : Fragment() {
      *
      * EXTRACT TO SEPARATE REUSABLE CLASS!!!!!
      */
-    fun changeFragment(v: View, fragment: Fragment){
-        var ft = activity?.supportFragmentManager?.beginTransaction()
-        ft!!.replace(R.id.frame_layout, fragment)
-        ft.addToBackStack(null)
-        ft.commit()
-    }
+//    fun changeFragment(v: View, fragment: Fragment){
+//        var ft = activity?.supportFragmentManager?.beginTransaction()
+//        ft!!.replace(R.id.frame_layout, fragment)
+//        ft.addToBackStack(null)
+//        ft.commit()
+//    }
 
 }//fragment

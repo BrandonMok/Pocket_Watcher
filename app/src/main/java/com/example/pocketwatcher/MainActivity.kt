@@ -14,13 +14,6 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
 
     /**
-     * TODO:
-     * Will have another activity that will have a layout with nav
-     * Don't want nav in here bc would show even if user isn't logged in!
-     */
-
-
-    /**
      * onCreate
      */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,4 +38,9 @@ class MainActivity : AppCompatActivity() {
             }, 3000)
         }//endif
     }//onCreate
+
+
+    fun changeFragment(v: View){
+
+    }
 }//activity
