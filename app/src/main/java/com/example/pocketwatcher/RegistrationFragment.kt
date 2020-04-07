@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import kotlinx.android.synthetic.main.fragment_registration.*
 import org.w3c.dom.Text
 
 /**
@@ -15,13 +16,6 @@ import org.w3c.dom.Text
 class RegistrationFragment : Fragment() {
     // Create Instance of LoginSignUp -> has reusable functions that both Login and Registration use
     private var loginSignUp = LoginSignUp()
-
-    // Fields to save from View - prevents having to find view.findViewById each time in different methods
-    var userNameTextView: TextView? = null
-    var passwordTextView: TextView? = null
-    var signUpBtn: Button? = null
-    var nextTime: TextView? = null
-
 
     /**
      * onCreateView
@@ -37,21 +31,15 @@ class RegistrationFragment : Fragment() {
      * onViewCreated
      */
     override fun onViewCreated(v: View, savedInstanceState: Bundle?) {
-        // Get elements from view && set onClickListeners
-        userNameTextView = v.findViewById<TextView>(R.id.usernameTextView)
-        passwordTextView = v.findViewById<TextView>(R.id.passwordTextView)
-        signUpBtn = v.findViewById<Button>(R.id.signUpBtn)
-        nextTime = v.findViewById<TextView>(R.id.nextTimeTextView)
-
-        signUpBtn!!.setOnClickListener{ signUp(v) }
-        nextTime!!.setOnClickListener{ nextTime(v)}
-
+        // Set onClickListeners
+        signUpBtn.setOnClickListener{ signUp(v) }
+        nextTimeTextView.setOnClickListener{ redirectToLogin(v) }
 
         // Clicked outside of textviews
-        userNameTextView!!.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
+        usernameTextView.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
             if(!hasFocus){ loginSignUp.hideKeyboard(v, context!!) }
         })
-        passwordTextView!!.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
+        passwordTextView.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
             if(!hasFocus){ loginSignUp.hideKeyboard(v, context!!) }
         })
     }//onViewCreated
@@ -61,8 +49,8 @@ class RegistrationFragment : Fragment() {
      */
     private fun signUp(v: View){
         // Need to createUser
-        var userName = userNameTextView!!.text.toString()
-        var pwd = passwordTextView!!.text.toString()
+        var userName = usernameTextView.text.toString()
+        var pwd = passwordTextView.text.toString()
 
         // Grab sharedPreferences for this username & will check if this user exists
         //var sp = getSharedPreferences(userName, 0)
@@ -124,9 +112,8 @@ class RegistrationFragment : Fragment() {
 //                    loginSignUp.makeToast("Account successfully created!", this).show()
 //
 //                    // Redirect back to login after done!
-//                    var loginIntent = Intent(this, MainActivity::class.java)
-//                    startActivity(loginIntent)
-//                    finish()
+                      //Globals().changeFragment(v, context!!, LoginFragment())
+//                    redirectToLogin(v)
 //                }
 //            }
 //            else {
@@ -140,26 +127,11 @@ class RegistrationFragment : Fragment() {
 //        }
     }//signUp
 
-    /**
-     * nextTime
-     */
-    private fun nextTime(v: View){
-        // Change fragments
-        changeFragment(v, LoginFragment())
-    }//nextTime
 
     /**
-     * changeFragment
-     *
-     *
-     *
-     * EXTRACT TO SEPARATE REUSABLE CLASS!!!!!
+     * redirectToLogin
      */
-    fun changeFragment(v: View, fragment: Fragment){
-        var ft = activity?.supportFragmentManager?.beginTransaction()
-        ft!!.replace(R.id.frame_layout, fragment)
-        ft.addToBackStack(null)
-        ft.commit()
+    private fun redirectToLogin(v: View){
+        Globals().changeFragment(v, context!!, LoginFragment())
     }
-
 }//fragment
