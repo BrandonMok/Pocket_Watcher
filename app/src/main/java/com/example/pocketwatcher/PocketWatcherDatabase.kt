@@ -32,6 +32,4 @@ abstract class PocketWatcherDatabase : RoomDatabase() {
             return INSTANCE!!
         }//get instance
     }//companion obj
-
-
 }//database

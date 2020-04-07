@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import com.example.pocketwatcher.entities.User
 import kotlinx.android.synthetic.main.fragment_login.*
 
 /**
@@ -53,7 +54,26 @@ class LoginFragment : Fragment() {
         var password = loginSignUp.hashPassword(passwordTextView.text.toString())
 
         // CHECK: That both inputs have values
-//        if(!username.equals("") && username != null && !password.equals("") && password != null){
+        if(username != "" && username != null && password != "" && password != null) {
+            // CHECK to see that user exists!
+            var account: User? = PocketWatcherDatabase.getInstance(context!!).userDao().getUserByUsername(username)
+
+            if(account != null) {
+                // Account doesn't exist yet with this username - create account
+
+                /**
+                 * TODO
+                 */
+
+
+                Globals().changeFragment(v, context!!, OverviewFragment())  //redirect if login credentials are successful!
+            }
+        }
+        else {
+            // Empty Fields
+            loginSignUp.makeToast("Please enter both a username and password!", context!!).show()
+        }
+
 //            var sp = getSharedPreferences(username,0)       // get sharedPreferences for user
 //
 //            // CHECK: if 'Status' key is true, then it was set on registrations

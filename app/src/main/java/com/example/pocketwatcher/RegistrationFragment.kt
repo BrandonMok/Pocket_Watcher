@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import com.example.pocketwatcher.entities.User
 import kotlinx.android.synthetic.main.fragment_registration.*
 import org.w3c.dom.Text
 
@@ -48,24 +49,39 @@ class RegistrationFragment : Fragment() {
      * signUp
      */
     private fun signUp(v: View){
-        // Need to createUser
-        var userName = usernameTextView.text.toString()
-        var pwd = passwordTextView.text.toString()
+        var username = usernameTextView.text.toString()
+        var password = passwordTextView.text.toString()
+
+        // CHECK: That both inputs have values
+        if(username != "" && username != null && password != "" && password != null) {
+            // CHECK: if username isn't already taken by an existing user
+            var account: User? = PocketWatcherDatabase.getInstance(context!!).userDao().getUserByUsername(username)
+
+            if(account != null){
+                // Account doesn't exist yet with this username - create account
+
+                /**
+                 * TODO
+                 */
+
+
+
+                redirectToLogin(v)  //redirect back to login when done!
+            }
+            else {
+                // Account with username exists already, show toast
+                loginSignUp.makeToast("Username taken! Please enter an available one", context!!).show()
+            }
+        }
+        else {
+            // Empty Fields
+            loginSignUp.makeToast("Please enter both a username and password!", context!!).show()
+        }
+
 
         // Grab sharedPreferences for this username & will check if this user exists
         //var sp = getSharedPreferences(userName, 0)
 
-//        // CHECK: If userName && password have values
-//        if(userName != null && !userName.equals("")){
-//            if(pwd != null && !pwd.equals("")) {
-//                // CHECK: if a value was returned by looking for a specific key
-//                // If there's a value -> User already exists (username taken) -> ELSE User doesn't exist so make one
-//                // With an actual user, will set a Status boolean key to allow this check to work
-//                if (sp.contains("Status")) {
-//                    loginSignUp.makeToast("Username taken!", this).show() // user already exists
-//                } else {
-//                    // Create & store info for new user in SP
-//
 //                    // Limit
 //                    // GSON used to convert structures/data to strings that sharedPref can accept
 //                    var gson = Gson()
@@ -77,19 +93,6 @@ class RegistrationFragment : Fragment() {
 //                    limitMap.put("Monthly", "")
 //                    var limitMapStr = gson.toJson(limitMap) // convert map to string for s.p
 //
-//                    // EXPENSES
-//                    // EX:
-//                    // DailyExpensesMap
-//                    //  -> today's date (i.e. 2020-04-04) //
-//                    //      -> HashSet of expenses
-//                    // var expenseMap = HashMap<String, HashMap<String, HashSet<String>>>()
-////                        expenseMap.put("DailyExpenses", HashMap<String, HashSet<String>>())
-////                        expenseMap.put("WeeklyExpenses", HashMap<String, HashSet<String>>())
-////                        expenseMap.put("MonthlyExpenses", HashMap<String, HashSet<String>>())
-//                    // var expenseMapStr = gson.toJson(expenseMap)
-//
-//                    var expenseMaps = HashMap<String, HashSet<String>>()
-//                    var expenseMapStr = gson.toJson(expenseMaps)
 //
 //
 //
@@ -107,24 +110,6 @@ class RegistrationFragment : Fragment() {
 //                    editor.putString("MonthlyExpenses", expenseMapStr)
 //                    editor.putString("Limit", limitMapStr)
 //                    editor.commit()
-//
-//                    // Display Toast of successfully creating account
-//                    loginSignUp.makeToast("Account successfully created!", this).show()
-//
-//                    // Redirect back to login after done!
-                      //Globals().changeFragment(v, context!!, LoginFragment())
-//                    redirectToLogin(v)
-//                }
-//            }
-//            else {
-//                // Invalid Password
-//                loginSignUp.makeToast("Invalid Password!", this).show()
-//            }
-//        }
-//        else {
-//            // Invalid Username
-//            loginSignUp. makeToast("Invalid Username!", this).show()
-//        }
     }//signUp
 
 
