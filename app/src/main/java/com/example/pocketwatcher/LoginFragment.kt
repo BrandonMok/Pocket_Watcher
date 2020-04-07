@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_login.*
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev
 
 /**
  * A simple [Fragment] subclass.
@@ -103,4 +106,22 @@ class LoginFragment : Fragment() {
         // Change fragments
         Globals().changeFragment(v, context!!, RegistrationFragment())
     }
+<<<<<<< HEAD
+=======
+
+    /**
+     * changeFragment
+     *
+     *
+     *
+     * EXTRACT TO SEPARATE REUSABLE CLASS!!!!!
+     */
+//    fun changeFragment(v: View, fragment: Fragment){
+//        var ft = activity?.supportFragmentManager?.beginTransaction()
+//        ft!!.replace(R.id.frame_layout, fragment)
+//        ft.addToBackStack(null)
+//        ft.commit()
+//    }
+
+>>>>>>> dev
 }//fragment
