@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import kotlinx.android.synthetic.main.fragment_login.*
+
 
 /**
  * A simple [Fragment] subclass.
@@ -29,25 +31,14 @@ class LoginFragment : Fragment() {
      * onViewCreated
      */
     override fun onViewCreated(v: View, savedInstanceState: Bundle?) {
-        // FIND elements in view && set onclick listeners!
-
-        // loginBtn
-        var loginBtn = v.findViewById<Button>(R.id.loginButton)
-        loginBtn.setOnClickListener { loginOnClick(v) }
-
-        // signupBtn
-        var signUpBtn = v.findViewById<TextView>(R.id.signUpTextView)
-        signUpBtn.setOnClickListener { signUpOnClick(v) }
-
-        // TextViews
-        var userNameTV = v.findViewById<TextView>(R.id.usernameTextView)
-        var passwordTV = v.findViewById<TextView>(R.id.passwordTextView)
+        loginButton.setOnClickListener { loginOnClick(v) }
+        signUpTextView.setOnClickListener { signUpOnClick(v) }
 
         // Clicked outside of textviews
-        userNameTV.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
+        usernameTextView.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
             if(!hasFocus){ loginSignUp.hideKeyboard(v, context!!) }
         })
-        passwordTV.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
+        passwordTextView.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
             if(!hasFocus){ loginSignUp.hideKeyboard(v, context!!) }
         })
     }//onViewCreated
@@ -59,14 +50,10 @@ class LoginFragment : Fragment() {
      */
     private fun loginOnClick(v: View){
         // Grab the info from textInputs!!
-        var usernameTextView = v.findViewById<TextView>(R.id.usernameTextView)
-        var passwordTextView = v.findViewById<TextView>(R.id.passwordTextView)
-
         var username = usernameTextView.text.toString()
         var password = loginSignUp.hashPassword(passwordTextView.text.toString())
 
-
-//        // CHECK: That both inputs have values
+        // CHECK: That both inputs have values
 //        if(!username.equals("") && username != null && !password.equals("") && password != null){
 //            var sp = getSharedPreferences(username,0)       // get sharedPreferences for user
 //
@@ -114,15 +101,6 @@ class LoginFragment : Fragment() {
      */
     fun signUpOnClick(v: View){
         // Change fragments
-        changeFragment(v, RegistrationFragment())
+        Globals().changeFragment(v, context!!, RegistrationFragment())
     }
-
-
-    fun changeFragment(v: View, fragment: Fragment){
-        var ft = activity?.supportFragmentManager?.beginTransaction()
-        ft!!.replace(R.id.frame_layout, fragment)
-        ft.addToBackStack(null)
-        ft.commit()
-    }
-
 }//fragment

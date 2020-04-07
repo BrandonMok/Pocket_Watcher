@@ -11,6 +11,9 @@ import android.view.ViewGroup
  */
 class RegistrationFragment : Fragment() {
 
+    /**
+     * onCreateView
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -19,4 +22,8 @@ class RegistrationFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_registration, container, false)
     }
 
-}
+    /**
+     *
+     */
+
+}//fragment
