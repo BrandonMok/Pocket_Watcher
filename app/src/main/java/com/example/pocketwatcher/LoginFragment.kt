@@ -103,18 +103,4 @@ class LoginFragment : Fragment() {
         Globals().changeFragment(v, context!!, RegistrationFragment())
     }
 
-    /**
-     * changeFragment
-     *
-     *
-     *
-     * EXTRACT TO SEPARATE REUSABLE CLASS!!!!!
-     */
-//    fun changeFragment(v: View, fragment: Fragment){
-//        var ft = activity?.supportFragmentManager?.beginTransaction()
-//        ft!!.replace(R.id.frame_layout, fragment)
-//        ft.addToBackStack(null)
-//        ft.commit()
-//    }
-
 }//fragment
