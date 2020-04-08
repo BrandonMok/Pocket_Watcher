@@ -38,9 +38,4 @@ class MainActivity : AppCompatActivity() {
             }, 3000)
         }//endif
     }//onCreate
-
-
-    fun changeFragment(v: View){
-
-    }
 }//activity

@@ -7,7 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import com.example.pocketwatcher.entities.User
 import kotlinx.android.synthetic.main.fragment_registration.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import org.w3c.dom.Text
 
 /**
@@ -16,6 +19,7 @@ import org.w3c.dom.Text
 class RegistrationFragment : Fragment() {
     // Create Instance of LoginSignUp -> has reusable functions that both Login and Registration use
     private var loginSignUp = LoginSignUp()
+   // var database: PocketWatcherDatabase = PocketWatcherDatabase.getInstance(context!!)
 
     /**
      * onCreateView
@@ -48,89 +52,39 @@ class RegistrationFragment : Fragment() {
      * signUp
      */
     private fun signUp(v: View){
-        // Need to createUser
-        var userName = usernameTextView.text.toString()
-        var pwd = passwordTextView.text.toString()
+        var username = usernameTextView.text.toString()
+        var password = passwordTextView.text.toString()
 
-<<<<<<< HEAD
-    /**
-     *
-     */
+            doAsync{
 
-=======
-        // Grab sharedPreferences for this username & will check if this user exists
-        //var sp = getSharedPreferences(userName, 0)
+                var db = PocketWatcherDatabase.getInstance(context!!)
+                var account: User? = db.userDao().getUserByUsername(username)
 
-//        // CHECK: If userName && password have values
-//        if(userName != null && !userName.equals("")){
-//            if(pwd != null && !pwd.equals("")) {
-//                // CHECK: if a value was returned by looking for a specific key
-//                // If there's a value -> User already exists (username taken) -> ELSE User doesn't exist so make one
-//                // With an actual user, will set a Status boolean key to allow this check to work
-//                if (sp.contains("Status")) {
-//                    loginSignUp.makeToast("Username taken!", this).show() // user already exists
-//                } else {
-//                    // Create & store info for new user in SP
-//
-//                    // Limit
-//                    // GSON used to convert structures/data to strings that sharedPref can accept
-//                    var gson = Gson()
-//
-//                    // LIMIT
-//                    var limitMap = HashMap<String, String>()
-//                    limitMap.put("Daily", "")
-//                    limitMap.put("Weekly", "")
-//                    limitMap.put("Monthly", "")
-//                    var limitMapStr = gson.toJson(limitMap) // convert map to string for s.p
-//
-//                    // EXPENSES
-//                    // EX:
-//                    // DailyExpensesMap
-//                    //  -> today's date (i.e. 2020-04-04) //
-//                    //      -> HashSet of expenses
-//                    // var expenseMap = HashMap<String, HashMap<String, HashSet<String>>>()
-////                        expenseMap.put("DailyExpenses", HashMap<String, HashSet<String>>())
-////                        expenseMap.put("WeeklyExpenses", HashMap<String, HashSet<String>>())
-////                        expenseMap.put("MonthlyExpenses", HashMap<String, HashSet<String>>())
-//                    // var expenseMapStr = gson.toJson(expenseMap)
-//
-//                    var expenseMaps = HashMap<String, HashSet<String>>()
-//                    var expenseMapStr = gson.toJson(expenseMaps)
-//
-//
-//
-//                    // Editor to add all keys into sharedPreferences
-//                    var editor = sp.edit()
-//                    editor.putBoolean("Status", true)
-//                    editor.putString("Username", userName)
-//                    editor.putString("Password", loginSignUp.hashPassword(pwd))
-////                     for expenses, will have all expenses be based of on a date
-////                     for daily (if today), weekly (within this week's range), monthly (this month) -> sorting based on all
-////                     Value of key "Expenses" will be a json string (use gson to convert to obj)
-//                    // editor.putString("Expenses", expenseMapStr)
-//                    editor.putString("DailyExpenses", expenseMapStr)
-//                    editor.putString("WeeklyExpenses", expenseMapStr)
-//                    editor.putString("MonthlyExpenses", expenseMapStr)
-//                    editor.putString("Limit", limitMapStr)
-//                    editor.commit()
-//
-//                    // Display Toast of successfully creating account
-//                    loginSignUp.makeToast("Account successfully created!", this).show()
-//
-//                    // Redirect back to login after done!
-                      //Globals().changeFragment(v, context!!, LoginFragment())
-//                    redirectToLogin(v)
-//                }
-//            }
-//            else {
-//                // Invalid Password
-//                loginSignUp.makeToast("Invalid Password!", this).show()
-//            }
-//        }
-//        else {
-//            // Invalid Username
-//            loginSignUp. makeToast("Invalid Username!", this).show()
-//        }
+                uiThread {
+                    if(account == null){
+                        // Account doesn't exist yet with this username - create account
+                        var hashedPassword = loginSignUp.hashPassword(password)
+
+                        doAsync {
+                            db.userDao().insertUser(User(username, hashedPassword))
+
+                            uiThread {
+                                loginSignUp.makeToast("Account created successfully!", context!!).show()
+                                redirectToLogin(v)  //redirect back to login when done!
+                            }
+                        }
+                    }
+                    else {
+                        // Account with username exists already, show toast
+                        loginSignUp.makeToast("Username taken! Please enter an available one", context!!).show()
+                    }
+                }
+            }
+        }
+        else {
+            // Empty Fields
+            loginSignUp.makeToast("Please enter username and password!", context!!).show()
+        }
     }//signUp
 
 
@@ -140,5 +94,4 @@ class RegistrationFragment : Fragment() {
     private fun redirectToLogin(v: View){
         Globals().changeFragment(v, context!!, LoginFragment())
     }
->>>>>>> dev
 }//fragment

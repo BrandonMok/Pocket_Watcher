@@ -1,8 +1,7 @@
 apply plugin: 'com.android.application'
-
 apply plugin: 'kotlin-android'
-
 apply plugin: 'kotlin-android-extensions'
+apply plugin: "kotlin-kapt"
 
 android {
     compileSdkVersion 29
@@ -43,9 +42,24 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.2.1'
     implementation 'androidx.navigation:navigation-ui-ktx:2.2.1'
+    implementation 'androidx.preference:preference:1.1.0-rc01'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+
+    // Room
+    def room_version = "2.2.5"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    kapt "androidx.room:room-compiler:$room_version"
+
+    // Anko
+    def anko_version = "0.10.8"
+    implementation "org.jetbrains.anko:anko-commons:$anko_version"
+
+    // Recycleview & cardview
+    implementation "androidx.recyclerview:recyclerview:1.2.0-alpha01"
+    implementation "androidx.cardview:cardview:1.0.0"
 
     implementation 'com.google.android.material:material:1.2.0-alpha04'
     implementation 'com.google.code.gson:gson:2.8.6'

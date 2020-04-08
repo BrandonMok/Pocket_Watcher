@@ -1,17 +1,15 @@
 package com.example.pocketwatcher
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
+import com.example.pocketwatcher.entities.User
 import kotlinx.android.synthetic.main.fragment_login.*
-<<<<<<< HEAD
-
-=======
->>>>>>> dev
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 /**
  * A simple [Fragment] subclass.
@@ -54,47 +52,44 @@ class LoginFragment : Fragment() {
     private fun loginOnClick(v: View){
         // Grab the info from textInputs!!
         var username = usernameTextView.text.toString()
-        var password = loginSignUp.hashPassword(passwordTextView.text.toString())
+        var password = passwordTextView.text.toString()
 
         // CHECK: That both inputs have values
-//        if(!username.equals("") && username != null && !password.equals("") && password != null){
-//            var sp = getSharedPreferences(username,0)       // get sharedPreferences for user
-//
-//            // CHECK: if 'Status' key is true, then it was set on registrations
-//            if(sp.contains("Status")){
-//                var spPwd = sp.getString("Password","") //pwd in user preferences
-//
-//                // CHECK: hashed passwords match for this user
-//                if(password.equals(spPwd)){
-//                    /**
-//                     * Keep track of current user's username
-//                     */
-//                    var generalSP = getSharedPreferences("CURRENT_USER", 0)
-//                    var editor = generalSP.edit()
-//                    editor.putString("USERNAME", username)
-//                    editor.commit()
-//
-//
-//                    // Good to go -> redirect to overview
-//                    var overviewIntent = Intent(this,OverviewActivity::class.java)
-//                    overviewIntent.putExtra("USER_NAME", username)
-//                    startActivity(overviewIntent)
-//                    finish()
-//                }
-//                else {
-//                    // INCORRECT PWD
-//                    loginSignUp.makeToast("Incorrect username or password!", this).show()
-//                }
-//            }
-//            else {
-//                // User doesn't exist
-//                loginSignUp.makeToast("Account doesn't exist!", this).show()
-//            }
-//        }
-//        else {
-//            // Both inputs weren't entered
-//            loginSignUp.makeToast("Please enter username and password!", this).show()
-//        }
+        if(!username.equals("") && username != null && !password.equals("") && password != null) {
+
+            password =  loginSignUp.hashPassword(password)  //Hash password after validating for input
+
+            doAsync {
+                var account: User? = PocketWatcherDatabase.getInstance(context!!).userDao().getUserByUsername(username)
+
+                uiThread {
+                    // CHECK: if account exists or not
+                    if(account != null) {
+                        // Login user in
+                        var accUsername = account.username
+                        var accPWD = account.password
+
+                        // Verify that username and password entered is the same as those in the db
+                        if(accUsername.equals(username) && accPWD.equals(password)){
+                            // Change activities - one that will have a navigation!
+                            startActivity(Intent(activity, LoggedInActivity::class.java))
+                        }
+                        else {
+                            // Login failed
+                            loginSignUp.makeToast("Login failed!", context!!).show()
+                        }
+                    }
+                    else {
+                        // Login failed
+                        loginSignUp.makeToast("Login failed!", context!!).show()
+                    }
+                }//uiThread
+            }//doAsync
+        }
+        else {
+            // Empty Fields
+            loginSignUp.makeToast("Please enter a username and password!", context!!).show()
+        }
     }//loginOnClick
 
 
@@ -106,22 +101,4 @@ class LoginFragment : Fragment() {
         // Change fragments
         Globals().changeFragment(v, context!!, RegistrationFragment())
     }
-<<<<<<< HEAD
-=======
-
-    /**
-     * changeFragment
-     *
-     *
-     *
-     * EXTRACT TO SEPARATE REUSABLE CLASS!!!!!
-     */
-//    fun changeFragment(v: View, fragment: Fragment){
-//        var ft = activity?.supportFragmentManager?.beginTransaction()
-//        ft!!.replace(R.id.frame_layout, fragment)
-//        ft.addToBackStack(null)
-//        ft.commit()
-//    }
-
->>>>>>> dev
 }//fragment
