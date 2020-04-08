@@ -55,7 +55,7 @@ class LoggedInActivity : AppCompatActivity() {
                 R.id.monthly_expenses -> {
 
                 }
-                R.id.settings  -> {
+                R.id.settings -> {
 
                 }
                 R.id.logout -> {

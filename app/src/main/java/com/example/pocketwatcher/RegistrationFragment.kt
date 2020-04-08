@@ -19,7 +19,6 @@ import org.w3c.dom.Text
 class RegistrationFragment : Fragment() {
     // Create Instance of LoginSignUp -> has reusable functions that both Login and Registration use
     private var loginSignUp = LoginSignUp()
-   // var database: PocketWatcherDatabase = PocketWatcherDatabase.getInstance(context!!)
 
     /**
      * onCreateView

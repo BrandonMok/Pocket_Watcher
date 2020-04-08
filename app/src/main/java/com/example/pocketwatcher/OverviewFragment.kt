@@ -22,4 +22,11 @@ class OverviewFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_overview, container, false)
     }//onCreateView
 
+    /**
+     * onViewCreated
+     */
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        //helloTextView.text = "Hello $usr!"
+    }//onViewCreated
+
 }//fragment
