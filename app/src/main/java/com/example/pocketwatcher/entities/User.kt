@@ -2,7 +2,7 @@ package com.example.pocketwatcher.entities
 
 import androidx.room.*
 
-@Entity(tableName = "User")
+@Entity(tableName = "user")
 data class User(
     @ColumnInfo(name = "username") var username: String,
     @ColumnInfo(name = "password") var password: String

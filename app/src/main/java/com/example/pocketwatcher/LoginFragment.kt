@@ -54,63 +54,37 @@ class LoginFragment : Fragment() {
         var password = loginSignUp.hashPassword(passwordTextView.text.toString())
 
         // CHECK: That both inputs have values
-        if(username != "" && username != null && password != "" && password != null) {
+        if(!username.equals("") && username != null && !password.equals("") && password != null) {
             // CHECK to see that user exists!
+
+            /**
+             * ISSUE CAN'T ACCESS DB IN MAIN THREAD
+             */
+
             var account: User? = PocketWatcherDatabase.getInstance(context!!).userDao().getUserByUsername(username)
 
             if(account != null) {
-                // Account doesn't exist yet with this username - create account
+                // Login user in
+                var accUsername = account.username
+                var accPWD = loginSignUp.hashPassword(account.password)
 
-                /**
-                 * TODO
-                 */
-
-
-                Globals().changeFragment(v, context!!, OverviewFragment())  //redirect if login credentials are successful!
+                if(accUsername.equals(username) && accPWD.equals(password)){
+                    Globals().changeFragment(v, context!!, OverviewFragment())  // redirect
+                }
+                else {
+                    // Login failed
+                    loginSignUp.makeToast("Login failed!", context!!).show()
+                }
+            }
+            else {
+                // Login failed
+                loginSignUp.makeToast("Login failed!", context!!).show()
             }
         }
         else {
             // Empty Fields
-            loginSignUp.makeToast("Please enter both a username and password!", context!!).show()
+            loginSignUp.makeToast("Please enter a username and password!", context!!).show()
         }
-
-//            var sp = getSharedPreferences(username,0)       // get sharedPreferences for user
-//
-//            // CHECK: if 'Status' key is true, then it was set on registrations
-//            if(sp.contains("Status")){
-//                var spPwd = sp.getString("Password","") //pwd in user preferences
-//
-//                // CHECK: hashed passwords match for this user
-//                if(password.equals(spPwd)){
-//                    /**
-//                     * Keep track of current user's username
-//                     */
-//                    var generalSP = getSharedPreferences("CURRENT_USER", 0)
-//                    var editor = generalSP.edit()
-//                    editor.putString("USERNAME", username)
-//                    editor.commit()
-//
-//
-//                    // Good to go -> redirect to overview
-//                    var overviewIntent = Intent(this,OverviewActivity::class.java)
-//                    overviewIntent.putExtra("USER_NAME", username)
-//                    startActivity(overviewIntent)
-//                    finish()
-//                }
-//                else {
-//                    // INCORRECT PWD
-//                    loginSignUp.makeToast("Incorrect username or password!", this).show()
-//                }
-//            }
-//            else {
-//                // User doesn't exist
-//                loginSignUp.makeToast("Account doesn't exist!", this).show()
-//            }
-//        }
-//        else {
-//            // Both inputs weren't entered
-//            loginSignUp.makeToast("Please enter username and password!", this).show()
-//        }
     }//loginOnClick
 
 

@@ -9,6 +9,8 @@ import android.widget.Button
 import android.widget.TextView
 import com.example.pocketwatcher.entities.User
 import kotlinx.android.synthetic.main.fragment_registration.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import org.w3c.dom.Text
 
 /**
@@ -17,6 +19,7 @@ import org.w3c.dom.Text
 class RegistrationFragment : Fragment() {
     // Create Instance of LoginSignUp -> has reusable functions that both Login and Registration use
     private var loginSignUp = LoginSignUp()
+   // var database: PocketWatcherDatabase = PocketWatcherDatabase.getInstance(context!!)
 
     /**
      * onCreateView
@@ -55,17 +58,18 @@ class RegistrationFragment : Fragment() {
         // CHECK: That both inputs have values
         if(username != "" && username != null && password != "" && password != null) {
             // CHECK: if username isn't already taken by an existing user
-            var account: User? = PocketWatcherDatabase.getInstance(context!!).userDao().getUserByUsername(username)
+
+            /**
+             * ISSUE CAN'T ACCESS DB IN MAIN THREAD
+             */
+            var db = PocketWatcherDatabase.getInstance(context!!)
+            var account: User? = db.userDao().getUserByUsername(username)
 
             if(account != null){
                 // Account doesn't exist yet with this username - create account
+                var hashedPassword = loginSignUp.hashPassword(password)
 
-                /**
-                 * TODO
-                 */
-
-
-
+                db.userDao().insertUser(User(username, hashedPassword))
                 redirectToLogin(v)  //redirect back to login when done!
             }
             else {
@@ -75,13 +79,12 @@ class RegistrationFragment : Fragment() {
         }
         else {
             // Empty Fields
-            loginSignUp.makeToast("Please enter both a username and password!", context!!).show()
+            loginSignUp.makeToast("Please enter username and password!", context!!).show()
         }
 
 
         // Grab sharedPreferences for this username & will check if this user exists
         //var sp = getSharedPreferences(userName, 0)
-
 //                    // Limit
 //                    // GSON used to convert structures/data to strings that sharedPref can accept
 //                    var gson = Gson()
@@ -92,24 +95,6 @@ class RegistrationFragment : Fragment() {
 //                    limitMap.put("Weekly", "")
 //                    limitMap.put("Monthly", "")
 //                    var limitMapStr = gson.toJson(limitMap) // convert map to string for s.p
-//
-//
-//
-//
-//                    // Editor to add all keys into sharedPreferences
-//                    var editor = sp.edit()
-//                    editor.putBoolean("Status", true)
-//                    editor.putString("Username", userName)
-//                    editor.putString("Password", loginSignUp.hashPassword(pwd))
-////                     for expenses, will have all expenses be based of on a date
-////                     for daily (if today), weekly (within this week's range), monthly (this month) -> sorting based on all
-////                     Value of key "Expenses" will be a json string (use gson to convert to obj)
-//                    // editor.putString("Expenses", expenseMapStr)
-//                    editor.putString("DailyExpenses", expenseMapStr)
-//                    editor.putString("WeeklyExpenses", expenseMapStr)
-//                    editor.putString("MonthlyExpenses", expenseMapStr)
-//                    editor.putString("Limit", limitMapStr)
-//                    editor.commit()
     }//signUp
 
 

@@ -11,6 +11,7 @@ import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
 class ExpenseViewModel (application: Application) : AndroidViewModel(application){
+
     private var allExpenses: MutableList<Expense> = mutableListOf()
     var mAllExpenses: MutableLiveData<MutableList<Expense>> = MutableLiveData()
 
