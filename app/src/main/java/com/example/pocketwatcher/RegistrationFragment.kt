@@ -55,6 +55,10 @@ class RegistrationFragment : Fragment() {
         var username = usernameTextView.text.toString()
         var password = passwordTextView.text.toString()
 
+        // CHECK: That both inputs have values
+        if(username != "" && username != null && password != "" && password != null) {
+            // CHECK: if username isn't already taken by an existing user
+
             doAsync{
 
                 var db = PocketWatcherDatabase.getInstance(context!!)
