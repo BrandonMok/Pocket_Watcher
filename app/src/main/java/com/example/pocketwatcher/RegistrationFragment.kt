@@ -59,42 +59,36 @@ class RegistrationFragment : Fragment() {
         if(username != "" && username != null && password != "" && password != null) {
             // CHECK: if username isn't already taken by an existing user
 
-            /**
-             * ISSUE CAN'T ACCESS DB IN MAIN THREAD
-             */
-            var db = PocketWatcherDatabase.getInstance(context!!)
-            var account: User? = db.userDao().getUserByUsername(username)
+            doAsync{
 
-            if(account != null){
-                // Account doesn't exist yet with this username - create account
-                var hashedPassword = loginSignUp.hashPassword(password)
+                var db = PocketWatcherDatabase.getInstance(context!!)
+                var account: User? = db.userDao().getUserByUsername(username)
 
-                db.userDao().insertUser(User(username, hashedPassword))
-                redirectToLogin(v)  //redirect back to login when done!
-            }
-            else {
-                // Account with username exists already, show toast
-                loginSignUp.makeToast("Username taken! Please enter an available one", context!!).show()
+                uiThread {
+                    if(account == null){
+                        // Account doesn't exist yet with this username - create account
+                        var hashedPassword = loginSignUp.hashPassword(password)
+
+                        doAsync {
+                            db.userDao().insertUser(User(username, hashedPassword))
+
+                            uiThread {
+                                loginSignUp.makeToast("Account created successfully!", context!!).show()
+                                redirectToLogin(v)  //redirect back to login when done!
+                            }
+                        }
+                    }
+                    else {
+                        // Account with username exists already, show toast
+                        loginSignUp.makeToast("Username taken! Please enter an available one", context!!).show()
+                    }
+                }
             }
         }
         else {
             // Empty Fields
             loginSignUp.makeToast("Please enter username and password!", context!!).show()
         }
-
-
-        // Grab sharedPreferences for this username & will check if this user exists
-        //var sp = getSharedPreferences(userName, 0)
-//                    // Limit
-//                    // GSON used to convert structures/data to strings that sharedPref can accept
-//                    var gson = Gson()
-//
-//                    // LIMIT
-//                    var limitMap = HashMap<String, String>()
-//                    limitMap.put("Daily", "")
-//                    limitMap.put("Weekly", "")
-//                    limitMap.put("Monthly", "")
-//                    var limitMapStr = gson.toJson(limitMap) // convert map to string for s.p
     }//signUp
 
 

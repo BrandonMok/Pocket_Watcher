@@ -9,6 +9,8 @@ import android.widget.Button
 import android.widget.TextView
 import com.example.pocketwatcher.entities.User
 import kotlinx.android.synthetic.main.fragment_login.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 /**
  * A simple [Fragment] subclass.
@@ -51,35 +53,38 @@ class LoginFragment : Fragment() {
     private fun loginOnClick(v: View){
         // Grab the info from textInputs!!
         var username = usernameTextView.text.toString()
-        var password = loginSignUp.hashPassword(passwordTextView.text.toString())
+        var password = passwordTextView.text.toString()
 
         // CHECK: That both inputs have values
         if(!username.equals("") && username != null && !password.equals("") && password != null) {
-            // CHECK to see that user exists!
 
-            /**
-             * ISSUE CAN'T ACCESS DB IN MAIN THREAD
-             */
+            password =  loginSignUp.hashPassword(password)  //Hash password after validating for input
 
-            var account: User? = PocketWatcherDatabase.getInstance(context!!).userDao().getUserByUsername(username)
+            doAsync {
+                var account: User? = PocketWatcherDatabase.getInstance(context!!).userDao().getUserByUsername(username)
 
-            if(account != null) {
-                // Login user in
-                var accUsername = account.username
-                var accPWD = loginSignUp.hashPassword(account.password)
+                uiThread {
+                    // CHECK: if account exists or not
+                    if(account != null) {
+                        // Login user in
+                        var accUsername = account.username
+                        var accPWD = account.password
 
-                if(accUsername.equals(username) && accPWD.equals(password)){
-                    Globals().changeFragment(v, context!!, OverviewFragment())  // redirect
-                }
-                else {
-                    // Login failed
-                    loginSignUp.makeToast("Login failed!", context!!).show()
-                }
-            }
-            else {
-                // Login failed
-                loginSignUp.makeToast("Login failed!", context!!).show()
-            }
+                        // Verify that username and password entered is the same as those in the db
+                        if(accUsername.equals(username) && accPWD.equals(password)){
+                            Globals().changeFragment(v, context!!, OverviewFragment())  // redirect
+                        }
+                        else {
+                            // Login failed
+                            loginSignUp.makeToast("Login failed!", context!!).show()
+                        }
+                    }
+                    else {
+                        // Login failed
+                        loginSignUp.makeToast("Login failed!", context!!).show()
+                    }
+                }//uiThread
+            }//doAsync
         }
         else {
             // Empty Fields
