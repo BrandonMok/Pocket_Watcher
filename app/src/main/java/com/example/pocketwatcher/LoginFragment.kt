@@ -72,7 +72,7 @@ class LoginFragment : Fragment() {
                         // Verify that username and password entered is the same as those in the db
                         if(accUsername.equals(username) && accPWD.equals(password)){
                             // Keep track of current user via sharedPreferences
-                            var preferences = activity!!.getSharedPreferences("CURRENT_USER", 0)
+                            var preferences = activity!!.getSharedPreferences("USERS", 0)
                             var prefEditor = preferences.edit()
                             prefEditor.putString("CURRENT_USER", username)
                             prefEditor.commit()

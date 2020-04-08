@@ -1,5 +1,6 @@
 package com.example.pocketwatcher
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -59,7 +60,13 @@ class LoggedInActivity : AppCompatActivity() {
 
                 }
                 R.id.logout -> {
+                    var pref = getSharedPreferences("USERS",0)
+                        .edit()
+                        .putString("CURRENT_USER", "")
+                        .commit()
 
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
                 }
             }//when
             true
