@@ -1,12 +1,11 @@
 package com.example.pocketwatcher
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import com.example.pocketwatcher.entities.User
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.jetbrains.anko.doAsync
@@ -72,7 +71,15 @@ class LoginFragment : Fragment() {
 
                         // Verify that username and password entered is the same as those in the db
                         if(accUsername.equals(username) && accPWD.equals(password)){
-                            Globals().changeFragment(v, context!!, OverviewFragment())  // redirect
+                            //Globals().changeFragment(v, context!!, OverviewFragment())  // redirect
+
+                            /**
+                             * TODO
+                             * Change activities
+//                             */
+//                            startActivity(Intent(this, LoggedInActivity::class.java))
+//                            finish()
+
                         }
                         else {
                             // Login failed
