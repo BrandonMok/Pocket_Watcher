@@ -101,5 +101,4 @@ class LoginFragment : Fragment() {
         // Change fragments
         Globals().changeFragment(v, context!!, RegistrationFragment())
     }
-
 }//fragment
