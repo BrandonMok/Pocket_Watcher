@@ -18,6 +18,7 @@ class LoggedInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_logged_in)
 
+        // If no fragment in layout, add OverviewFragment() as initial fragment
         if(supportFragmentManager.findFragmentById(R.id.frame_layout) == null){
             supportFragmentManager.beginTransaction()
                 .add(R.id.frame_layout, OverviewFragment())

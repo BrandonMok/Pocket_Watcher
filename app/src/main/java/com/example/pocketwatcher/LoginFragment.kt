@@ -71,15 +71,8 @@ class LoginFragment : Fragment() {
 
                         // Verify that username and password entered is the same as those in the db
                         if(accUsername.equals(username) && accPWD.equals(password)){
-                            //Globals().changeFragment(v, context!!, OverviewFragment())  // redirect
-
-                            /**
-                             * TODO
-                             * Change activities
-//                             */
-//                            startActivity(Intent(this, LoggedInActivity::class.java))
-//                            finish()
-
+                            // Change activities - one that will have a navigation!
+                            startActivity(Intent(activity, LoggedInActivity::class.java))
                         }
                         else {
                             // Login failed
