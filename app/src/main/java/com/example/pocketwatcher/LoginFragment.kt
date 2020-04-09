@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.pocketwatcher.entities.User
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_login.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -71,6 +72,12 @@ class LoginFragment : Fragment() {
 
                         // Verify that username and password entered is the same as those in the db
                         if(accUsername.equals(username) && accPWD.equals(password)){
+                            // Keep track of current user via sharedPreferences
+                            var preferences = activity!!.getSharedPreferences("USERS", 0)
+                            var prefEditor = preferences.edit()
+                            prefEditor.putString("CURRENT_USER", Gson().toJson(account))
+                            prefEditor.commit()
+
                             // Change activities - one that will have a navigation!
                             startActivity(Intent(activity, LoggedInActivity::class.java))
                         }

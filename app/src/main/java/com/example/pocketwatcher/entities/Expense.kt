@@ -8,7 +8,7 @@ data class Expense(
     @ColumnInfo(name = "value") var value: Double,
     @ColumnInfo(name = "tag") var tag: String?,
     @ColumnInfo(name = "date") var date: String,
-    @ColumnInfo(name = "creator") var creator: String
+    @ColumnInfo(name = "user") var user: String
 ){
     @ColumnInfo(name = "id")
     @PrimaryKey(autoGenerate = true) var id: Long = 0

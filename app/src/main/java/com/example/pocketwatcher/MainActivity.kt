@@ -20,22 +20,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         // CHECK: If no fragment, then display splash first
         if(supportFragmentManager.findFragmentById(R.id.frame_layout) == null){
-            var sfm = supportFragmentManager
-
-            // Show Splash Fragment
-            sfm.beginTransaction()
-                .add(R.id.frame_layout, SplashFragment())
+            // Add LoginFragment() to frame layout
+            supportFragmentManager.beginTransaction()
+                .add(R.id.frame_layout, LoginFragment())
                 .commit()
-
-            // Then direct to login fragment
-            Handler().postDelayed(Runnable{
-                sfm.beginTransaction()
-                    .replace(R.id.frame_layout, LoginFragment())
-                    .commit()
-            }, 3000)
         }//endif
     }//onCreate
 }//activity

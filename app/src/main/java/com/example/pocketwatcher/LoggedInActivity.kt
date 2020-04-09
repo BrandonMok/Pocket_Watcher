@@ -1,15 +1,20 @@
 package com.example.pocketwatcher
 
+import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.MenuItem
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
 import kotlinx.android.synthetic.main.activity_logged_in.*
 
 class LoggedInActivity : AppCompatActivity() {
 
     lateinit var toggle: ActionBarDrawerToggle
+    private var globals = Globals()
 
     /**
      * onCreate
@@ -25,7 +30,7 @@ class LoggedInActivity : AppCompatActivity() {
                 .commit()
         }//endif
 
-        menuHandler()
+        menuSetup()
     }//oncreate
 
 
@@ -33,7 +38,7 @@ class LoggedInActivity : AppCompatActivity() {
      * menuHandler
      * Function to setup the menu and its pathing
      */
-    fun menuHandler(){
+    private fun menuSetup(){
         toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
@@ -44,7 +49,8 @@ class LoggedInActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.overview -> {
-                    //drawerLayout.closeDrawers()
+                    globals.changeFragment(findViewById(R.id.frame_layout), this@LoggedInActivity, OverviewFragment())
+                    closeDrawers()
                 }
                 R.id.daily_expenses -> {
 
@@ -55,11 +61,12 @@ class LoggedInActivity : AppCompatActivity() {
                 R.id.monthly_expenses -> {
 
                 }
-                R.id.settings  -> {
-
+                R.id.settings -> {
+                    globals.changeFragment(findViewById(R.id.frame_layout), this@LoggedInActivity, SettingsFragment())
+                    closeDrawers()
                 }
                 R.id.logout -> {
-
+                    logout(this@LoggedInActivity)
                 }
             }//when
             true
@@ -74,6 +81,29 @@ class LoggedInActivity : AppCompatActivity() {
             return true
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    /**
+     * closeDrawers
+     */
+    private fun closeDrawers(){
+        drawerLayout.closeDrawers()
+    }
+
+
+    /**
+     * logout
+     */
+    fun logout(context: Context){
+        var activity = context as AppCompatActivity
+
+        activity!!.getSharedPreferences("USERS", 0)
+            .edit()
+            .putString("CURRENT_USER", "")
+            .commit()
+
+        startActivity(Intent(activity, MainActivity::class.java))
+        finish()
     }
 
 }//class
