@@ -30,18 +30,16 @@ class OverviewFragment : Fragment() {
      * onViewCreated
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var pref = activity!!.getSharedPreferences("USERS",0)
-        var user = pref.getString("CURRENT_USER", "")
+        var gson = Gson()
+        var user = Globals().getCurrentUser(activity!!, gson)
 
-        if(user.equals("") || user == null){
+        if(user == null){
             // user's username wasn't set on login - redirect back to login
             startActivity(Intent(activity, MainActivity::class.java))
         }
 
-        var userObj = Gson().fromJson(user, User::class.java)
-
         // Set custom text
-        helloTextView.text = "Hello ${userObj.username}!"
+        helloTextView.text = "Hello ${user.username}!"
     }//onViewCreated
 
 }//fragment

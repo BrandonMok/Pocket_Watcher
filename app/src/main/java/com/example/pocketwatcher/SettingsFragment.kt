@@ -57,25 +57,17 @@ class SettingsFragment : Fragment() {
         if(!newPWD.equals("") && newPWD != null){
             newPWD = lsu.hashPassword(passwordTextView.text.toString())
 
-
             var gson = Gson()
-
-            /**
-             * TODO
-             * Refactor to a reusable function to get current user!
-             */
-            var sp = activity!!.getSharedPreferences("USERS",0)
-            var userString = sp.getString("CURRENT_USER",  "")
-            var userObj = gson.fromJson(userString, User::class.java)
-            userObj.password = newPWD
-
+            var userObj = Globals().getCurrentUser(activity!!, gson)
+            userObj!!.password = newPWD
 
             doAsync {
-                var account = PocketWatcherDatabase.getInstance(context!!).userDao().updateUser(userObj)
+                PocketWatcherDatabase.getInstance(context!!).userDao().updateUser(userObj!!)
 
                 uiThread {
                     // Update current user in sharedpref
-                    sp.edit()
+                    activity!!.getSharedPreferences("USERS",0)
+                        .edit()
                         .putString("CURRENT_USER", gson.toJson(userObj))
                         .commit()
 
