@@ -6,7 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.pocketwatcher.entities.User
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_settings.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 /**
  * A simple [Fragment] subclass.
@@ -39,6 +43,8 @@ class SettingsFragment : Fragment() {
         logoutButton.setOnClickListener {
             (activity as LoggedInActivity).logout(activity!!)
         }
+
+        submitButton.setOnClickListener { submitButtonOnClick(view) }
     }
 
     /**
@@ -51,15 +57,33 @@ class SettingsFragment : Fragment() {
         if(!newPWD.equals("") && newPWD != null){
             newPWD = lsu.hashPassword(passwordTextView.text.toString())
 
+
+            var gson = Gson()
+
             /**
              * TODO
-             * Change password of user
+             * Refactor to a reusable function to get current user!
              */
+            var sp = activity!!.getSharedPreferences("USERS",0)
+            var userString = sp.getString("CURRENT_USER",  "")
+            var userObj = gson.fromJson(userString, User::class.java)
+            userObj.password = newPWD
 
 
+            doAsync {
+                var account = PocketWatcherDatabase.getInstance(context!!).userDao().updateUser(userObj)
 
-            passwordTextView.text = null
-            lsu.makeToast("Password Changed Successfully!", context!!).show()
+                uiThread {
+                    // Update current user in sharedpref
+                    sp.edit()
+                        .putString("CURRENT_USER", gson.toJson(userObj))
+                        .commit()
+
+
+                    passwordTextView.text = null
+                    lsu.makeToast("Password Changed Successfully!", context!!).show()
+                }
+            }
         }
         else {
             // Not allowed password
