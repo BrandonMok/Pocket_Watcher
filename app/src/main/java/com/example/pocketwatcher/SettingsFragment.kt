@@ -36,6 +36,9 @@ class SettingsFragment : Fragment() {
             if(!hasFocus){ lsu.hideKeyboard(v, context!!) }
         })
 
+        logoutButton.setOnClickListener {
+            (activity as LoggedInActivity).logout(activity!!)
+        }
     }
 
     /**
@@ -63,18 +66,4 @@ class SettingsFragment : Fragment() {
             lsu.makeToast("Please enter a valid password!", context!!).show()
         }
     }//submitButtonOnClick
-
-
-    /**
-     * logoutButtonOnClick
-     */
-    fun logoutButtonOnClick(v: View){
-        var pref = activity!!.getSharedPreferences("USERS",0)
-            .edit()
-            .putString("CURRENT_USER", "")
-            .commit()
-
-        startActivity(Intent(activity, MainActivity::class.java))
-    }//logoutButtonOnClick
-
 }//fragment

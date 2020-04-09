@@ -81,7 +81,6 @@
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:text="Logout"
-            android:onClick="logoutButtonOnClick"
             android:background="@color/colorPrimary"
             android:textColor="@android:color/white"
             app:layout_constraintBottom_toBottomOf="parent"
