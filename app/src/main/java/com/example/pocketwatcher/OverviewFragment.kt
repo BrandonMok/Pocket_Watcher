@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.pocketwatcher.entities.User
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_overview.*
 
 /**
@@ -36,8 +38,10 @@ class OverviewFragment : Fragment() {
             startActivity(Intent(activity, MainActivity::class.java))
         }
 
+        var userObj = Gson().fromJson(user, User::class.java)
+
         // Set custom text
-        helloTextView.text = "Hello $user!"
+        helloTextView.text = "Hello ${userObj.username}!"
     }//onViewCreated
 
 }//fragment
