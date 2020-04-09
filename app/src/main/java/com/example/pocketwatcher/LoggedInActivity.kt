@@ -66,7 +66,8 @@ class LoggedInActivity : AppCompatActivity() {
                         .commit()
 
                     startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+//                    Globals().logout(this)
+//                    finish()
                 }
             }//when
             true

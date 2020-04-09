@@ -1,6 +1,7 @@
 package com.example.pocketwatcher
 
 import android.content.Context
+import android.content.Intent
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -21,5 +22,19 @@ class Globals: AppCompatActivity() {
         ft.addToBackStack(null)
         ft.commit()
     }//changeFragment
+
+    /**
+     * logout
+     */
+//    fun logout(context: Context){
+//        var activity = context as AppCompatActivity
+//
+//        activity!!.getSharedPreferences("USERS", 0)
+//            .edit()
+//            .putString("CURRENT_USER", "")
+//            .commit()
+//
+//        startActivity(Intent(activity, MainActivity::class.java))
+//    }
 
 }//class
