@@ -16,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:text="Limitations"
+        android:text="@string/limitations"
         android:textColor="@android:color/black"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/limitSubTextView"
@@ -29,7 +29,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Stay on track by setting a limit!"
+        android:text="@string/limitation_longtext"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,18 +47,17 @@
         app:layout_constraintTop_toBottomOf="@id/limitSubTextView" />
 
 
-<!--    <TextView-->
-<!--        android:id="@+id/explanationTextView"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:text="Setting daily, weekly, or monthly limits help keep you on track of your spending and saving goals! Enter a limit for either daily, weekly, or monthly and the rest will-->
-<!--be calculated!"-->
-<!--        android:padding="15dp"-->
-<!--        android:textSize="15sp"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/guideline"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/divider" />-->
+    <TextView
+        android:id="@+id/explanationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Setting daily, weekly, or monthly limits help keep you on track of your spending and saving goals! Enter a limit for either daily, weekly, or monthly and the rest will
+be calculated!"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"

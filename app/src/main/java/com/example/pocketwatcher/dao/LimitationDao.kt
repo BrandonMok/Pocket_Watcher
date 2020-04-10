@@ -8,7 +8,7 @@ import com.example.pocketwatcher.entities.Limitation
 interface LimitationDao {
 
     @Query("SELECT * FROM limitation WHERE user = :username")
-    fun getLimit(username: String)
+    fun getLimit(username: String): Limitation?
 
     @Insert(onConflict = REPLACE)
     fun insertlimit(limit: Limitation)

@@ -11,7 +11,6 @@
     <string name="hello_s">Hello %s!</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name="title_activity_base">BaseActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -22,16 +21,12 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="used">Used</string>
     <string name="limit">Limit</string>
-    <string name="no_limit_set_set_a_limit_to_help_track_your_expenses">No limit set! Set a limit to help track your expenses!</string>
+    <string name="no_limit_set_set_a_limit_to_help_track_your_expenses">No limit set! Set a limit to help track of your expenses!</string>
     <string name="zero_point_zero">0.00</string>
     <string name="daily_expenses">Daily Expenses</string>
     <string name="weekly_expenses">Weekly Expenses</string>
     <string name="monthly_expenses">Monthly Expenses</string>
     <string name="dollar_zero_point_zero">$0.00</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_afterlogin_activtiy">AfterLogin</string>
 
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
@@ -47,4 +42,6 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="limitations">Limitations</string>
+    <string name="limitation_longtext">Stay on track by setting a limit!</string>
 </resources>

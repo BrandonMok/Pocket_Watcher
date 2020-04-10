@@ -6,14 +6,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.pocketwatcher.entities.User
+import com.example.pocketwatcher.entities.Limitation
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_overview.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 /**
  * A simple [Fragment] subclass.
  */
 class OverviewFragment : Fragment() {
+
+    // DB
+    var db: PocketWatcherDatabase? = null
 
     /**
      * onCreateView
@@ -34,12 +39,34 @@ class OverviewFragment : Fragment() {
         var user = Globals().getCurrentUser(activity!!, gson)
 
         if(user == null){
-            // user's username wasn't set on login - redirect back to login
+            // user'sl username wasn't set on login - redirect back to login
             startActivity(Intent(activity, MainActivity::class.java))
         }
 
+        var username = user.username
+
         // Set custom text
-        helloTextView.text = "Hello ${user.username}!"
+        helloTextView.text = "Hello $username!"
+
+
+        // CHECK: if user has a limit set
+        doAsync{
+            db = PocketWatcherDatabase.getInstance(context!!)
+            var limit: Limitation? = db!!.limitationDao().getLimit(username)
+
+            uiThread {
+                if(limit != null ){
+                    // Show limit daily limit for the overview page
+                    /**
+                     * TODO
+                     */
+                }
+                else {
+                    // No limit set, show textview
+                    noLimitTextView.visibility = View.VISIBLE
+                }
+            }
+        }
     }//onViewCreated
 
 }//fragment
