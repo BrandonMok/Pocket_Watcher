@@ -9,7 +9,7 @@ import com.example.pocketwatcher.dao.UserDao
 import com.example.pocketwatcher.entities.Limitation
 import com.example.pocketwatcher.entities.User
 
-@Database(entities = arrayOf(User::class, Expense::class, Limitation::class), version = 3, exportSchema = false)
+@Database(entities = arrayOf(User::class, Expense::class, Limitation::class), version = 4, exportSchema = false)
 abstract class PocketWatcherDatabase : RoomDatabase() {
     // DAOs
     abstract fun userDao(): UserDao

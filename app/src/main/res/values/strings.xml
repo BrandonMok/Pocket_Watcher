@@ -21,7 +21,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="used">Used</string>
     <string name="limit">Limit</string>
-    <string name="no_limit_set_set_a_limit_to_help_track_your_expenses">No limit set! Set a limit to help track of your expenses!</string>
+    <string name="no_limit_set_set_a_limit_to_help_track_your_expenses">No limit set! Set a limit to help track your expenses!</string>
     <string name="zero_point_zero">0.00</string>
     <string name="daily_expenses">Daily Expenses</string>
     <string name="weekly_expenses">Weekly Expenses</string>
@@ -45,4 +45,9 @@
     <string name="limitations">Limitations</string>
     <string name="limitation_longtext">Stay on track by setting a limit!</string>
     <string name="limit_explanation">Setting daily, weekly, or monthly limits help keep you on track of your spending and saving goals! Enter a limit for either daily, weekly, or monthly and the rest will be calculated!</string>
+    <string name="monthly">Monthly</string>
+    <string name="weekly">Weekly</string>
+    <string name="daily">Daily</string>
+    <string name="set">Set</string>
+    <string name="remove_limit">Remove Limit</string>
 </resources>

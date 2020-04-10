@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_limit.*
 
 /**
  * A simple [Fragment] subclass.
@@ -30,6 +31,7 @@ class LimitFragment : Fragment() {
          * TODO:
          * WIll set onchangelisteners on textviews
          */
+
     }
 
 }//fragment
