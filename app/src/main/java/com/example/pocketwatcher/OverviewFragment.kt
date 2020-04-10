@@ -37,13 +37,13 @@ class OverviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var gson = Gson()
         var user = Globals().getCurrentUser(activity!!, gson)
+        var username = user.username
 
         if(user == null){
             // user'sl username wasn't set on login - redirect back to login
             startActivity(Intent(activity, MainActivity::class.java))
         }
 
-        var username = user.username
 
         // Set custom text
         helloTextView.text = "Hello $username!"
@@ -57,9 +57,7 @@ class OverviewFragment : Fragment() {
             uiThread {
                 if(limit != null ){
                     // Show limit daily limit for the overview page
-                    /**
-                     * TODO
-                     */
+                    limitEditText.setText(limit.daily)
                 }
                 else {
                     // No limit set, show textview

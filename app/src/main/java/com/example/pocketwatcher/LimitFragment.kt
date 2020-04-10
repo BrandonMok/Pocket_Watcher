@@ -11,6 +11,9 @@ import android.view.ViewGroup
  */
 class LimitFragment : Fragment() {
 
+    /**
+     * onCreateView
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -19,4 +22,14 @@ class LimitFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_limit, container, false)
     }
 
-}
+    /**
+     * onViewCreated
+     */
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        /**
+         * TODO:
+         * WIll set onchangelisteners on textviews
+         */
+    }
+
+}//fragment

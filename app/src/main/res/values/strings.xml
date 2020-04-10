@@ -44,4 +44,5 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="limitations">Limitations</string>
     <string name="limitation_longtext">Stay on track by setting a limit!</string>
+    <string name="limit_explanation">Setting daily, weekly, or monthly limits help keep you on track of your spending and saving goals! Enter a limit for either daily, weekly, or monthly and the rest will be calculated!</string>
 </resources>
