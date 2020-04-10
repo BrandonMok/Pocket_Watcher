@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_logged_in.*
 
 class LoggedInActivity : AppCompatActivity() {
@@ -49,8 +50,7 @@ class LoggedInActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener {
             when(it.itemId) {
                 R.id.overview -> {
-                    globals.changeFragment(findViewById(R.id.frame_layout), this@LoggedInActivity, OverviewFragment())
-                    closeDrawers()
+                    navClickHandler(OverviewFragment())
                 }
                 R.id.daily_expenses -> {
 
@@ -61,9 +61,11 @@ class LoggedInActivity : AppCompatActivity() {
                 R.id.monthly_expenses -> {
 
                 }
+                R.id.limitation -> {
+                    navClickHandler(LimitFragment())
+                }
                 R.id.settings -> {
-                    globals.changeFragment(findViewById(R.id.frame_layout), this@LoggedInActivity, SettingsFragment())
-                    closeDrawers()
+                    navClickHandler(SettingsFragment())
                 }
                 R.id.logout -> {
                     logout(this@LoggedInActivity)
@@ -84,12 +86,12 @@ class LoggedInActivity : AppCompatActivity() {
     }
 
     /**
-     * closeDrawers
+     * navClickHandler
      */
-    private fun closeDrawers(){
+    private fun navClickHandler(fragment: Fragment){
+        globals.changeFragment(findViewById(R.id.frame_layout), this@LoggedInActivity, fragment)
         drawerLayout.closeDrawers()
     }
-
 
     /**
      * logout
