@@ -18,6 +18,7 @@ import org.jetbrains.anko.uiThread
 class LoginFragment : Fragment() {
     // Create Instance of LoginSignUp -> has reusable functions that both Login and Registration use
     private var loginSignUp = LoginSignUp()
+    private var globals = Globals()
 
     /**
      * onCreateView
@@ -83,19 +84,19 @@ class LoginFragment : Fragment() {
                         }
                         else {
                             // Login failed
-                            loginSignUp.makeToast("Login failed!", context!!).show()
+                            globals.makeToast("Login failed!", context!!).show()
                         }
                     }
                     else {
                         // Login failed
-                        loginSignUp.makeToast("Login failed!", context!!).show()
+                        globals.makeToast("Login failed!", context!!).show()
                     }
                 }//uiThread
             }//doAsync
         }
         else {
             // Empty Fields
-            loginSignUp.makeToast("Please enter a username and password!", context!!).show()
+            globals.makeToast("Please enter a username and password!", context!!).show()
         }
     }//loginOnClick
 

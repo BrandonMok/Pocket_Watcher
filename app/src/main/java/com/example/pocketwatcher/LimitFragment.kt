@@ -1,5 +1,6 @@
 package com.example.pocketwatcher
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,8 +19,6 @@ import java.util.*
  */
 class LimitFragment : Fragment() {
     private var loginSignUp = LoginSignUp()
-    private val PATTERN = "^[0-9]+$"
-
 
     /**
      * onCreateView
@@ -48,67 +47,83 @@ class LimitFragment : Fragment() {
         })
 
 
-
-
-
         /**
          * TODO:
          * WIll set onchangelisteners on textviews
          */
         dailyEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable) {calculateLimits(s.toString(), R.id.dailyEditText)}
-            override fun onTextChanged( s: CharSequence,  start: Int, before: Int, count: Int) {
-                //calculateLimits(s.toString(), R.id.dailyEditText)
-            }
+            override fun afterTextChanged(s: Editable) { calculateLimits(s.toString(), R.id.dailyEditText) }
+            override fun onTextChanged( s: CharSequence,  start: Int, before: Int, count: Int) {}
         })
-    }
+    }//onViewCreated
 
     /**
      * calculateLimits
      */
     private fun calculateLimits(value: String, enteredEditTextID: Int){
-        try{
-            var numVal = parseDouble(value)
+        if(!value.equals("")) {
+            try {
+                var numVal = parseDouble(value)
 
-            when(enteredEditTextID){
-                R.id.dailyEditText -> {
-                    /**
-                     * Given daily, calculate weekly & monthly
-                     * Figure out how many weeks in current month
-                     */
-                    // weekly
-                    var weeklyCalcLimit = numVal * 7.0 // daily * 7 days a week for week
-                    weeklyEditText.setText("$" + weeklyCalcLimit.toString())
+                when (enteredEditTextID) {
+                    R.id.dailyEditText -> {
+                        /**
+                         * Given daily, calculate weekly & monthly
+                         * Figure out how many weeks in current month
+                         */
+                        // weekly
+                        var weeklyCalcLimit = numVal * 7.0 // daily * 7 days a week for week
+                        weeklyEditText.setText("$" + weeklyCalcLimit.toString())
 
-                    // month
-                    var maximumDays = Calendar.getInstance()
-                        .getActualMaximum(Calendar.DAY_OF_MONTH)
-                    var monthlyCalcLimit = maximumDays * numVal
-                    monthlyEditText.setText("$" +  monthlyCalcLimit.toString())
+                        // month
+                        var maximumDays = Calendar.getInstance()
+                            .getActualMaximum(Calendar.DAY_OF_MONTH)
+                        var monthlyCalcLimit = maximumDays * numVal
+                        monthlyEditText.setText("$" + monthlyCalcLimit.toString())
+                    }
+                    R.id.weeklyEditText -> {
+                        /**
+                         * TODO
+                         */
+                    }
+                    R.id.monthlyEditText -> {
+                        /**
+                         * TODO
+                         */
+                    }
                 }
-                R.id.weeklyEditText -> {
-                    /**
-                     * TODO
-                     */
-                }
-                R.id.monthlyEditText -> {
-                    /**
-                     * TODO
-                     */
-                }
+            } catch (e: NumberFormatException) {
+                // not numeric, show message!
+                /**
+                 * TODO
+                 * Show alert dialog or toast!!
+                 */
+                AlertDialog.Builder(context!!)
+                    .setTitle("Invalid value")
+                    .setMessage("Please enter a valid numerical limit value!")
+                    .setPositiveButton(android.R.string.ok) { _, _ -> }
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show()
             }
         }
-        catch(e: NumberFormatException){
-            // not numeric, show message!
-            /**
-             * TODO
-             * Show alert dialog or toast!!
-             */
-
-
-        }
     }//calculate limits
+
+
+    /**
+     * TODO:
+     * Have reusable function to calc all
+     * do CHekcs on which isn't null
+     */
+    private fun calcDaily(){
+
+    }
+    private fun calcWeekly(){
+
+    }
+    private fun calcMonthly(){
+
+    }
 
 
 }//fragment
