@@ -1,6 +1,7 @@
 package com.example.pocketwatcher
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.view.View
@@ -43,5 +44,17 @@ class Globals: AppCompatActivity() {
      */
     fun makeToast(msg: String, context: Context): Toast {
         return Toast.makeText(context, msg, Toast.LENGTH_LONG)
+    }
+
+    /**
+     * makeAlertDialog
+     */
+    fun makeAlertDialog(context: Context, title: String, msg: String){
+        AlertDialog.Builder(context)
+            .setTitle(title)
+            .setMessage(msg)
+            .setPositiveButton(android.R.string.ok) { _, _ -> }
+            .setIcon(android.R.drawable.ic_dialog_alert)
+            .show()
     }
 }//class

@@ -94,17 +94,7 @@ class LimitFragment : Fragment() {
                     }
                 }
             } catch (e: NumberFormatException) {
-                // not numeric, show message!
-                /**
-                 * TODO
-                 * Show alert dialog or toast!!
-                 */
-                AlertDialog.Builder(context!!)
-                    .setTitle("Invalid value")
-                    .setMessage("Please enter a valid numerical limit value!")
-                    .setPositiveButton(android.R.string.ok) { _, _ -> }
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show()
+                Globals().makeAlertDialog(context!!, "Invalid value", "Please enter a valid numerical limit value!")
             }
         }
     }//calculate limits
