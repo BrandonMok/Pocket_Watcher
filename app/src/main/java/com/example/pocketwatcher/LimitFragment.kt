@@ -5,10 +5,12 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.TextView
 import kotlinx.android.synthetic.main.fragment_limit.*
 import java.lang.Double.parseDouble
@@ -20,6 +22,10 @@ import java.util.*
  */
 class LimitFragment : Fragment() {
     private var loginSignUp = LoginSignUp()
+    private var v: View? = null
+
+    private var totalDaysInMonth: Int? = null
+    private var totalWeeks: Int? = null
 
     /**
      * onCreateView
@@ -36,6 +42,7 @@ class LimitFragment : Fragment() {
      * onViewCreated
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        v = view
 
         dailyEditText.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
             if(!hasFocus){ loginSignUp.hideKeyboard(v, context!!) }
@@ -49,20 +56,26 @@ class LimitFragment : Fragment() {
 
         dailyEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable) { calculateLimits(s.toString(), R.id.dailyEditText) }
+            override fun afterTextChanged(s: Editable) { calculateLimits(s.toString(), R.id.dailyEditText)}
             override fun onTextChanged( s: CharSequence,  start: Int, before: Int, count: Int) {}
         })
         weeklyEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable) { calculateLimits(s.toString(), R.id.weeklyEditText) }
+            override fun afterTextChanged(s: Editable) {calculateLimits(s.toString(), R.id.weeklyEditText) }
             override fun onTextChanged( s: CharSequence,  start: Int, before: Int, count: Int) {}
         })
         monthlyEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable) { calculateLimits(s.toString(), R.id.monthlyEditText) }
+            override fun afterTextChanged(s: Editable) {calculateLimits(s.toString(), R.id.monthlyEditText)}
             override fun onTextChanged( s: CharSequence,  start: Int, before: Int, count: Int) {}
         })
     }//onViewCreated
+
+    /**
+     * ISSUE!!!!!
+     * When setting text of others, triggers call for their on text changed
+     */
+
 
     /**
      * calculateLimits
@@ -75,35 +88,35 @@ class LimitFragment : Fragment() {
 
             when (enteredEditTextID) {
                 R.id.dailyEditText -> {
+                    //given daily
                     // weekly
-                    var weeklyCalcLimit = numVal * 7.0 // daily * 7 days a week for week
-                    weeklyEditText.setText("$" + weeklyCalcLimit.toString())
+                    var weeklyCalcLimit = numVal * 7.0
+                    weeklyEditText.setText("$" + String.format("%.2f", weeklyCalcLimit))
 
                     // month
                     var monthlyCalcLimit = totalDaysInMonth * numVal
-                    monthlyEditText.setText("$" + monthlyCalcLimit.toString())
+                    monthlyEditText.setText("$" +  String.format("%.2f", monthlyCalcLimit))
                 }
                 R.id.weeklyEditText -> {
                     // given weekly
-
                     // daily
                     var dailyCalcLimit = numVal / 7.0
-                    dailyEditText.setText("$" + dailyCalcLimit.toString())
+                    dailyEditText.setText("$" + String.format("%.2f", dailyCalcLimit))
 
                     //monthly
                     var monthlyCalcLimit = totalDaysInMonth * dailyCalcLimit
-                    monthlyEditText.setText("$" + monthlyCalcLimit.toString())
+                    monthlyEditText.setText("$" + String.format("%.2f",monthlyCalcLimit))
                 }
                 R.id.monthlyEditText -> {
                     //given monthly
 
                     // weekly
                     var weeklyCalcLimit =  numVal / totalWeeks
-                    weeklyEditText.setText("$" + weeklyCalcLimit.toString())
+                    weeklyEditText.setText("$" + String.format("%.2f",weeklyCalcLimit))
 
                     // daily
                     var dailyCalcLimit = numVal / totalDaysInMonth
-                    dailyEditText.setText("$" + dailyCalcLimit.toString())
+                    dailyEditText.setText("$" + String.format("%.2f", dailyCalcLimit))
                 }
             }
         } catch (e: NumberFormatException) {
