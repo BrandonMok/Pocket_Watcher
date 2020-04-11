@@ -1,5 +1,6 @@
 package com.example.pocketwatcher
 
+import android.Manifest.permission_group.CALENDAR
 import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
@@ -46,14 +47,19 @@ class LimitFragment : Fragment() {
             if(!hasFocus){ loginSignUp.hideKeyboard(v, context!!) }
         })
 
-
-        /**
-         * TODO:
-         * WIll set onchangelisteners on textviews
-         */
         dailyEditText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun afterTextChanged(s: Editable) { calculateLimits(s.toString(), R.id.dailyEditText) }
+            override fun onTextChanged( s: CharSequence,  start: Int, before: Int, count: Int) {}
+        })
+        weeklyEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable) { calculateLimits(s.toString(), R.id.weeklyEditText) }
+            override fun onTextChanged( s: CharSequence,  start: Int, before: Int, count: Int) {}
+        })
+        monthlyEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun afterTextChanged(s: Editable) { calculateLimits(s.toString(), R.id.monthlyEditText) }
             override fun onTextChanged( s: CharSequence,  start: Int, before: Int, count: Int) {}
         })
     }//onViewCreated
@@ -62,58 +68,69 @@ class LimitFragment : Fragment() {
      * calculateLimits
      */
     private fun calculateLimits(value: String, enteredEditTextID: Int){
-        if(!value.equals("")) {
-            try {
-                var numVal = parseDouble(value)
+        try {
+            var numVal = parseDouble(value)         // value entered, either daily, weekly, or monthly
+            var totalDaysInMonth = getTotalDaysInMonth()// get Total # of days in current month for calculations
+            var totalWeeks = getTotalWeeks()    // get total # of weeks
 
-                when (enteredEditTextID) {
-                    R.id.dailyEditText -> {
-                        /**
-                         * Given daily, calculate weekly & monthly
-                         * Figure out how many weeks in current month
-                         */
-                        // weekly
-                        var weeklyCalcLimit = numVal * 7.0 // daily * 7 days a week for week
-                        weeklyEditText.setText("$" + weeklyCalcLimit.toString())
+            when (enteredEditTextID) {
+                R.id.dailyEditText -> {
+                    // weekly
+                    var weeklyCalcLimit = numVal * 7.0 // daily * 7 days a week for week
+                    weeklyEditText.setText("$" + weeklyCalcLimit.toString())
 
-                        // month
-                        var maximumDays = Calendar.getInstance()
-                            .getActualMaximum(Calendar.DAY_OF_MONTH)
-                        var monthlyCalcLimit = maximumDays * numVal
-                        monthlyEditText.setText("$" + monthlyCalcLimit.toString())
-                    }
-                    R.id.weeklyEditText -> {
-                        /**
-                         * TODO
-                         */
-                    }
-                    R.id.monthlyEditText -> {
-                        /**
-                         * TODO
-                         */
-                    }
+                    // month
+                    var monthlyCalcLimit = totalDaysInMonth * numVal
+                    monthlyEditText.setText("$" + monthlyCalcLimit.toString())
                 }
-            } catch (e: NumberFormatException) {
-                Globals().makeAlertDialog(context!!, "Invalid value", "Please enter a valid numerical limit value!")
+                R.id.weeklyEditText -> {
+                    // given weekly
+
+                    // daily
+                    var dailyCalcLimit = numVal / 7.0
+                    dailyEditText.setText("$" + dailyCalcLimit.toString())
+
+                    //monthly
+                    var monthlyCalcLimit = totalDaysInMonth * dailyCalcLimit
+                    monthlyEditText.setText("$" + monthlyCalcLimit.toString())
+                }
+                R.id.monthlyEditText -> {
+                    //given monthly
+
+                    // weekly
+                    var weeklyCalcLimit =  numVal / totalWeeks
+                    weeklyEditText.setText("$" + weeklyCalcLimit.toString())
+
+                    // daily
+                    var dailyCalcLimit = numVal / totalDaysInMonth
+                    dailyEditText.setText("$" + dailyCalcLimit.toString())
+                }
             }
+        } catch (e: NumberFormatException) {
+            //Globals().makeAlertDialog(context!!, "Invalid value", "Please enter a valid numerical limit value!")
         }
     }//calculate limits
 
 
     /**
-     * TODO:
-     * Have reusable function to calc all
-     * do CHekcs on which isn't null
+     * totalDaysInMonth
      */
-    private fun calcDaily(){
-
-    }
-    private fun calcWeekly(){
-
-    }
-    private fun calcMonthly(){
-
+    private fun getTotalDaysInMonth(): Int {
+       return Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH)
     }
 
+    /**
+     * getTotalWeeksInMonth
+     */
+    private fun getTotalWeeks(): Int {
+        var cal = Calendar.getInstance()
+        cal.set(Calendar.DAY_OF_MONTH, 1)
+        var start = cal.get(Calendar.WEEK_OF_YEAR)
+
+        cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH))
+        var end = cal.get(Calendar.WEEK_OF_YEAR)
+
+        return (end - start + 1)
+    }
 
 }//fragment
