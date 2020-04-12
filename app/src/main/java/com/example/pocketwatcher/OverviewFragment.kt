@@ -46,10 +46,11 @@ class OverviewFragment : Fragment() {
             startActivity(Intent(activity, MainActivity::class.java))
         }
 
+        helloTextView.text = "Hello $username!" // Set custom text
 
-        // Set custom text
-        helloTextView.text = "Hello $username!"
 
+        // variable to know if limit was set -> used later whether to show dailyLimitUsed value
+        var limitSet: Boolean = false
 
         // CHECK: if user has a limit set
         doAsync{
@@ -60,6 +61,7 @@ class OverviewFragment : Fragment() {
                 if(limit != null ){
                     // Show limit daily limit for the overview page
                     limitEditText.setText(limit.daily)
+                    limitSet = true
                 }
                 else {
                     // No limit set, show textview
@@ -110,6 +112,9 @@ class OverviewFragment : Fragment() {
                     }
 
                     // Set values on UI
+                    if(limitSet){
+                        limitUsedEditText.setText("$" + dailyTotal)
+                    }
                     dailyExpenseValueTextView.setText("$" + dailyTotal)
                     weeklyExpenseValueTextView.setText("$" + weeklyTotal)
                     monthlyExpenseValueTextView.setText("$" + monthlyTotal)
