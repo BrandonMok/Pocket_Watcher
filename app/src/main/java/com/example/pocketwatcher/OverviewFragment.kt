@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.pocketwatcher.entities.Expense
 import com.example.pocketwatcher.entities.Limitation
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_overview.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
+import java.util.*
 
 /**
  * A simple [Fragment] subclass.
@@ -62,6 +64,55 @@ class OverviewFragment : Fragment() {
                 else {
                     // No limit set, show textview
                     noLimitTextView.visibility = View.VISIBLE
+                }
+            }
+        }
+
+
+        // CHECK for expenses
+        doAsync {
+            var expenseList: List<Expense> = db!!.expenseDao().getAllExpenses(username)
+
+            uiThread {
+                if(expenseList != null && expenseList.isNotEmpty()){
+                    // There are expenses made from user
+                    // Calculate all totals
+                    var tp = TimePeriod()
+                    var today = Date(tp.getToday())
+
+                    var entireWeekString = tp.getWeek()
+                    var startWeek = Date(entireWeekString.substring(0,10))
+                    var endWeek = Date(entireWeekString.substring(11,21))
+
+                    var entireMonthString = tp.getMonth()
+                    var startMonth = Date(entireMonthString.substring(0,10))
+                    var endMonth = Date(entireMonthString.substring(11,21))
+
+                    var dailyTotal: Double = 0.0
+                    var weeklyTotal: Double = 0.0
+                    var monthlyTotal: Double = 0.0
+
+                    for(exp in expenseList){
+                        var expDate = Date(exp.date)
+
+                        if(expDate.equals(today)){
+                            // Today
+                            dailyTotal += exp.value
+                        }
+                        if(expDate.compareTo(startWeek) >= 0 && expDate.compareTo(endWeek) <= 0){
+                            // Week
+                            weeklyTotal += exp.value
+                        }
+                        if(expDate.compareTo(startMonth) >= 0 && expDate.compareTo(endMonth) <= 0){
+                            // month
+                            monthlyTotal += exp.value
+                        }
+                    }
+
+                    // Set values on UI
+                    dailyExpenseValueTextView.setText("$" + dailyTotal)
+                    weeklyExpenseValueTextView.setText("$" + weeklyTotal)
+                    monthlyExpenseValueTextView.setText("$" + monthlyTotal)
                 }
             }
         }

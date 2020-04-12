@@ -7,8 +7,8 @@ import com.example.pocketwatcher.entities.Expense
 @Dao
 interface ExpenseDao {
 
-    @Query("select * from expense")
-    fun getAllExpenses(): List<Expense>
+    @Query("select * from expense where user = :username")
+    fun getAllExpenses(username: String): List<Expense>
 
     @Query("select * from expense where id = :id")
     fun getExpenseById(id: Long): Expense
