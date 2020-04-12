@@ -121,6 +121,17 @@ class OverviewFragment : Fragment() {
                 }
             }
         }
+
+
+        // set onClickListeners
+        ConstraintLayoutDE.setOnClickListener {
+            Globals().changeFragment(view, context!!, DailyExpenseFragment())
+        }
+        /**
+         * TODO
+         * Set onclicklisteners for other CL
+         */
+
     }//onViewCreated
 
 }//fragment

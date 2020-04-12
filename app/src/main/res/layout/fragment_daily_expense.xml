@@ -7,8 +7,12 @@
     tools:context=".DailyExpenseFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+
+        <!-- Insert graph here -->
 
 
         <androidx.recyclerview.widget.RecyclerView
