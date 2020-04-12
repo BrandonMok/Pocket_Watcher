@@ -54,21 +54,21 @@ class LimitFragment : Fragment() {
             if(!hasFocus){ loginSignUp.hideKeyboard(v, context!!) }
         })
 
-        dailyEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable) { calculateLimits(s.toString(), R.id.dailyEditText)}
-            override fun onTextChanged( s: CharSequence,  start: Int, before: Int, count: Int) {}
-        })
-        weeklyEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable) {calculateLimits(s.toString(), R.id.weeklyEditText) }
-            override fun onTextChanged( s: CharSequence,  start: Int, before: Int, count: Int) {}
-        })
-        monthlyEditText.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun afterTextChanged(s: Editable) {calculateLimits(s.toString(), R.id.monthlyEditText)}
-            override fun onTextChanged( s: CharSequence,  start: Int, before: Int, count: Int) {}
-        })
+//        dailyEditText.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//            override fun afterTextChanged(s: Editable) { calculateLimits(s.toString(), R.id.dailyEditText)}
+//            override fun onTextChanged( s: CharSequence,  start: Int, before: Int, count: Int) {}
+//        })
+//        weeklyEditText.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//            override fun afterTextChanged(s: Editable) {calculateLimits(s.toString(), R.id.weeklyEditText) }
+//            override fun onTextChanged( s: CharSequence,  start: Int, before: Int, count: Int) {}
+//        })
+//        monthlyEditText.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//            override fun afterTextChanged(s: Editable) {calculateLimits(s.toString(), R.id.monthlyEditText)}
+//            override fun onTextChanged( s: CharSequence,  start: Int, before: Int, count: Int) {}
+//        })
     }//onViewCreated
 
     /**
@@ -80,49 +80,49 @@ class LimitFragment : Fragment() {
     /**
      * calculateLimits
      */
-    private fun calculateLimits(value: String, enteredEditTextID: Int){
-        try {
-            var numVal = parseDouble(value)         // value entered, either daily, weekly, or monthly
-            var totalDaysInMonth = getTotalDaysInMonth()// get Total # of days in current month for calculations
-            var totalWeeks = getTotalWeeks()    // get total # of weeks
-
-            when (enteredEditTextID) {
-                R.id.dailyEditText -> {
-                    //given daily
-                    // weekly
-                    var weeklyCalcLimit = numVal * 7.0
-                    weeklyEditText.setText("$" + String.format("%.2f", weeklyCalcLimit))
-
-                    // month
-                    var monthlyCalcLimit = totalDaysInMonth * numVal
-                    monthlyEditText.setText("$" +  String.format("%.2f", monthlyCalcLimit))
-                }
-                R.id.weeklyEditText -> {
-                    // given weekly
-                    // daily
-                    var dailyCalcLimit = numVal / 7.0
-                    dailyEditText.setText("$" + String.format("%.2f", dailyCalcLimit))
-
-                    //monthly
-                    var monthlyCalcLimit = totalDaysInMonth * dailyCalcLimit
-                    monthlyEditText.setText("$" + String.format("%.2f",monthlyCalcLimit))
-                }
-                R.id.monthlyEditText -> {
-                    //given monthly
-
-                    // weekly
-                    var weeklyCalcLimit =  numVal / totalWeeks
-                    weeklyEditText.setText("$" + String.format("%.2f",weeklyCalcLimit))
-
-                    // daily
-                    var dailyCalcLimit = numVal / totalDaysInMonth
-                    dailyEditText.setText("$" + String.format("%.2f", dailyCalcLimit))
-                }
-            }
-        } catch (e: NumberFormatException) {
-            //Globals().makeAlertDialog(context!!, "Invalid value", "Please enter a valid numerical limit value!")
-        }
-    }//calculate limits
+//    private fun calculateLimits(value: String, enteredEditTextID: Int){
+//        try {
+//            var numVal = parseDouble(value)         // value entered, either daily, weekly, or monthly
+//            var totalDaysInMonth = getTotalDaysInMonth()// get Total # of days in current month for calculations
+//            var totalWeeks = getTotalWeeks()    // get total # of weeks
+//
+//            when (enteredEditTextID) {
+//                R.id.dailyEditText -> {
+//                    //given daily
+//                    // weekly
+//                    var weeklyCalcLimit = numVal * 7.0
+//                    weeklyEditText.setText("$" + String.format("%.2f", weeklyCalcLimit))
+//
+//                    // month
+//                    var monthlyCalcLimit = totalDaysInMonth * numVal
+//                    monthlyEditText.setText("$" +  String.format("%.2f", monthlyCalcLimit))
+//                }
+//                R.id.weeklyEditText -> {
+//                    // given weekly
+//                    // daily
+//                    var dailyCalcLimit = numVal / 7.0
+//                    dailyEditText.setText("$" + String.format("%.2f", dailyCalcLimit))
+//
+//                    //monthly
+//                    var monthlyCalcLimit = totalDaysInMonth * dailyCalcLimit
+//                    monthlyEditText.setText("$" + String.format("%.2f",monthlyCalcLimit))
+//                }
+//                R.id.monthlyEditText -> {
+//                    //given monthly
+//
+//                    // weekly
+//                    var weeklyCalcLimit =  numVal / totalWeeks
+//                    weeklyEditText.setText("$" + String.format("%.2f",weeklyCalcLimit))
+//
+//                    // daily
+//                    var dailyCalcLimit = numVal / totalDaysInMonth
+//                    dailyEditText.setText("$" + String.format("%.2f", dailyCalcLimit))
+//                }
+//            }
+//        } catch (e: NumberFormatException) {
+//            //Globals().makeAlertDialog(context!!, "Invalid value", "Please enter a valid numerical limit value!")
+//        }
+//    }//calculate limits
 
 
     /**
