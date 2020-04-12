@@ -163,7 +163,7 @@
         app:layout_constraintGuide_begin="500dp" />
 
     <Button
-        android:id="@+id/calculate"
+        android:id="@+id/calculateBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:width="200dp"

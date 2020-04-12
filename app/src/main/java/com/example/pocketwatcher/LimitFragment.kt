@@ -54,9 +54,13 @@ class LimitFragment : Fragment() {
             if(!hasFocus){ loginSignUp.hideKeyboard(v, context!!) }
         })
 
+        calculateBtn.setOnClickListener {
+            //calculateLimits()
+        }
+
 //        dailyEditText.addTextChangedListener(object : TextWatcher {
 //            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-//            override fun afterTextChanged(s: Editable) { calculateLimits(s.toString(), R.id.dailyEditText)}
+//            override fun afterTextChanged(s: Editable) { calculateLimits(s.toString(), R.id.weeklyEditText)}
 //            override fun onTextChanged( s: CharSequence,  start: Int, before: Int, count: Int) {}
 //        })
 //        weeklyEditText.addTextChangedListener(object : TextWatcher {
@@ -70,6 +74,13 @@ class LimitFragment : Fragment() {
 //            override fun onTextChanged( s: CharSequence,  start: Int, before: Int, count: Int) {}
 //        })
     }//onViewCreated
+
+
+//    private fun calculateLimits(){
+//        // Figure out which editText has an entered value
+//        // ISSUE: If there's text already, calculateBtn wouldn't work
+//    }
+
 
     /**
      * ISSUE!!!!!
@@ -101,7 +112,7 @@ class LimitFragment : Fragment() {
 //                    // given weekly
 //                    // daily
 //                    var dailyCalcLimit = numVal / 7.0
-//                    dailyEditText.setText("$" + String.format("%.2f", dailyCalcLimit))
+//                    dailyEditText.setText("$" -+ String.format("%.2f", dailyCalcLimit))
 //
 //                    //monthly
 //                    var monthlyCalcLimit = totalDaysInMonth * dailyCalcLimit
