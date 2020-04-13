@@ -54,4 +54,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title">Title</string>
+    <string name="tag">Tag:</string>
+    <string name="gas">Gas</string>
+    <string name="_2020_04_12">2020-04-12</string>
 </resources>
