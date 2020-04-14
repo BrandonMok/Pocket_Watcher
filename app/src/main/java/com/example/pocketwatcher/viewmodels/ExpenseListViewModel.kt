@@ -20,8 +20,15 @@ class ExpenseListViewModel (application: Application, username: String) : Androi
 
     init {
         doAsync {
-            allExpenses = database.expenseDao().getAllExpenses(username).toMutableList()
-            mAllExpenses.postValue(allExpenses)
+            var expenses = database.expenseDao().getAllExpenses(username).toMutableList()
+
+            /**
+             * TODO
+             * need way to have only get correct period of expenses (i.e. only daily or weekly)
+             * Maybe pass another param to viewmodel??
+             */
+//            allExpenses =
+//            mAllExpenses.postValue(allExpenses)
         }
     }//init
 
