@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pocketwatcher.entities.Expense
 import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
@@ -14,7 +16,6 @@ import com.example.pocketwatcher.ExpenseListAdapter
 import com.github.mikephil.charting.animation.Easing
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_daily_expense.*
-import java.util.Observer
 
 
 /**
@@ -43,10 +44,11 @@ class DailyExpenseFragment : Fragment() {
         expenseListViewModel = ExpenseListViewModel(activity?.application!!, currUser.username, tpMap)
         mAdapter = ExpenseListAdapter(mutableListOf(), context!!)
 
-//        expenseListViewModel.mAllExpenses.observe(this,
-//            Observer<MutableList<Expense>> {expense ->
-//                mAdapter.addExpense(expense!!)
-//            })
+        expenseListViewModel.mAllExpenses.observe(this,
+            Observer<MutableList<Expense>> {expense ->
+                mAdapter.addExpense(expense!!)
+            })
+
 
         //PieChart
 //        piechart.setUsePercentValues(true)
