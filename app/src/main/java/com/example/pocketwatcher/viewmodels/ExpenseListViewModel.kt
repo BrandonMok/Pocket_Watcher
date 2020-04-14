@@ -10,7 +10,7 @@ import com.example.pocketwatcher.entities.Expense
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-class ExpenseViewModel (application: Application) : AndroidViewModel(application){
+class ExpenseListViewModel (application: Application, username: String) : AndroidViewModel(application){
 
     private var allExpenses: MutableList<Expense> = mutableListOf()
     var mAllExpenses: MutableLiveData<MutableList<Expense>> = MutableLiveData()
@@ -20,8 +20,8 @@ class ExpenseViewModel (application: Application) : AndroidViewModel(application
 
     init {
         doAsync {
-//            allExpenses = database.expenseDao().getAllExpenses().toMutableList()
-//            mAllExpenses.postValue(allExpenses)
+            allExpenses = database.expenseDao().getAllExpenses(username).toMutableList()
+            mAllExpenses.postValue(allExpenses)
         }
     }//init
 
@@ -60,9 +60,14 @@ class ExpenseViewModel (application: Application) : AndroidViewModel(application
 
             // CHECK if it exists
 
+            /**
+             * TODO:
+             * CHECK if expense exists,
+             * use current list of expenses to find it instead of getting it all over again
+             */
 
-//
-//            allExpenses = database.expenseDao().getAllExpenses().toMutableList()
+
+//            allExpenses = database.expenseDao().getAllExpenses(username).toMutableList()
 //            mAllExpenses.postValue(allExpenses)
         }
     }
@@ -76,7 +81,7 @@ class ExpenseViewModel (application: Application) : AndroidViewModel(application
 
             //need to update live data. We're just going to get them all
             //probably should do a more efficient way
-//            allExpenses = database.expenseDao().getAllExpenses().toMutableList()
+//            allExpenses = database.expenseDao().getAllExpenses(username).toMutableList()
 //            mAllExpenses.postValue(allExpenses)
         }
     }
@@ -90,7 +95,7 @@ class ExpenseViewModel (application: Application) : AndroidViewModel(application
 
             //need to update live data. We're just going to get them all
             //probably should do a more efficient way
-//            allExpenses = database.expenseDao().getAllExpenses().toMutableList()
+//            allExpenses = database.expenseDao().getAllExpenses(username).toMutableList()
 //            mAllExpenses.postValue(allExpenses)
         }
     }

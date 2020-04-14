@@ -52,17 +52,19 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>, private
 
     /**
      * addTask
+     *
+     * Is this correct to be in here??
      */
-    fun addTask(expense: Expense){
-        doAsync {
-            PocketWatcherDatabase.getInstance(context).expenseDao().insertExpense(expense)
-            expenseList.add(expense)
-
-            uiThread {
-                //notifyDataSetChanged
-            }
-        }
-    }
+//    fun addTask(expense: Expense){
+//        doAsync {
+//            PocketWatcherDatabase.getInstance(context).expenseDao().insertExpense(expense)
+//            expenseList.add(expense)
+//
+//            uiThread {
+//                //notifyDataSetChanged
+//            }
+//        }
+//    }
 
 
 
