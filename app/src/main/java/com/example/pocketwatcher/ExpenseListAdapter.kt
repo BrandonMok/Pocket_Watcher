@@ -43,15 +43,15 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
     }
 
     /**
-     * addTasks
+     * addExpense
      */
-    fun addTasks(taskList: MutableList<Expense>){
-        this.expenseList = taskList
+    fun addTasks(expenseList: MutableList<Expense>){
+        this.expenseList = expenseList
         notifyDataSetChanged()
     }
 
     /**
-     * addTask
+     * addExpenses
      */
     fun addTask(expense: Expense){
         doAsync {
@@ -80,16 +80,16 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
      * RecyclerViewHolder class
      */
     internal class RecyclerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var title: TextView? = null
-        var value: TextView? = null
-        var tag: TextView? = null
-        var date: TextView? = null
+        var title: TextView? = view.findViewById(R.id.titleTextView)
+        var value: TextView? = view.findViewById(R.id.valueTextView)
+        var tag: TextView? = view.findViewById(R.id.tagValueTextView)
+        var date: TextView? = view.findViewById(R.id.dateTextView)
 
-        init {
-            title = view.findViewById(R.id.titleTextView)
-            value = view.findViewById(R.id.valueTextView)
-            tag = view.findViewById(R.id.tagValueTextView)
-            date = view.findViewById(R.id.dateTextView)
-        }
+//        init {
+//            title = view.findViewById(R.id.titleTextView)
+//            value = view.findViewById(R.id.valueTextView)
+//            tag = view.findViewById(R.id.tagValueTextView)
+//            date = view.findViewById(R.id.dateTextView)
+//        }
     }
 }//class
