@@ -21,6 +21,8 @@ class OverviewFragment : Fragment() {
 
     // DB
     var db: PocketWatcherDatabase? = null
+    //Globals
+    private var globals = Globals()
 
     /**
      * onCreateView
@@ -38,7 +40,7 @@ class OverviewFragment : Fragment() {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var gson = Gson()
-        var user = Globals().getCurrentUser(activity!!, gson)
+        var user = globals.getCurrentUser(activity!!, gson)
         var username = user.username
 
         if(user == null){
@@ -125,13 +127,14 @@ class OverviewFragment : Fragment() {
 
         // set onClickListeners
         ConstraintLayoutDE.setOnClickListener {
-            Globals().changeFragment(view, context!!, DailyExpenseFragment())
+            globals.changeFragment(view, context!!, DailyExpenseFragment())
         }
-        /**
-         * TODO
-         * Set onclicklisteners for other CL
-         */
-
+//        ConstraintLayoutDE.setOnClickListener {
+//            globals.changeFragment(view, context!!, WeeklyExpenseFragment())
+//        }
+//        ConstraintLayoutDE.setOnClickListener {
+//            globals.changeFragment(view, context!!, MonthlyExpenseFragment())
+//        }
     }//onViewCreated
 
 }//fragment

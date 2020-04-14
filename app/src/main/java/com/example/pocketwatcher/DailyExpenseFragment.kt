@@ -32,7 +32,12 @@ class DailyExpenseFragment : Fragment() {
 
         var currUser = Globals().getCurrentUser(activity!!, Gson())
 
-        expenseListViewModel = ExpenseListViewModel(activity?.application!!, currUser.username)
+        // Map for viewmodel to know which timeperiod and which date + how to parse it when finding expenses
+        var tpMap = HashMap<String, String>()
+        tpMap.put("Period", "Daily")
+        tpMap.put("Date", TimePeriod().getToday())
+
+        expenseListViewModel = ExpenseListViewModel(activity?.application!!, currUser.username, tpMap)
         mAdapter = ExpenseListAdapter(mutableListOf(), context!!)
 
 //        expenseListViewModel.mAllExpenses.observe(this,
@@ -53,14 +58,7 @@ class DailyExpenseFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = mAdapter         // set recyclerView's adapter
-//        view.findViewById<Button>(R.id.add_btn).setOnClickListener {
-//            //should do some validation here
-//            val newTask = Task(false,
-//                view.findViewById<EditText>(R.id.task_et).text.toString())
-//            taskListViewModel.insertTask(newTask)
-//            view.findViewById<EditText>(R.id.task_et).setText("")
-//        }
+        recyclerView.adapter = mAdapter                                              // set recyclerView's adapter
         return view
     }
 

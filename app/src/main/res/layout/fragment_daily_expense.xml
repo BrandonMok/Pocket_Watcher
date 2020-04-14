@@ -44,7 +44,14 @@
                 android:id="@+id/piechart"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:minHeight="300dp"/>
+                android:minHeight="250dp"/>
+
+
+        <FrameLayout
+            android:id="@+id/limitFrameLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
