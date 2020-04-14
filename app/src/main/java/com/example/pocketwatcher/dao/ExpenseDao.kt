@@ -14,12 +14,12 @@ interface ExpenseDao {
     fun getExpenseById(id: Long): Expense
 
     @Insert(onConflict = REPLACE)
-    fun insertTask(expense: Expense)
+    fun insertExpense(expense: Expense)
 
     @Update(onConflict = REPLACE)
-    fun updateTask(expense: Expense)
+    fun updateExpense(expense: Expense)
 
     @Delete
-    fun deleteTask(expense: Expense)
+    fun deleteExpense(expense: Expense)
 
 }//interface
