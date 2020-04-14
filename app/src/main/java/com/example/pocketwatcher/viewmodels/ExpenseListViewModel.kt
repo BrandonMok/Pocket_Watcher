@@ -120,12 +120,26 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
      */
     fun updateExpense(expense: Expense){
         doAsync {
-            database.expenseDao().updateExpense(expense)
+            var expenseToUpdate = getExpense(expense.id)
 
-            //need to update live data. We're just going to get them all
-            //probably should do a more efficient way
-//            allExpenses = database.expenseDao().getAllExpenses(username).toMutableList()
-//            mAllExpenses.postValue(allExpenses)
+            uiThread {
+                if(expenseToUpdate != null){
+                    // Exists!
+                    doAsync {
+                        database.expenseDao().updateExpense(expense)
+
+                        uiThread {
+                            // Replace that expense in the list
+                            for(exp in allExpenses.indices){
+                                if(allExpenses[exp].id == expense.id){
+                                    allExpenses[exp] = expense
+                                }
+                            }
+                            mAllExpenses.postValue(allExpenses)
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -134,12 +148,20 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
      */
     fun deleteExpense(expense: Expense){
         doAsync {
-            database.expenseDao().deleteExpense(expense)
+            var expenseToDelete = getExpense(expense.id)
 
-            //need to update live data. We're just going to get them all
-            //probably should do a more efficient way
-//            allExpenses = database.expenseDao().getAllExpenses(username).toMutableList()
-//            mAllExpenses.postValue(allExpenses)
+            uiThread {
+                if(expenseToDelete != null){
+                    doAsync {
+                        database.expenseDao().deleteExpense(expense)
+
+                        uiThread {
+                            allExpenses.remove(expense)
+                            mAllExpenses.postValue(allExpenses)
+                        }
+                    }
+                }
+            }
         }
     }
 

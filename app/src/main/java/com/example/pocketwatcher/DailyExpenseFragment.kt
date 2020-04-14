@@ -1,6 +1,7 @@
 
 package com.example.pocketwatcher
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,10 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pocketwatcher.entities.Expense
-import java.util.Observer
 import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
 import com.example.pocketwatcher.ExpenseListAdapter
+import com.github.mikephil.charting.animation.Easing
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_daily_expense.*
+import java.util.Observer
+
 
 /**
  * A simple [Fragment] subclass.
@@ -42,8 +46,34 @@ class DailyExpenseFragment : Fragment() {
 
 //        expenseListViewModel.mAllExpenses.observe(this,
 //            Observer<MutableList<Expense>> {expense ->
-//                mAdapter.addTasks(expense!!)
+//                mAdapter.addTasks(expense)
 //            })
+
+
+        //PieChart
+//        piechart.setUsePercentValues(true)
+//        piechart.description.isEnabled = false
+//        piechart.dragDecelerationFrictionCoef = 0.95f
+//        piechart.setExtraOffsets(5f, 10f, 5f, 5f)
+//        piechart.isDrawHoleEnabled = true
+//        piechart.setHoleColor(Color.WHITE)
+//        piechart.transparentCircleRadius = 60f
+//        piechart.animateY(1000, Easing. EaseInOutCubic)
+//        piechart.legend.isEnabled = false
+
+        // ADD VALUES into chart
+        // list.add(PieEntry(40f, "Dinner")
+
+        // var dataSet = PieDataSet(list, "Expenses")
+        // dataSet.sliceSpace = 3f
+        // dataset.selectionShift = 5f
+
+        // var data = PieCDData(dataSet)
+        // data.setValueTextColor(Color.Black)
+        // data.setValueTextSize(10f)
+        // piechart.data = data
+        //piechart.invalidate() // refresh
+        //
     }
 
     /**

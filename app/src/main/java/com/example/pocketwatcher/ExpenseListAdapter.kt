@@ -4,15 +4,15 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pocketwatcher.entities.Expense
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 
-class ExpenseListAdapter (private var expenseList: MutableList<Expense>, private var context: Context)
-    : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
+                          private var context: Context)
+                            : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     /**
      * onCreateViewHolder
@@ -52,19 +52,27 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>, private
 
     /**
      * addTask
-     *
-     * Is this correct to be in here??
      */
-//    fun addTask(expense: Expense){
-//        doAsync {
-//            PocketWatcherDatabase.getInstance(context).expenseDao().insertExpense(expense)
-//            expenseList.add(expense)
-//
-//            uiThread {
-//                //notifyDataSetChanged
-//            }
-//        }
-//    }
+    fun addTask(expense: Expense){
+        doAsync {
+            var db = PocketWatcherDatabase.getInstance(context)
+            var exp = db.expenseDao().getExpenseById(expense.id)
+
+            uiThread {
+                if(exp == null){
+                    //dne good to add
+                    doAsync {
+                        db.expenseDao().insertExpense(expense)
+
+                        uiThread {
+                            expenseList.add(expense)
+                            notifyDataSetChanged()
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 
 
