@@ -1,7 +1,6 @@
 
 package com.example.pocketwatcher
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -46,9 +45,8 @@ class DailyExpenseFragment : Fragment() {
 
 //        expenseListViewModel.mAllExpenses.observe(this,
 //            Observer<MutableList<Expense>> {expense ->
-//                mAdapter.addTasks(expense)
+//                mAdapter.addExpense(expense!!)
 //            })
-
 
         //PieChart
 //        piechart.setUsePercentValues(true)

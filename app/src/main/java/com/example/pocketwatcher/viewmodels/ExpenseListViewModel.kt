@@ -90,7 +90,7 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
             }
         }
         return expense
-    }//getTask
+    }//getExpense
 
 
     /**
