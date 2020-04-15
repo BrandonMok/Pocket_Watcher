@@ -156,6 +156,8 @@ class DailyExpenseFragment : Fragment() {
         piechart.transparentCircleRadius = 60f
         piechart.animateY(1000, Easing. EaseInOutCubic)
         piechart.legend.isEnabled = false
+        piechart.setNoDataText("No logged expenses!")
+        piechart.setNoDataTextColor(Color.BLACK)
     }
 
 
