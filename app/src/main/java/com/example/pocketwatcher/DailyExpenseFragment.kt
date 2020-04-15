@@ -45,7 +45,7 @@ class DailyExpenseFragment : Fragment() {
 
         var database: PocketWatcherDatabase = PocketWatcherDatabase.getInstance(context!!)
         var currUser = Globals().getCurrentUser(activity!!, Gson())
-        var currUsername = currUser.username
+        var currUsername = currUser!!.username
 
         //Map for viewmodel to know which timeperiod and which date + how to parse it when finding expenses
         var tpMap = HashMap<String, String>()

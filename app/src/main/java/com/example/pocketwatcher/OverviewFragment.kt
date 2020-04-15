@@ -42,7 +42,7 @@ class OverviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         var gson = Gson()
         var user = globals.getCurrentUser(activity!!, gson)
-        var username = user.username
+        var username = user!!.username
 
         if(user == null){
             // user'sl username wasn't set on login - redirect back to login

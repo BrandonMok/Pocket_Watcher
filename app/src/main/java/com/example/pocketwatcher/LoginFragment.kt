@@ -34,6 +34,14 @@ class LoginFragment : Fragment() {
      * onViewCreated
      */
     override fun onViewCreated(v: View, savedInstanceState: Bundle?) {
+        var currUser = globals.getCurrentUser(activity!!, Gson())
+
+        if(currUser != null){
+            startActivity(Intent(activity, LoggedInActivity::class.java))
+        }
+
+
+
         loginButton.setOnClickListener { loginOnClick(v) }
         signUpTextView.setOnClickListener { signUpOnClick(v) }
 
@@ -45,7 +53,6 @@ class LoginFragment : Fragment() {
             if(!hasFocus){ loginSignUp.hideKeyboard(v, context!!) }
         })
     }//onViewCreated
-
 
     /**
      * loginOnClick

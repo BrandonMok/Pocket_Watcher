@@ -31,7 +31,7 @@ class Globals: AppCompatActivity() {
     /**
      * getCurrentUser
      */
-    fun getCurrentUser(activity: Activity, gson: Gson): User {
+    fun getCurrentUser(activity: Activity, gson: Gson): User? {
         var sp = activity!!.getSharedPreferences("USERS",0)
         var userString = sp.getString("CURRENT_USER",  "")
         return gson.fromJson(userString, User::class.java)
