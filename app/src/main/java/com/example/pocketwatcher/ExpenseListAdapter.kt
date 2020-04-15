@@ -9,10 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pocketwatcher.entities.Expense
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
+import kotlin.math.exp
 
 class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
                           private var context: Context)
                             : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    // Made public for chart usage
+    var allExpenseList = expenseList
+
 
     /**
      * onCreateViewHolder

@@ -30,7 +30,7 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
 
                 when(period){
                     "Daily" -> {
-                        var today = Date(timeMap.get("Date"))
+                        var today = Date(timeMap.get("Date"))           // ISSUE!! Date parsing error
 
                         for(expense in expenseList){
                             if(Date(expense.date).compareTo(today) == 0){
