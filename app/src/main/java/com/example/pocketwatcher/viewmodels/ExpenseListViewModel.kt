@@ -1,10 +1,12 @@
 package com.example.pocketwatcher.viewmodels
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.pocketwatcher.PocketWatcherDatabase
+import com.example.pocketwatcher.TimePeriod
 import com.example.pocketwatcher.entities.Expense
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
@@ -13,11 +15,16 @@ import java.util.*
 
 class ExpenseListViewModel (application: Application, username: String, timeMap: HashMap<String, String>) : AndroidViewModel(application){
 
+    //Lists
     private var allExpenses: MutableList<Expense> = mutableListOf()
     var mAllExpenses: MutableLiveData<MutableList<Expense>> = MutableLiveData()
 
     // Database
     private val database: PocketWatcherDatabase = PocketWatcherDatabase.getInstance(this.getApplication())
+
+    //TimePeriod
+    private var tp = TimePeriod()
+
 
     init {
         doAsync {
@@ -25,29 +32,33 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
             var expenseList = database.expenseDao().getAllExpenses(username).toMutableList()
 
             uiThread {
-                // Get only add/use the expenses within specified timeperiod in timeP map
-                var period = timeMap.get("Period")  //e.g "Daily", "Weekly", "Monthly"
+                if(expenseList.isNotEmpty()){
+                    var period = timeMap.get("Period")  //e.g "Daily", "Weekly", "Monthly"
+                    var dateStr = timeMap["Date"]       //DateString (e.g. 2020-04-4)
 
-                when(period){
-                    "Daily" -> {
-                        var today = Date(timeMap.get("Date"))           // ISSUE!! Date parsing error
+                    when(period){
+                        "Daily" -> {
+                            var today = tp.stringToDate(dateStr!!)
+                            // var today = Date(dateStr!!.substring(0,4).toInt(), dateStr!!.substring(5,7).toInt(), dateStr!!.substring(8,10).toInt())
 
-                        for(expense in expenseList){
-                            if(Date(expense.date).compareTo(today) == 0){
-                                allExpenses.add(expense)
+                            for(expense in expenseList){
+                                if(tp.stringToDate(expense.date).compareTo(today) == 0){
+                                    allExpenses.add(expense)
+                                }
                             }
                         }
+                        "Weekly" -> {
+                            withinDateRange(dateStr!!, expenseList)
+                        }
+                        "Monthly" -> {
+                            withinDateRange(dateStr!!, expenseList)
+                        }
                     }
-                    "Weekly" -> {
-                        withinDateRange(timeMap.get("Date")!!, expenseList)
-                    }
-                    "Monthly" -> {
-                        withinDateRange(timeMap.get("Date")!!, expenseList)
-                    }
-                }
-                mAllExpenses.postValue(allExpenses)
-            }
-        }
+
+                    mAllExpenses.postValue(allExpenses)
+                }//endif
+            }//uiThread
+        }//doAsync
     }//init
 
 
@@ -55,11 +66,11 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
      * withinDateRange
      */
     private fun withinDateRange(dateString: String, expenseList: MutableList<Expense>){
-        var start = Date(dateString.substring(0,10))
-        var end= Date(dateString!!.substring(11,21))
+        var start = tp.stringToDate(dateString.substring(0,10))
+        var end = tp.stringToDate(dateString!!.substring(11,21))
 
         for(expense in expenseList){
-            var expDate = Date(expense.date)
+            var expDate = tp.stringToDate(expense.date) //This expense's date
 
             if(expDate.compareTo(start) >= 0 && expDate.compareTo(end) <= 0){
                 allExpenses.add(expense)

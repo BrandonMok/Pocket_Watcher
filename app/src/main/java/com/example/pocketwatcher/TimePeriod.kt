@@ -64,4 +64,13 @@ class TimePeriod {
         return "$firstDay:$lastDay"
     }//getMonth
 
+
+    /**
+     * stringToDate
+     * Converts a stringDate to Date obj
+     */
+    fun stringToDate(dateStr: String): Date {
+        return formatter.parse(dateStr)
+    }
+
 }// class

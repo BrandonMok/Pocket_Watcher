@@ -20,9 +20,11 @@ import java.util.*
 class OverviewFragment : Fragment() {
 
     // DB
-    var db: PocketWatcherDatabase? = null
+    private var db: PocketWatcherDatabase? = null
     //Globals
     private var globals = Globals()
+    //TimePeriod
+    private var tp = TimePeriod()
 
     /**
      * onCreateView
@@ -31,7 +33,6 @@ class OverviewFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_overview, container, false)
     }//onCreateView
 
@@ -81,23 +82,22 @@ class OverviewFragment : Fragment() {
                 if(expenseList != null && expenseList.isNotEmpty()){
                     // There are expenses made from user
                     // Calculate all totals
-                    var tp = TimePeriod()
-                    var today = Date(tp.getToday())
+                    var today = tp.stringToDate(tp.getToday())
 
                     var entireWeekString = tp.getWeek()
-                    var startWeek = Date(entireWeekString.substring(0,10))
-                    var endWeek = Date(entireWeekString.substring(11,21))
+                    var startWeek = tp.stringToDate(entireWeekString.substring(0,10))
+                    var endWeek = tp.stringToDate(entireWeekString.substring(11,21))
 
                     var entireMonthString = tp.getMonth()
-                    var startMonth = Date(entireMonthString.substring(0,10))
-                    var endMonth = Date(entireMonthString.substring(11,21))
+                    var startMonth = tp.stringToDate(entireMonthString.substring(0,10))
+                    var endMonth = tp.stringToDate(entireMonthString.substring(11,21))
 
                     var dailyTotal: Double = 0.0
                     var weeklyTotal: Double = 0.0
                     var monthlyTotal: Double = 0.0
 
                     for(exp in expenseList){
-                        var expDate = Date(exp.date)
+                        var expDate = tp.stringToDate(exp.date)
 
                         if(expDate.equals(today)){
                             // Today
