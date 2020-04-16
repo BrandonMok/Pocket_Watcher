@@ -45,11 +45,12 @@ class AddExpenseDialogFragment : DialogFragment() {
         builder.setView(view)
             .setTitle("Add Expense")
             .setNegativeButton("Cancel", DialogInterface.OnClickListener() { dialogInterface: DialogInterface, i: Int -> })
-            .setPositiveButton("Ok", DialogInterface.OnClickListener() { dialogInterface: DialogInterface, i: Int ->
+            .setPositiveButton("Add", DialogInterface.OnClickListener() { dialogInterface: DialogInterface, i: Int ->
                 if(!titleET!!.text.equals("") && titleET != null &&
                     !valueET!!.text.equals("") && valueET != null){
 
-                    var expense: Expense = Expense(
+                    // Expense object
+                    var expense = Expense(
                         titleET!!.text.toString(),
                         valueET!!.text.toString().toDouble(),
                         tagET!!.text.toString(),
@@ -60,7 +61,9 @@ class AddExpenseDialogFragment : DialogFragment() {
                     doAsync {
                         PocketWatcherDatabase.getInstance(context!!).expenseDao().insertExpense(expense)
 
-                        uiThread { }
+                        uiThread {
+                            return@uiThread
+                        }
                     }
                 }
                 else {
