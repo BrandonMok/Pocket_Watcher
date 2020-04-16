@@ -58,4 +58,6 @@
     <string name="tag">Tag:</string>
     <string name="gas">Gas</string>
     <string name="_2020_04_12">2020-04-12</string>
+    <string name="value">Value</string>
+    <string name="add_expense">Add Expense</string>
 </resources>

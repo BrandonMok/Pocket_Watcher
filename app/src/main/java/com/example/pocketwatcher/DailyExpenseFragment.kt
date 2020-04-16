@@ -3,11 +3,13 @@ package com.example.pocketwatcher
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
@@ -100,6 +102,17 @@ class DailyExpenseFragment : Fragment() {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //Set FAB's click listener
+        addFab.setOnClickListener{
+            /**
+             * TODO
+             * Show custom dialog to get info on expense to create
+             */
+            AddExpenseDialogFragment().show(activity!!.supportFragmentManager, "Add")
+        }
+
+
         //Setup piehcart
         setupPieChart()
 //        setupPieChartData(mAdapter.allExpenseList)
