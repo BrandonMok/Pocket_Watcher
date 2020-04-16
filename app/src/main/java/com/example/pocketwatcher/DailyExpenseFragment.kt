@@ -105,10 +105,6 @@ class DailyExpenseFragment : Fragment() {
 
         //Set FAB's click listener
         addFab.setOnClickListener{
-            /**
-             * TODO
-             * Show custom dialog to get info on expense to create
-             */
             AddExpenseDialogFragment().show(activity!!.supportFragmentManager, "Add")
         }
 
