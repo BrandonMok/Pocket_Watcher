@@ -20,11 +20,11 @@ class SplashActivity : AppCompatActivity() {
         if(Globals().getCurrentUser(this, Gson()) != null){
             startActivity(Intent(this, LoggedInActivity::class.java))
         }
-
-        Handler().postDelayed(Runnable{
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
-        }, 3000)
-
+        else {
+            Handler().postDelayed(Runnable{
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }, 3000)
+        }
     }//onCreate
 }//class

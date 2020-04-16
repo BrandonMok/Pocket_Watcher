@@ -98,17 +98,10 @@ class LoggedInActivity : AppCompatActivity() {
      */
     fun logout(context: Context){
         var activity = context as AppCompatActivity
-
-//        activity!!.getSharedPreferences("USERS", 0)
-//            .edit()
-//            .putString("CURRENT_USER", "")
-//            .commit()
-
         activity!!.getSharedPreferences("USERS", 0)
             .edit()
             .clear()
             .commit()
-
         startActivity(Intent(activity, MainActivity::class.java))
         finish()
     }

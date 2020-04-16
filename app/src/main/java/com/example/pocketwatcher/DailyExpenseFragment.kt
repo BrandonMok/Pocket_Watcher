@@ -37,6 +37,7 @@ class DailyExpenseFragment : Fragment() {
     private lateinit var layoutManager: RecyclerView.LayoutManager  //LayoutManager
     private lateinit var expenseListViewModel: ExpenseListViewModel //ExpenseListViewModel
 
+
     /**
      * onCreate
      */
@@ -61,8 +62,7 @@ class DailyExpenseFragment : Fragment() {
             })
 
 
-        //LIMIT
-        //Show only if there's a limit set
+        //LIMIT - Show only if there's a limit set
         doAsync {
             var limit: Limitation? = database!!.limitationDao().getLimit(currUsername)
 
@@ -77,7 +77,6 @@ class DailyExpenseFragment : Fragment() {
                 }
             }
         }
-
     }
 
     /**
@@ -96,10 +95,13 @@ class DailyExpenseFragment : Fragment() {
         return view
     }
 
+    /**
+     * onViewCreated
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         //Setup piehcart
-//        setupPieChart()
+        setupPieChart()
 //        setupPieChartData(mAdapter.allExpenseList)
 
         //TEST
