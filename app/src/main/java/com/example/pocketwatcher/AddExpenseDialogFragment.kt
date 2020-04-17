@@ -64,14 +64,7 @@ class AddExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel) : Dia
                         )
 
                         doAsync {
-                            PocketWatcherDatabase.getInstance(context!!).expenseDao().insertExpense(expense)
-
-                            //need to add expense to viewmodel
                             expenseListViewModel.insertExpense(expense)
-
-                            uiThread {
-                                return@uiThread
-                            }
                         }
                     }
                 }

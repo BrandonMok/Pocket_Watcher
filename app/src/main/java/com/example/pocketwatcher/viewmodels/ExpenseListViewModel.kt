@@ -32,7 +32,7 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
 
             uiThread {
                 if(expenseList.isNotEmpty()){
-                    var period = timeMap.get("Period")  //e.g "Daily", "Weekly", "Monthly"
+                    var period = timeMap["Period"]      //e.g "Daily", "Weekly", "Monthly"
                     var dateStr = timeMap["Date"]       //DateString (e.g. 2020-04-4)
 
                     when(period){
@@ -109,7 +109,7 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
     fun insertExpense(expense: Expense){
         doAsync {
             database.expenseDao().insertExpense(expense!!)
-            allExpenses.add(expense)
+            allExpenses.add(expense!!)
             mAllExpenses.postValue(allExpenses)
         }
     }
