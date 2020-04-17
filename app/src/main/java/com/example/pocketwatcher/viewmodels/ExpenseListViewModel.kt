@@ -18,10 +18,8 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
     //Lists
     private var allExpenses: MutableList<Expense> = mutableListOf()
     var mAllExpenses: MutableLiveData<MutableList<Expense>> = MutableLiveData()
-
     // Database
     private val database: PocketWatcherDatabase = PocketWatcherDatabase.getInstance(this.getApplication())
-
     //TimePeriod
     private var tp = TimePeriod()
 
@@ -119,7 +117,9 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
                         database.expenseDao().insertExpense(expense!!)
 
                         allExpenses.add(expense)
-                        mAllExpenses.postValue(allExpenses)
+                        mAllExpenses.postValue(allExpenses.toMutableList())
+
+                        uiThread { return@uiThread }
                     }
                 }
             }

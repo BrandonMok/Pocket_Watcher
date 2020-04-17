@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_add_expense_dialog.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.uiThread
+import java.util.regex.Pattern
 
 /**
  * A simple [Fragment] subclass.
@@ -52,30 +53,32 @@ class AddExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel) : Dia
                 if(!titleET!!.text.equals("") && titleET != null &&
                     !valueET!!.text.equals("") && valueET != null){
 
-                    // Expense object
-                    var expense = Expense(
-                        titleET!!.text.toString(),
-                        valueET!!.text.toString().toDouble(),
-                        tagET!!.text.toString(),
-                        TimePeriod().getToday(),
-                        globals.getCurrentUser(activity!!, Gson())!!.username
-                    )
+                    if(Pattern.compile( "[0-9]" ).matcher( valueET!!.text.toString() ).find()){
+                        // Expense object
+                        var expense = Expense(
+                            titleET!!.text.toString(),
+                            valueET!!.text.toString().toDouble(),
+                            tagET!!.text.toString(),
+                            TimePeriod().getToday(),
+                            globals.getCurrentUser(activity!!, Gson())!!.username
+                        )
 
-                    doAsync {
-                        PocketWatcherDatabase.getInstance(context!!).expenseDao().insertExpense(expense)
+                        doAsync {
+                            PocketWatcherDatabase.getInstance(context!!).expenseDao().insertExpense(expense)
 
-                        //need to add expense to viewmodel
-                        expenseListViewModel.insertExpense(expense)
+                            //need to add expense to viewmodel
+                            expenseListViewModel.insertExpense(expense)
 
-                        uiThread {
-                            return@uiThread
+                            uiThread {
+                                return@uiThread
+                            }
                         }
                     }
                 }
                 else {
                     // ISSUE:
-                    // Doesn't show
-                    globals.makeToast("Invalid values. Please try again!", context!!).show()
+                    // Doesn't show for some reason
+                    globals.makeAlertDialog(context!!, "Invalid Values", "Please try again!")
                 }
             })
 

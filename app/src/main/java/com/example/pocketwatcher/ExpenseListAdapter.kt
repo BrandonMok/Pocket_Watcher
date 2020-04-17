@@ -30,7 +30,7 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
         val expense = expenseList[position]
         val vh = holder as ExpenseListAdapter.RecyclerViewHolder
         vh.title!!.text = expense.title
-        vh.value!!.text = expense.value.toString()
+        vh.value!!.text = "$" + expense.value.toString()
         vh.date!!.text = expense.date
         vh.tag!!.text = expense.tag
     }

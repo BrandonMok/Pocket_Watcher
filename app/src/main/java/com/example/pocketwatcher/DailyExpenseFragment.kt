@@ -62,6 +62,7 @@ class DailyExpenseFragment : Fragment() {
         expenseListViewModel.mAllExpenses.observe(this,
             Observer<MutableList<Expense>> {expense ->
                 mAdapter.addExpense(expense!!)
+                mAdapter.notifyDataSetChanged()
             })
 
 
@@ -112,14 +113,15 @@ class DailyExpenseFragment : Fragment() {
 
         //Setup piehcart
         setupPieChart()
-//        if(mAdapter.allExpenseList.isNotEmpty()){
-//            setupPieChartData(mAdapter.allExpenseList)
-//        }
-//
+
+
+        if(expenseListViewModel.getAllExpenses() != null){
+//            setupPieChartData((expenseListViewModel.getAllExpenses())
+        }
+
+
+
 //        Log.d("ALLEXPENSES", mAdapter.allExpenseList.size.toString())
-
-
-//        setupPieChartData(mAdapter.allExpenseList)
 
         //TEST
 //        var pc = view!!.findViewById<PieChart>(R.id.piechart)
@@ -184,42 +186,44 @@ class DailyExpenseFragment : Fragment() {
      * setupPieChartData
      * converts entries from passed list to list of PieEntries that chart library understands
      */
-    private fun setupPieChartData(expList: MutableList<Expense>) {
-        var pieEntryList: ArrayList<PieEntry>? = null
-        var expenseTypes: HashMap<String, Float>? = null
-
-        if(expList != null){
-            //Iterate through all expenses passed in to consolidate all data for piechart (e.g. "dinner", value && "dinner", value => "Dinner", value + value)
-            //This way avoids having two entries for the same thing
-            for(exp in expList){
-                var title: String = exp.title.toUpperCase()
-
-                if(expenseTypes!!.get(title) != null){
-                    //add this new Title of expense to map & it's value
-                    expenseTypes.put(title, exp.value.toFloat())
-                }
-                else {
-                    // Key already exists (e.g. "dinner" came up several times)
-                    var existingType = expenseTypes.get(title)
-                    existingType = existingType!!.plus(exp.value.toFloat())
-                }
-            }
-
-            //Add PieEntries into list -> this list will be used to populate the graph
-            expenseTypes!!.forEach { (key, value) -> pieEntryList!!.add(PieEntry(value, key)) }
-        }
-
-        //Convert list of PieEntries to PieDataSet
-        var dataSet = PieDataSet(pieEntryList, "Expenses")
-         dataSet.sliceSpace = 3f
-        dataSet.selectionShift = 5f
-
-        //Convert PieDataset to PieData
-        var data = PieData(dataSet)
-         data.setValueTextColor(Color.BLACK)
-         data.setValueTextSize(20f)
-         piechart.data = data
-         piechart.invalidate() // refresh
-    }//setupPieChartData
-
+//    private fun setupPieChartData(expList: MutableLiveData<MutableList<Expense>>) {
+//        var pieEntryList: ArrayList<PieEntry>? = null
+//        var expenseTypes: HashMap<String, Float>? = null
+//
+//        if(expList != null){
+//            //Iterate through all expenses passed in to consolidate all data for piechart (e.g. "dinner", value && "dinner", value => "Dinner", value + value)
+//            //This way avoids having two entries for the same thing
+//
+//            val list = expList
+//
+//            for(exp in list?.iterator()){
+//                var title: String = exp.title.toUpperCase()
+//
+//                if(expenseTypes!!.get(title) != null){
+//                    //add this new Title of expense to map & it's value
+//                    expenseTypes.put(title, exp.value.toFloat())
+//                }
+//                else {
+//                    // Key already exists (e.g. "dinner" came up several times)
+//                    var existingType = expenseTypes.get(title)
+//                    existingType = existingType!!.plus(exp.value.toFloat())
+//                }
+//            }
+//
+//            //Add PieEntries into list -> this list will be used to populate the graph
+//            expenseTypes!!.forEach { (key, value) -> pieEntryList!!.add(PieEntry(value, key)) }
+//        }
+//
+//        //Convert list of PieEntries to PieDataSet
+//        var dataSet = PieDataSet(pieEntryList, "Expenses")
+//         dataSet.sliceSpace = 3f
+//        dataSet.selectionShift = 5f
+//
+//        //Convert PieDataset to PieData
+//        var data = PieData(dataSet)
+//         data.setValueTextColor(Color.BLACK)
+//         data.setValueTextSize(20f)
+//         piechart.data = data
+//         piechart.invalidate() // refresh
+//    }//setupPieChartData
 }//fragment
