@@ -121,23 +121,17 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
         doAsync {
             var expenseToUpdate = getExpense(expense.id)
 
-            uiThread {
-                if(expenseToUpdate != null){
-                    // Exists!
-                    doAsync {
-                        database.expenseDao().updateExpense(expense)
+            if(expenseToUpdate != null){
+                // Exists!
+                database.expenseDao().updateExpense(expense)
 
-                        uiThread {
-                            // Replace that expense in the list
-                            for(exp in allExpenses.indices){
-                                if(allExpenses[exp].id == expense.id){
-                                    allExpenses[exp] = expense
-                                }
-                            }
-                            mAllExpenses.postValue(allExpenses)
-                        }
+                // Replace that expense in the list
+                for(exp in allExpenses.indices){
+                    if(allExpenses[exp].id == expense.id){
+                        allExpenses[exp] = expense
                     }
                 }
+                mAllExpenses.postValue(allExpenses)
             }
         }
     }
@@ -149,17 +143,10 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
         doAsync {
             var expenseToDelete = getExpense(expense.id)
 
-            uiThread {
-                if(expenseToDelete != null){
-                    doAsync {
-                        database.expenseDao().deleteExpense(expense)
-
-                        uiThread {
-                            allExpenses.remove(expense)
-                            mAllExpenses.postValue(allExpenses)
-                        }
-                    }
-                }
+            if(expenseToDelete != null){
+                database.expenseDao().deleteExpense(expense)
+                allExpenses.remove(expense)
+                mAllExpenses.postValue(allExpenses)
             }
         }
     }
