@@ -1,6 +1,7 @@
 package com.example.pocketwatcher
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +13,7 @@ import org.jetbrains.anko.uiThread
 import kotlin.math.exp
 
 class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
-                          private var context: Context)
-                            : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-    // Made public for chart usage
-    var allExpenseList = expenseList
-
+                          private var context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     /**
      * onCreateViewHolder
@@ -85,16 +81,16 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
      * RecyclerViewHolder class
      */
     internal class RecyclerViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        var title: TextView? = view.findViewById(R.id.titleTextView)
-        var value: TextView? = view.findViewById(R.id.valueTextView)
-        var tag: TextView? = view.findViewById(R.id.tagValueTextView)
-        var date: TextView? = view.findViewById(R.id.dateTextView)
+        var title: TextView
+        var value: TextView
+        var tag: TextView?
+        var date: TextView
 
-//        init {
-//            title = view.findViewById(R.id.titleTextView)
-//            value = view.findViewById(R.id.valueTextView)
-//            tag = view.findViewById(R.id.tagValueTextView)
-//            date = view.findViewById(R.id.dateTextView)
-//        }
+        init {
+            title = view.findViewById(R.id.titleTextView)
+            value = view.findViewById(R.id.valueTextView)
+            tag = view.findViewById(R.id.tagValueTextView)
+            date = view.findViewById(R.id.dateTextView)
+        }
     }
 }//class

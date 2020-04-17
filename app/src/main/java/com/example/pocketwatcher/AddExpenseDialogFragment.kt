@@ -15,6 +15,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.fragment.app.DialogFragment
 import com.example.pocketwatcher.entities.Expense
+import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_add_expense_dialog.*
 import org.jetbrains.anko.doAsync
@@ -24,13 +25,15 @@ import org.jetbrains.anko.uiThread
 /**
  * A simple [Fragment] subclass.
  */
-class AddExpenseDialogFragment : DialogFragment() {
+class AddExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel) : DialogFragment() {
     //Global
     private var globals = Globals()
 
     private var titleET: EditText? = null
     private var valueET: EditText? = null
     private var tagET: EditText? = null
+
+    var expenseListViewModel = expenseListViewModel
 
 
 
@@ -60,6 +63,9 @@ class AddExpenseDialogFragment : DialogFragment() {
 
                     doAsync {
                         PocketWatcherDatabase.getInstance(context!!).expenseDao().insertExpense(expense)
+
+                        //need to add expense to viewmodel
+                        expenseListViewModel.insertExpense(expense)
 
                         uiThread {
                             return@uiThread

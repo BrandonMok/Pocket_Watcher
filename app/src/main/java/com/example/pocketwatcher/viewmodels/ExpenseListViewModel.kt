@@ -55,7 +55,7 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
                         }
                     }
 
-                    mAllExpenses.postValue(allExpenses)
+                    mAllExpenses.postValue(allExpenses.toMutableList())
                 }//endif
             }//uiThread
         }//doAsync

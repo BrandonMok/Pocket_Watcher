@@ -4,6 +4,8 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -56,5 +58,30 @@ class Globals: AppCompatActivity() {
             .setPositiveButton(android.R.string.ok) { _, _ -> }
             .setIcon(android.R.drawable.ic_dialog_alert)
             .show()
+    }
+
+
+    /**
+     * storeTotals
+     */
+    fun storeTotals(sp: SharedPreferences, dailyTotal: Double, weeklyTotal: Double, monthlyTotal: Double){
+        var editor = sp.edit()
+        editor.putBoolean("TOTALS", true)
+        editor.putString("dailyTotal", dailyTotal.toString())
+        editor.putString("weeklyTotal", weeklyTotal.toString())
+        editor.putString("monthlyTotal", monthlyTotal.toString())
+        editor.commit()
+    }
+
+    /**
+     * clearTotals
+     */
+    fun clearTotals(sp: SharedPreferences){
+        var editor = sp.edit()
+        editor.remove("TOTALS")
+        editor.remove("dailyTotal")
+        editor.remove("weeklyTotal")
+        editor.remove("monthlyTotal")
+        editor.commit()
     }
 }//class

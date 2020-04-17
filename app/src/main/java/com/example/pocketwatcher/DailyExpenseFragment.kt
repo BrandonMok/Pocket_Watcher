@@ -46,6 +46,7 @@ class DailyExpenseFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //DB to get current_users' expenses
         var database: PocketWatcherDatabase = PocketWatcherDatabase.getInstance(context!!)
         var currUser = Globals().getCurrentUser(activity!!, Gson())
         var currUsername = currUser!!.username
@@ -105,12 +106,19 @@ class DailyExpenseFragment : Fragment() {
 
         //Set FAB's click listener
         addFab.setOnClickListener{
-            AddExpenseDialogFragment().show(activity!!.supportFragmentManager, "Add")
+            AddExpenseDialogFragment(expenseListViewModel).show(activity!!.supportFragmentManager, "Add")
         }
 
 
         //Setup piehcart
         setupPieChart()
+//        if(mAdapter.allExpenseList.isNotEmpty()){
+//            setupPieChartData(mAdapter.allExpenseList)
+//        }
+//
+//        Log.d("ALLEXPENSES", mAdapter.allExpenseList.size.toString())
+
+
 //        setupPieChartData(mAdapter.allExpenseList)
 
         //TEST
