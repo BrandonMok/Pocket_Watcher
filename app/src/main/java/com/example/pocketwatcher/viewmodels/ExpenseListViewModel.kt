@@ -22,6 +22,7 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
     private val database: PocketWatcherDatabase = PocketWatcherDatabase.getInstance(this.getApplication())
     //TimePeriod
     private var tp = TimePeriod()
+    private var username = username
 
 
     init {
@@ -107,22 +108,9 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
      */
     fun insertExpense(expense: Expense){
         doAsync {
-            // CHECK if it exists
-            var expense = getExpense(expense.id)
-
-            uiThread {
-                if(expense == null){
-                    // DNE
-                    doAsync {
-                        database.expenseDao().insertExpense(expense!!)
-
-                        allExpenses.add(expense)
-                        mAllExpenses.postValue(allExpenses.toMutableList())
-
-                        uiThread { return@uiThread }
-                    }
-                }
-            }
+            database.expenseDao().insertExpense(expense!!)
+            allExpenses.add(expense)
+            mAllExpenses.postValue(allExpenses)
         }
     }
 

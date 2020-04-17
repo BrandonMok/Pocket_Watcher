@@ -46,7 +46,7 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
     /**
      * addExpense
      */
-    fun addExpense(expenseList: MutableList<Expense>){
+    fun addExpenses(expenseList: MutableList<Expense>){
         this.expenseList = expenseList
         notifyDataSetChanged()
     }
@@ -54,7 +54,7 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
     /**
      * addExpenses
      */
-    fun addExpenses(expense: Expense){
+    fun addExpense(expense: Expense){
         doAsync {
             var db = PocketWatcherDatabase.getInstance(context)
             var exp = db.expenseDao().getExpenseById(expense.id)

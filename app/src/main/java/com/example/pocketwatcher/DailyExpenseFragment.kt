@@ -61,8 +61,9 @@ class DailyExpenseFragment : Fragment() {
         //Observer
         expenseListViewModel.mAllExpenses.observe(this,
             Observer<MutableList<Expense>> {expense ->
-                mAdapter.addExpense(expense!!)
-                mAdapter.notifyDataSetChanged()
+                Log.d("OBSERVER", "In the observer")
+                mAdapter.addExpenses(expense!!)
+//                mAdapter.notifyDataSetChanged()
             })
 
 
