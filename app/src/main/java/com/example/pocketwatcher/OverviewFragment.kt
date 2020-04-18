@@ -141,7 +141,7 @@ class OverviewFragment : Fragment() {
 
                         // Set values on UI
                         if (limitSet) {
-                            limitUsedEditText.setText("$" + dailyTotal)
+                            limitUsedEditText.setText("" + dailyTotal)
                         }
 
                         displayExpenseValues(dailyTotal.toString(), weeklyTotal.toString(), monthlyTotal.toString())

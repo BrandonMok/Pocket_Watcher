@@ -22,7 +22,6 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
     private val database: PocketWatcherDatabase = PocketWatcherDatabase.getInstance(this.getApplication())
     //TimePeriod
     private var tp = TimePeriod()
-    private var username = username
 
 
     init {
