@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pocketwatcher.entities.Expense
 import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
@@ -40,6 +41,7 @@ class DailyExpenseFragment : Fragment() {
     private lateinit var expenseListViewModel: ExpenseListViewModel //ExpenseListViewModel
 
     private var expenseList: MutableList<Expense> ? = null
+    private var globals = Globals()
 
 
     /**
@@ -112,6 +114,9 @@ class DailyExpenseFragment : Fragment() {
         }
 
         setupPieChart() //setup chart
+
+        //Add touch listener to recyclerview
+        globals.setRecyclerViewItemTouchListener(activity!!, recyclerView)
 
 //        if(expenseListViewModel.allExpenses != null){
 //            setupPieChartData(expenseListViewModel.allExpenses)

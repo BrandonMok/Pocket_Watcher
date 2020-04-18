@@ -10,6 +10,8 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.example.pocketwatcher.entities.User
 import com.google.gson.Gson
 
@@ -83,5 +85,41 @@ class Globals: AppCompatActivity() {
         editor.remove("weeklyTotal")
         editor.remove("monthlyTotal")
         editor.commit()
+    }
+
+
+    /**
+     * setRecyclerViewItemTouchListener
+     */
+    fun setRecyclerViewItemTouchListener(activity: Activity, recyclerView: RecyclerView){
+        val itemTouchCallback = object: ItemTouchHelper.SimpleCallback(0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+
+                if(direction == 8){
+                    //Right - DELETE
+                    Toast.makeText(activity!!, "RIGHT", Toast.LENGTH_SHORT).show()
+                }
+                else if(direction == 4){
+                    //Left - EDIT
+                    Toast.makeText(activity!!, "LEFT", Toast.LENGTH_SHORT).show()
+                    /**
+                     * TODO
+                     */
+                }
+            }
+        }
+
+        val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 }//class
