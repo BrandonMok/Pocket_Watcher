@@ -11,7 +11,6 @@
     <string name="hello_s">Hello %s!</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
-    <string name="title_activity_base">BaseActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
@@ -29,10 +28,6 @@
     <string name="monthly_expenses">Monthly Expenses</string>
     <string name="dollar_zero_point_zero">$0.00</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_afterlogin_activtiy">AfterLogin</string>
-
     <!-- Preference Titles -->
     <string name="messages_header">Messages</string>
     <string name="sync_header">Sync</string>
@@ -47,4 +42,22 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="limitations">Limitations</string>
+    <string name="limitation_longtext">Stay on track by setting a limit!</string>
+    <string name="limit_explanation">Setting daily, weekly, or monthly limits help keep you on track of your spending and saving goals! Enter a limit for either daily, weekly, or monthly and click the Calculate button to see limits for all time periods!</string>
+    <string name="monthly">Monthly</string>
+    <string name="weekly">Weekly</string>
+    <string name="daily">Daily</string>
+    <string name="set">Set</string>
+    <string name="remove_limit">Remove Limit</string>
+    <string name="calculate">Calculate</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title">Title</string>
+    <string name="tag">Tag:</string>
+    <string name="gas">Gas</string>
+    <string name="_2020_04_12">2020-04-12</string>
+    <string name="value">Value</string>
+    <string name="add_expense">Add Expense</string>
 </resources>

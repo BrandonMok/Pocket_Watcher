@@ -19,6 +19,8 @@ class SettingsFragment : Fragment() {
 
     //loginSignup
     private var lsu = LoginSignUp()
+    // Globals
+    private var globals = Globals()
 
     /**
      * onCreateView
@@ -73,13 +75,13 @@ class SettingsFragment : Fragment() {
 
 
                     passwordTextView.text = null
-                    lsu.makeToast("Password Changed Successfully!", context!!).show()
+                    globals.makeToast("Password Changed Successfully!", context!!).show()
                 }
             }
         }
         else {
             // Not allowed password
-            lsu.makeToast("Please enter a valid password!", context!!).show()
+            globals.makeToast("Please enter a valid password!", context!!).show()
         }
     }//submitButtonOnClick
 }//fragment

@@ -33,13 +33,4 @@ open class LoginSignUp  {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS)
     }
-
-    /**
-     * makeToast
-     * @param msg
-     * Reusable function to make & show a toast
-     */
-    fun makeToast(msg: String, context: Context): Toast{
-        return Toast.makeText(context, msg, Toast.LENGTH_LONG)
-    }
 }

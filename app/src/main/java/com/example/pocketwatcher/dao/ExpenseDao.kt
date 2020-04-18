@@ -7,19 +7,19 @@ import com.example.pocketwatcher.entities.Expense
 @Dao
 interface ExpenseDao {
 
-    @Query("select * from expense")
-    fun getAllExpenses(): List<Expense>
+    @Query("select * from expense where user = :username")
+    fun getAllExpenses(username: String): List<Expense>
 
     @Query("select * from expense where id = :id")
     fun getExpenseById(id: Long): Expense
 
     @Insert(onConflict = REPLACE)
-    fun insertTask(expense: Expense)
+    fun insertExpense(expense: Expense)
 
     @Update(onConflict = REPLACE)
-    fun updateTask(expense: Expense)
+    fun updateExpense(expense: Expense)
 
     @Delete
-    fun deleteTask(expense: Expense)
+    fun deleteExpense(expense: Expense)
 
 }//interface

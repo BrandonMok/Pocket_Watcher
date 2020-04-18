@@ -19,6 +19,7 @@ import org.w3c.dom.Text
 class RegistrationFragment : Fragment() {
     // Create Instance of LoginSignUp -> has reusable functions that both Login and Registration use
     private var loginSignUp = LoginSignUp()
+    private var globals = Globals()
 
     /**
      * onCreateView
@@ -72,21 +73,21 @@ class RegistrationFragment : Fragment() {
                             db.userDao().insertUser(User(username, hashedPassword))
 
                             uiThread {
-                                loginSignUp.makeToast("Account created successfully!", context!!).show()
+                                globals.makeToast("Account created successfully!", context!!).show()
                                 redirectToLogin(v)  //redirect back to login when done!
                             }
                         }
                     }
                     else {
                         // Account with username exists already, show toast
-                        loginSignUp.makeToast("Username taken! Please enter an available one", context!!).show()
+                        globals.makeToast("Username taken! Please enter an available one", context!!).show()
                     }
                 }
             }
         }
         else {
             // Empty Fields
-            loginSignUp.makeToast("Please enter username and password!", context!!).show()
+            globals.makeToast("Please enter username and password!", context!!).show()
         }
     }//signUp
 
