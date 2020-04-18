@@ -68,20 +68,20 @@ class DailyExpenseFragment : Fragment() {
 
 
         //LIMIT - Show only if there's a limit set
-        doAsync {
-            var limit: Limitation? = database!!.limitationDao().getLimit(currUsername)
-
-            uiThread {
-                if(limit != null){
-                    //if there's a limit set by user, show reusable fragment holding 'usedLimit' & 'limit'
-                    activity!!.supportFragmentManager.beginTransaction()
-                        .replace(R.id.limitFrameLayout, NoLimitFragment())
-                        .commit()
-
-                    limitEditText.setText(limit.daily)  //set the limit set on daily
-                }
-            }
-        }
+//        doAsync {
+//            var limit: Limitation? = database!!.limitationDao().getLimit(currUsername)
+//
+//            uiThread {
+//                if(limit != null){
+//                    //if there's a limit set by user, show reusable fragment holding 'usedLimit' & 'limit'
+//                    activity!!.supportFragmentManager.beginTransaction()
+//                        .replace(R.id.limitFrameLayout, NoLimitFragment())
+//                        .commit()
+//
+//                    limitEditText.setText(limit.daily)  //set the limit set on daily
+//                }
+//            }
+//        }
     }
 
     /**
