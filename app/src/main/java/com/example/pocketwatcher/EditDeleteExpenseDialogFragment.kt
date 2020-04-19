@@ -13,13 +13,15 @@ import androidx.fragment.app.DialogFragment
 import com.example.pocketwatcher.entities.Expense
 import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_edit_delete_expense_dialog.view.*
 import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 import java.util.regex.Pattern
 
 /**
  * A simple [Fragment] subclass.
  */
-class EditDeleteExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel) : DialogFragment() {
+class EditDeleteExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel, expense: Expense) : DialogFragment() {
     //Global
     private var globals = Globals()
     private var titleET: EditText? = null
@@ -27,6 +29,7 @@ class EditDeleteExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel
     private var tagET: EditText? = null
 
     var expenseListViewModel = expenseListViewModel
+    var expense = expense
 
     /**
      * onCreateDialog
@@ -36,6 +39,12 @@ class EditDeleteExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel
         var inflater: LayoutInflater = activity!!.layoutInflater
         var view: View = inflater.inflate(R.layout.fragment_add_expense_dialog, null)
 
+        //Preset the values of the expense that user clicked && wanting to edit
+        view.titleEditText.setText(expense.title)
+        view.valueEditText.setText(expense.value.toString())
+        view.tagEditText.setText(expense.tag)
+
+
         builder.setView(view)
             .setTitle("Edit Expense")
             .setNegativeButton("Cancel", DialogInterface.OnClickListener() { dialogInterface: DialogInterface, i: Int -> })
@@ -44,24 +53,17 @@ class EditDeleteExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel
                     !valueET!!.text.equals("") && valueET != null){
 
                     if(Pattern.compile( "[0-9]" ).matcher( valueET!!.text.toString() ).find()){
-
-                        /**
-                         * TODO to update
-                         * Get it first?
-                         */
-
-
-                        // Expense object
-                        var expense = Expense(
-                            titleET!!.text.toString(),
-                            valueET!!.text.toString().toDouble(),
-                            tagET!!.text.toString(),
-                            TimePeriod().getToday(),
-                            globals.getCurrentUser(activity!!, Gson())!!.username
-                        )
+                        // Set values to ones changed/entered on dialog
+                        expense.title = titleET!!.text.toString()
+                        expense.value = valueET!!.text.toString().toDouble()
+                        expense.tag = tagET!!.text.toString()
 
                         doAsync {
                             expenseListViewModel.updateExpense(expense)
+
+                            uiThread {
+                                globals.makeToast("Updated Successfully!", context!!)
+                            }
                         }
                     }
                 }

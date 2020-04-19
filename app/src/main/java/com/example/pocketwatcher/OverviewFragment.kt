@@ -53,7 +53,7 @@ class OverviewFragment : Fragment() {
 
 
         //LIMIT
-        // variable to know if limit was set -> used later whether to show dailyLimitUsed value
+        //variable to know if limit was set -> used later whether to show dailyLimitUsed value
         var limitSet: Boolean = false
         var limitObj = globals.getLimitFromSharedPref(activity!!, gson)
         if(limitObj != null){
@@ -74,20 +74,20 @@ class OverviewFragment : Fragment() {
          * Note: not the best method to hold/retain totals and displaying w/o having to check db each time
          * Using this way as to when app is closed, when it's reopened values are entered back in.
          */
-        if(sp.getBoolean("TOTALS", false) && sp.getBoolean("TOTALS", false) != null){
-            //Pass & display total values to reusable function
-            displayExpenseValues(
-                sp.getString("dailyTotal","").toString(),
-                sp.getString("weeklyTotal","").toString(),
-                sp.getString("monthlyTotal","").toString()
-            )
-
-            globals.clearTotals(sp)
-        }
-        else {
+//        if(sp.getBoolean("TOTALS", false) && sp.getBoolean("TOTALS", false) != null){
+//            //Pass & display total values to reusable function
+//            displayExpenseValues(
+//                sp.getString("dailyTotal","").toString(),
+//                sp.getString("weeklyTotal","").toString(),
+//                sp.getString("monthlyTotal","").toString()
+//            )
+//
+//            globals.clearTotals(sp)
+//        }
+//        else {
             // CHECK for expenses
             doAsync {
-                var expenseList: List<Expense> = db!!.expenseDao().getAllExpenses(username)
+                var expenseList: List<Expense>? = db!!.expenseDao()!!.getAllExpenses(username)
 
                 uiThread {
                     if (expenseList != null && expenseList.isNotEmpty()) {
@@ -132,16 +132,16 @@ class OverviewFragment : Fragment() {
                         )  //store totals
 
 
-                        // Set values on UI
-                        if (limitSet) {
-                            limitUsedEditText.setText("" + dailyTotal)
-                        }
+//                        // Set values on UI
+//                        if (limitSet) {
+//                            limitUsedEditText.setText("" + dailyTotal)
+//                        }
 
                         displayExpenseValues(dailyTotal.toString(), weeklyTotal.toString(), monthlyTotal.toString())
                     }
                 }
             }
-        }
+//        }
 
         // set onClickListeners
         ConstraintLayoutDE.setOnClickListener {

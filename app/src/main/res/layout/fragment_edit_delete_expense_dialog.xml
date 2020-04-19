@@ -97,14 +97,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="52dp"
+            android:layout_marginBottom="20dp"
             android:width="150dp"
             android:ems="10"
             android:inputType="textPersonName"
             android:text=""
+            app:layout_constraintBottom_toTopOf="@+id/deleteBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/tagTextView"
-            tools:layout_editor_absoluteY="169dp" />
+            app:layout_constraintStart_toEndOf="@+id/tagTextView" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline4"
@@ -118,10 +119,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="60dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="60dp"
             android:background="@color/red"
             android:onClick="deleteExpense"
-            android:layout_marginTop="20dp"
             android:text="X"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

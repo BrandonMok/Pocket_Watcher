@@ -44,15 +44,9 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
         //onclick listener for the clicked recyclerview item
         vh.itemView.setOnClickListener{
             val expense = expenseList[position]
-
-            //Log.d("EXPENSE", Gson().toJson(expense))
-            EditDeleteExpenseDialogFragment(expenseListViewModel).show(fragmentManager, "Edit")
-
-//            Snackbar.make(it, "Click detected on item ${position+1}", Snackbar.LENGTH_LONG)
-//                .setAction("Action", null)
-//                .show()
+            EditDeleteExpenseDialogFragment(expenseListViewModel, expense).show(fragmentManager, "Edit")
         }
-    }
+    }//onBindViewHolder
 
     /**
      * getItemCount
