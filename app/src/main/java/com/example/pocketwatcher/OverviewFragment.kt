@@ -24,6 +24,7 @@ class OverviewFragment : Fragment() {
     private var db: PocketWatcherDatabase? = null   //db
     private var globals = Globals() //globals
     private var tp = TimePeriod()   //timeperiod
+    private var gson = Gson()
 
     /**
      * onCreateView
@@ -39,7 +40,8 @@ class OverviewFragment : Fragment() {
      * onViewCreated
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var gson = Gson()
+        db = PocketWatcherDatabase.getInstance(context!!)   //set instance of db
+
         var sp = activity!!.getSharedPreferences("USER", 0)
         var user = globals.getCurrentUser(activity!!, gson)
         var username = user!!.username
@@ -66,7 +68,6 @@ class OverviewFragment : Fragment() {
         }
 
 
-
         //EXPENSES:
         //If SP doesn't hold values, then go else to go through db and calc
         //If SP does hold values as through "TOTALS" boolean key-value, then did store totals so use stored values instead of having to run through db
@@ -74,17 +75,17 @@ class OverviewFragment : Fragment() {
          * Note: not the best method to hold/retain totals and displaying w/o having to check db each time
          * Using this way as to when app is closed, when it's reopened values are entered back in.
          */
-//        if(sp.getBoolean("TOTALS", false) && sp.getBoolean("TOTALS", false) != null){
-//            //Pass & display total values to reusable function
-//            displayExpenseValues(
-//                sp.getString("dailyTotal","").toString(),
-//                sp.getString("weeklyTotal","").toString(),
-//                sp.getString("monthlyTotal","").toString()
-//            )
-//
-//            globals.clearTotals(sp)
-//        }
-//        else {
+        if(sp.getBoolean("TOTALS", false) && sp.getBoolean("TOTALS", false) != null){
+            //Pass & display total values to reusable function
+            displayExpenseValues(
+                sp.getString("dailyTotal","").toString(),
+                sp.getString("weeklyTotal","").toString(),
+                sp.getString("monthlyTotal","").toString()
+            )
+
+            globals.clearTotals(sp)
+        }
+        else {
             // CHECK for expenses
             doAsync {
                 var expenseList: List<Expense>? = db!!.expenseDao()!!.getAllExpenses(username)
@@ -132,16 +133,16 @@ class OverviewFragment : Fragment() {
                         )  //store totals
 
 
-//                        // Set values on UI
-//                        if (limitSet) {
-//                            limitUsedEditText.setText("" + dailyTotal)
-//                        }
+                        //If limit is set, display the total value used for the overview
+                        if (limitSet) {
+                            limitUsedEditText.setText(dailyTotal.toString())
+                        }
 
                         displayExpenseValues(dailyTotal.toString(), weeklyTotal.toString(), monthlyTotal.toString())
                     }
                 }
             }
-//        }
+        }
 
         // set onClickListeners
         ConstraintLayoutDE.setOnClickListener {
@@ -159,7 +160,7 @@ class OverviewFragment : Fragment() {
     /**
      * displayExpenseValues
      */
-     private fun displayExpenseValues(dailyTotal: String, weeklyTotal: String, monthlyTotal: String){
+    private fun displayExpenseValues(dailyTotal: String, weeklyTotal: String, monthlyTotal: String){
         dailyExpenseValueTextView.setText("$" + dailyTotal)
         weeklyExpenseValueTextView.setText("$" + weeklyTotal)
         monthlyExpenseValueTextView.setText("$" + monthlyTotal)
