@@ -12,9 +12,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pocketwatcher.entities.Expense
 import com.example.pocketwatcher.entities.Limitation
 import com.example.pocketwatcher.entities.User
 import com.google.gson.Gson
+import org.jetbrains.anko.doAsync
 
 /**
  * Globals class to hold global reusable functions
@@ -101,45 +103,52 @@ class Globals: AppCompatActivity() {
     /**
      * setRecyclerViewItemTouchListener
      */
-    fun setRecyclerViewItemTouchListener(activity: Activity, recyclerView: RecyclerView){
-        val itemTouchCallback = object: ItemTouchHelper.SimpleCallback(0,
-            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean {
-                return false
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val position = viewHolder.adapterPosition
-
-                if(direction == 8){
-                    //Right - DELETE
-                    /**
-                     * TODO
-                     * Delete
-                     * show undo snack just in case
-                     */
-
-
-
-                }
-                else if(direction == 4){
-                    //Left - EDIT
-                    Toast.makeText(activity!!, "LEFT", Toast.LENGTH_SHORT).show()
-                    /**
-                     * TODO
-                     * EDIT
-                     * Display alertdialog like adding to allow edit
-                     */
-
-                }
-            }
-        }
-
-        val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
-        itemTouchHelper.attachToRecyclerView(recyclerView)
-    }
+//    fun setRecyclerViewItemTouchListener(activity: Activity, recyclerView: RecyclerView, expenseList: MutableList<Expense>){
+//        val itemTouchCallback = object: ItemTouchHelper.SimpleCallback(0,
+//            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
+//            override fun onMove(
+//                recyclerView: RecyclerView,
+//                viewHolder: RecyclerView.ViewHolder,
+//                target: RecyclerView.ViewHolder
+//            ): Boolean {
+//                return false
+//            }
+//
+//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+//                val position = viewHolder.adapterPosition
+//
+//                if(direction == 8){
+//                    //Right - DELETE
+//                    /**
+//                     * TODO
+//                     * Delete
+//                     * show undo snack just in case
+//                     */
+//                    var deleteItem = expenseList.get(position)
+//                    Log.d("POS", deleteItem.toString())
+//
+//
+//                    doAsync {
+//                        PocketWatcherDatabase.getInstance(activity!!).expenseDao().deleteExpense(deleteItem)
+//                    }
+//
+//
+//
+//                }
+////                else if(direction == 4){
+////                    //Left - EDIT
+////                    Toast.makeText(activity!!, "LEFT", Toast.LENGTH_SHORT).show()
+////                    /**
+////                     * TODO
+////                     * EDIT
+////                     * Display alertdialog like adding to allow edit
+////                     */
+////
+////                }
+//            }
+//        }
+//
+//        val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
+//        itemTouchHelper.attachToRecyclerView(recyclerView)
+//    }
 }//class

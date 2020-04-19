@@ -127,7 +127,7 @@ class DailyExpenseFragment : Fragment() {
         setupPieChart() //setup chart
 
         //Add touch listener to recyclerview
-        globals.setRecyclerViewItemTouchListener(activity!!, recyclerView)
+//        globals.setRecyclerViewItemTouchListener(activity!!, recyclerView, mAdapter.expenseList)
     }
 
 

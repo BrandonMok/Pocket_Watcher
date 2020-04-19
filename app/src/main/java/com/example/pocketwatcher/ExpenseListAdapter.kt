@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pocketwatcher.entities.Expense
+import com.google.android.material.snackbar.Snackbar
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import kotlin.math.exp
 
 class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
                           private var context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
 
     /**
      * onCreateViewHolder
@@ -92,6 +92,21 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
             value = view.findViewById(R.id.valueTextView)
             tag = view.findViewById(R.id.tagValueTextView)
             date = view.findViewById(R.id.dateTextView)
-        }
-    }
+
+            itemView.setOnClickListener {v: View ->     // could just use "it" instead of setting "v"
+                // get which item tapped on
+                val position = adapterPosition
+
+                //EditDeleteExpenseDialogFragment(expenseListViewModel).show(activity!!.supportFragmentManager, "Add")
+
+                /**
+                 * TODO
+                 * Show alertDialog to edit + delete
+                 */
+                Snackbar.make(v, "Click detected on item ${position+1}", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null)
+                    .show()
+            }//onClickListener
+        }//init
+    }//viewholder
 }//class
