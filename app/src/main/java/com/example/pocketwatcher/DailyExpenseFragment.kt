@@ -28,6 +28,9 @@ import kotlinx.android.synthetic.main.fragment_daily_expense.*
 import kotlinx.android.synthetic.main.fragment_no_limit.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
+import kotlin.math.exp
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -39,9 +42,9 @@ class DailyExpenseFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView                 //RecyclerView
     private lateinit var layoutManager: RecyclerView.LayoutManager  //LayoutManager
     private lateinit var expenseListViewModel: ExpenseListViewModel //ExpenseListViewModel
-
-    private var expenseList: MutableList<Expense> ? = null
     private var globals = Globals()
+
+    private var localList: MutableList<Expense>? = null
 
 
     /**
@@ -62,10 +65,17 @@ class DailyExpenseFragment : Fragment() {
         expenseListViewModel = ExpenseListViewModel(activity?.application!!, currUsername, tpMap)
         mAdapter = ExpenseListAdapter(mutableListOf(), context!!)
 
-        //Observer
+        //Observer - viewmodel to add expenses to adapter if change on viewmodel's data
         expenseListViewModel.mAllExpenses.observe(this,
             Observer<MutableList<Expense>> {expense ->
                 mAdapter.addExpenses(expense!!)
+            })
+
+        //Observer - viewmodel to have local copy of expenses
+        expenseListViewModel.mAllExpenses.observe(this,
+            Observer<MutableList<Expense>> {expense ->
+                localList = expense!!
+                setupPieChartData(localList)
             })
 
 
@@ -117,36 +127,6 @@ class DailyExpenseFragment : Fragment() {
 
         //Add touch listener to recyclerview
         globals.setRecyclerViewItemTouchListener(activity!!, recyclerView)
-
-//        if(expenseListViewModel.allExpenses != null){
-//            setupPieChartData(expenseListViewModel.allExpenses)
-//        }
-
-        //TEST
-//        var pc = view!!.findViewById<PieChart>(R.id.piechart)
-//
-//        pc.setUsePercentValues(true)
-//        pc.description.isEnabled = false
-//        pc.dragDecelerationFrictionCoef = 0.95f
-//        pc.setExtraOffsets(5f, 10f, 5f, 5f)
-//        pc.isDrawHoleEnabled = true
-//        pc.setHoleColor(Color.WHITE)
-//        pc.transparentCircleRadius = 60f
-//        pc.animateY(1000, Easing. EaseInOutCubic)
-//        pc.legend.isEnabled = false
-//
-//        var list = listOf<PieEntry>(PieEntry(5f, "Dinner"))
-//
-//        var dataSet = PieDataSet(list, "Expenses")
-//        dataSet.sliceSpace = 3f
-//        dataSet.selectionShift = 5f
-//
-//        //Convert PieDataset to PieData
-//        var data = PieData(dataSet)
-//        data.setValueTextColor(Color.BLACK)
-//        data.setValueTextSize(20f)
-//        pc.data = data
-//        pc.invalidate() // refresh
     }
 
 
@@ -185,9 +165,9 @@ class DailyExpenseFragment : Fragment() {
      * setupPieChartData
      * converts entries from passed list to list of PieEntries that chart library understands
      */
-    private fun setupPieChartData(expList: MutableList<Expense>) {
-        var pieEntryList: ArrayList<PieEntry>? = null
-        var expenseMapTypes: HashMap<String, Float>? = null
+    private fun setupPieChartData(expList: MutableList<Expense>?) {
+        var pieEntryList: ArrayList<PieEntry> = ArrayList()
+        var expenseMapTypes: MutableMap<String, Float>? = HashMap()
 
         if(expList != null && expList.size != 0){
             //Iterate through all expenses passed in to consolidate all data for piechart (e.g. "dinner", value && "dinner", value => "Dinner", value + value)
@@ -195,24 +175,28 @@ class DailyExpenseFragment : Fragment() {
             for(exp in expList){
                 var title: String = exp.title.toUpperCase()
 
-                if(expenseMapTypes!![title] != null){
-                    //add this new Title of expense to map & it's value
-                    expenseMapTypes[title] = exp.value.toFloat()
-                }
-                else {
-                    // Key already exists (e.g. "dinner" came up several times)
-                    var existingType = expenseMapTypes[title]
-                    existingType = existingType!!.plus(exp.value.toFloat())
+                if (expenseMapTypes != null) {
+                    if(expenseMapTypes[title] == null){
+                        //add this new Title of expense to map & it's value
+                        expenseMapTypes[title] = exp.value.toFloat()
+                    } else {
+                        // Key already exists (e.g. "dinner" came up several times)
+                        expenseMapTypes[title] = expenseMapTypes[title]!!.plus(exp.value.toFloat())
+                    }
                 }
             }//endfor
 
             //Add PieEntries into list -> this list will be used to populate the graph
-            expenseMapTypes!!.forEach { (key, value) -> pieEntryList!!.add(PieEntry(value, key)) }
+            if (expenseMapTypes != null) {
+                expenseMapTypes?.forEach { (key, value) ->
+                    pieEntryList.add(PieEntry(value,key))
+                }
+            }//endif
         }
 
         //Convert list of PieEntries to PieDataSet
         var dataSet = PieDataSet(pieEntryList, "Expenses")
-         dataSet.sliceSpace = 3f
+        dataSet.sliceSpace = 3f
         dataSet.selectionShift = 5f
 
         //Convert PieDataset to PieData

@@ -15,6 +15,7 @@ import kotlin.math.exp
 class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
                           private var context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+
     /**
      * onCreateViewHolder
      */

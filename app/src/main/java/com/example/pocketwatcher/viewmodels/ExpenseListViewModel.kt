@@ -37,7 +37,6 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
                     when(period){
                         "Daily" -> {
                             var today = tp.stringToDate(dateStr!!)
-                            // var today = Date(dateStr!!.substring(0,4).toInt(), dateStr!!.substring(5,7).toInt(), dateStr!!.substring(8,10).toInt())
 
                             for(expense in expenseList){
                                 if(tp.stringToDate(expense.date).compareTo(today) == 0){

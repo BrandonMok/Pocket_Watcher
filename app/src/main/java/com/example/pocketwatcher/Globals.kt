@@ -107,14 +107,24 @@ class Globals: AppCompatActivity() {
 
                 if(direction == 8){
                     //Right - DELETE
-                    Toast.makeText(activity!!, "RIGHT", Toast.LENGTH_SHORT).show()
+                    /**
+                     * TODO
+                     * Delete
+                     * show undo snack just in case
+                     */
+
+
+
                 }
                 else if(direction == 4){
                     //Left - EDIT
                     Toast.makeText(activity!!, "LEFT", Toast.LENGTH_SHORT).show()
                     /**
                      * TODO
+                     * EDIT
+                     * Display alertdialog like adding to allow edit
                      */
+
                 }
             }
         }
