@@ -59,6 +59,7 @@ class OverviewFragment : Fragment() {
         if(limitObj != null){
             limitEditText.setText(limitObj.daily)
             limitSet = true
+            noLimitTextView.visibility = View.GONE
         }
         else {
             noLimitTextView.visibility = View.VISIBLE

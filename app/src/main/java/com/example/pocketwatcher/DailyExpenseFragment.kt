@@ -1,7 +1,9 @@
 
 package com.example.pocketwatcher
 
+import android.content.Context
 import android.graphics.Color
+import android.graphics.Color.blue
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -46,6 +48,8 @@ class DailyExpenseFragment : Fragment() {
 
     private var localList: MutableList<Expense>? = null
 
+    private var total: Double = 0.0
+
 
     /**
      * onCreate
@@ -72,48 +76,26 @@ class DailyExpenseFragment : Fragment() {
 
                 localList = expense!!
                 setupPieChartData(localList)
+                calcTotal(localList)
             })
 
 
+        //LIMIT
         var limitObj = globals.getLimitFromSharedPref(activity!!, Gson())
         if(limitObj != null){
-//                var noLimitFragment = NoLimitFragment()
-//                var args = Bundle()
-//                args.putString(NoLimitFragment.ARG_LIMIT, limitObj.daily)
-//                args.putString(NoLimitFragment.ARG_LIMIT_USED, )
-//                noLimitFragment.arguments = args
+            if(activity!!.supportFragmentManager.findFragmentById(R.id.limitFrameLayout) == null){
+                var noLimitFragment = NoLimitFragment()
+                var args = Bundle()
+                args.putString(NoLimitFragment.ARG_LIMIT_USED, total.toString())
+                args.putString(NoLimitFragment.ARG_LIMIT, limitObj.daily)
+                noLimitFragment.arguments = args
 
-
-                //if there's a limit set by user, show reusable fragment holding 'usedLimit' & 'limit'
-                activity!!.supportFragmentManager
-                    .beginTransaction()
-                    .add(R.id.limitFrameLayout, NoLimitFragment(), "LIMIT")
+                activity!!.supportFragmentManager.beginTransaction()
+                    .add(R.id.limitFrameLayout, noLimitFragment)
                     .commit()
+            }//endif
         }
-
-
-        //LIMIT - Show only if there's a limit set
-//        doAsync {
-//            var limit: Limitation? = database!!.limitationDao().getLimit(currUsername)
-//
-//            uiThread {
-//                if(limit != null){
-////                    var noLimitFragment = NoLimitFragment()
-////                    var args = Bundle()
-////                    args.putString(NoLimitFragment.ARG_LIMIT, )
-////                    args.putString(NoLimitFragment.ARG_LIMIT_USED, )
-////                    noLimitFragment.arguments = args
-//
-//
-//                    //if there's a limit set by user, show reusable fragment holding 'usedLimit' & 'limit'
-//                    activity!!.supportFragmentManager
-//                        .beginTransaction()
-//                        .add(R.id.limitFrameLayout, NoLimitFragment(), "LIMIT")
-//                        .commit()
-//                }
-//            }
-//        }
-    }
+    }//onCreate
 
     /**
      * onCreateView
@@ -213,10 +195,21 @@ class DailyExpenseFragment : Fragment() {
             }//endif
         }
 
+
+
+        var colors = ArrayList<Int>()
+        colors.add(resources.getColor(R.color.blue))
+        colors.add(resources.getColor(R.color.red))
+        colors.add(resources.getColor(R.color.yellow))
+        colors.add(resources.getColor(R.color.darkBlue))
+        colors.add(resources.getColor(R.color.green))
+
         //Convert list of PieEntries to PieDataSet
         var dataSet = PieDataSet(pieEntryList, "Expenses")
         dataSet.sliceSpace = 3f
         dataSet.selectionShift = 5f
+        dataSet.colors = colors
+
 
         //Convert PieDataset to PieData
         var data = PieData(dataSet)
@@ -225,4 +218,16 @@ class DailyExpenseFragment : Fragment() {
          piechart.data = data
          piechart.invalidate() // refresh
     }//setupPieChartData
+
+
+    /**
+     * calcTotal
+     */
+    private fun calcTotal(expList: MutableList<Expense>?){
+        if(expList != null && expList.size != 0) {
+            for(exp in expList){
+                total = total?.plus(exp.value)
+            }
+        }
+    }
 }//fragment
