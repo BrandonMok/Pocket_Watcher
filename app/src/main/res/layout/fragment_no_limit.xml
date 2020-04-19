@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="233dp" />
+        app:layout_constraintGuide_begin="115dp" />
 
     <EditText
         android:id="@+id/limitUsedEditText"
@@ -52,7 +52,7 @@
         android:text="@string/zero_point_zero"
         android:textAlignment="center"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/noLimitTextView"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@+id/limitEditText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,25 +71,11 @@
         android:inputType="none"
         android:text="@string/zero_point_zero"
         android:textAlignment="center"
-        app:layout_constraintBottom_toTopOf="@+id/noLimitTextView"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/limitUsedEditText"
         app:layout_constraintTop_toBottomOf="@+id/limitTextView" />
 
-
-    <TextView
-        android:id="@+id/noLimitTextView"
-        android:layout_width="278dp"
-        android:layout_height="37dp"
-        android:layout_marginBottom="12dp"
-        android:text="@string/no_limit_set_set_a_limit_to_help_track_your_expenses"
-        android:textAlignment="center"
-        android:textIsSelectable="false"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.488"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

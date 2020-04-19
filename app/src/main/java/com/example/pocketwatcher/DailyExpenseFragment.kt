@@ -69,14 +69,27 @@ class DailyExpenseFragment : Fragment() {
         expenseListViewModel.mAllExpenses.observe(this,
             Observer<MutableList<Expense>> {expense ->
                 mAdapter.addExpenses(expense!!)
-            })
 
-        //Observer - viewmodel to have local copy of expenses
-        expenseListViewModel.mAllExpenses.observe(this,
-            Observer<MutableList<Expense>> {expense ->
                 localList = expense!!
                 setupPieChartData(localList)
             })
+
+
+        var limitObj = globals.getLimitFromSharedPref(activity!!, Gson())
+        if(limitObj != null){
+//                var noLimitFragment = NoLimitFragment()
+//                var args = Bundle()
+//                args.putString(NoLimitFragment.ARG_LIMIT, limitObj.daily)
+//                args.putString(NoLimitFragment.ARG_LIMIT_USED, )
+//                noLimitFragment.arguments = args
+
+
+                //if there's a limit set by user, show reusable fragment holding 'usedLimit' & 'limit'
+                activity!!.supportFragmentManager
+                    .beginTransaction()
+                    .add(R.id.limitFrameLayout, NoLimitFragment(), "LIMIT")
+                    .commit()
+        }
 
 
         //LIMIT - Show only if there's a limit set
@@ -85,12 +98,18 @@ class DailyExpenseFragment : Fragment() {
 //
 //            uiThread {
 //                if(limit != null){
-//                    //if there's a limit set by user, show reusable fragment holding 'usedLimit' & 'limit'
-//                    activity!!.supportFragmentManager.beginTransaction()
-//                        .replace(R.id.limitFrameLayout, NoLimitFragment())
-//                        .commit()
+////                    var noLimitFragment = NoLimitFragment()
+////                    var args = Bundle()
+////                    args.putString(NoLimitFragment.ARG_LIMIT, )
+////                    args.putString(NoLimitFragment.ARG_LIMIT_USED, )
+////                    noLimitFragment.arguments = args
 //
-//                    limitEditText.setText(limit.daily)  //set the limit set on daily
+//
+//                    //if there's a limit set by user, show reusable fragment holding 'usedLimit' & 'limit'
+//                    activity!!.supportFragmentManager
+//                        .beginTransaction()
+//                        .add(R.id.limitFrameLayout, NoLimitFragment(), "LIMIT")
+//                        .commit()
 //                }
 //            }
 //        }

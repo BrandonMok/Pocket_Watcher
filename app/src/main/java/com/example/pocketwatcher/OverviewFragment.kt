@@ -52,26 +52,18 @@ class OverviewFragment : Fragment() {
         helloTextView.text = "Hello $username!" // Set custom text
 
 
+        //LIMIT
         // variable to know if limit was set -> used later whether to show dailyLimitUsed value
         var limitSet: Boolean = false
-
-        // CHECK: if user has a limit set
-        doAsync{
-            db = PocketWatcherDatabase.getInstance(context!!)
-            var limit: Limitation? = db!!.limitationDao().getLimit(username)
-
-            uiThread {
-                if(limit != null ){
-                    // Show limit daily limit for the overview page
-                    limitEditText.setText(limit.daily)
-                    limitSet = true
-                }
-                else {
-                    // No limit set, show textview
-                    noLimitTextView.visibility = View.VISIBLE
-                }
-            }
+        var limitObj = globals.getLimitFromSharedPref(activity!!, gson)
+        if(limitObj != null){
+            limitEditText.setText(limitObj.daily)
+            limitSet = true
         }
+        else {
+            noLimitTextView.visibility = View.VISIBLE
+        }
+
 
 
         //EXPENSES:

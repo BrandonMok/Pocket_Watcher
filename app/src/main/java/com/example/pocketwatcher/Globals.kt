@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pocketwatcher.entities.Limitation
 import com.example.pocketwatcher.entities.User
 import com.google.gson.Gson
 
@@ -39,6 +40,15 @@ class Globals: AppCompatActivity() {
         var sp = activity!!.getSharedPreferences("USERS",0)
         var userString = sp.getString("CURRENT_USER",  "")
         return gson.fromJson(userString, User::class.java)
+    }
+
+    /**
+     * getLimitFromSharedPref
+     */
+    fun getLimitFromSharedPref(activity: Activity, gson: Gson): Limitation? {
+        var sp = activity!!.getSharedPreferences("USERS",0)
+        var limitString = sp.getString("LIMIT", "")
+        return gson.fromJson(limitString, Limitation::class.java)
     }
 
     /**
