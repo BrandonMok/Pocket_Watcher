@@ -1,13 +1,16 @@
 package com.example.pocketwatcher
 
+import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pocketwatcher.entities.Expense
+import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import org.jetbrains.anko.doAsync
@@ -15,7 +18,9 @@ import org.jetbrains.anko.uiThread
 import kotlin.math.exp
 
 class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
-                          private var context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                          private var context: Context,
+                          private var expenseListViewModel: ExpenseListViewModel,
+                          private var fragmentManager: FragmentManager) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     /**
      * onCreateViewHolder
@@ -41,12 +46,11 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
             val expense = expenseList[position]
 
             //Log.d("EXPENSE", Gson().toJson(expense))
+            EditDeleteExpenseDialogFragment(expenseListViewModel).show(fragmentManager, "Edit")
 
-            //EditDeleteExpenseDialogFragment(expenseListViewModel).show(activity!!.supportFragmentManager, "Add")
-
-            Snackbar.make(it, "Click detected on item ${position+1}", Snackbar.LENGTH_LONG)
-                .setAction("Action", null)
-                .show()
+//            Snackbar.make(it, "Click detected on item ${position+1}", Snackbar.LENGTH_LONG)
+//                .setAction("Action", null)
+//                .show()
         }
     }
 

@@ -67,7 +67,7 @@ class DailyExpenseFragment : Fragment() {
         tpMap.put("Period", "Daily")
         tpMap.put("Date", TimePeriod().getToday())
         expenseListViewModel = ExpenseListViewModel(activity?.application!!, currUsername, tpMap)
-        mAdapter = ExpenseListAdapter(mutableListOf(), context!!)
+        mAdapter = ExpenseListAdapter(mutableListOf(), context!!, expenseListViewModel, activity!!.supportFragmentManager)
 
         //Observer - viewmodel to add expenses to adapter if change on viewmodel's data
         expenseListViewModel.mAllExpenses.observe(this,

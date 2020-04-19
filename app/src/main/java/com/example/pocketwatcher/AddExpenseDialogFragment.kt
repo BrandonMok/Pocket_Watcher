@@ -71,7 +71,7 @@ class AddExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel) : Dia
                 else {
                     // ISSUE:
                     // Doesn't show for some reason
-                    globals.makeAlertDialog(context!!, "Invalid Values", "Please try again!")
+                    globals.makeAlertDialog(activity!!, "Invalid Values", "Please try again!")
                 }
             })
 

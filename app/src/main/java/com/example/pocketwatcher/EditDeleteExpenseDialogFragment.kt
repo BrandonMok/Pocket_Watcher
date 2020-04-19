@@ -22,7 +22,6 @@ import java.util.regex.Pattern
 class EditDeleteExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel) : DialogFragment() {
     //Global
     private var globals = Globals()
-
     private var titleET: EditText? = null
     private var valueET: EditText? = null
     private var tagET: EditText? = null
@@ -40,7 +39,7 @@ class EditDeleteExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel
         builder.setView(view)
             .setTitle("Edit Expense")
             .setNegativeButton("Cancel", DialogInterface.OnClickListener() { dialogInterface: DialogInterface, i: Int -> })
-            .setPositiveButton("Add", DialogInterface.OnClickListener() { dialogInterface: DialogInterface, i: Int ->
+            .setPositiveButton("Edit", DialogInterface.OnClickListener() { dialogInterface: DialogInterface, i: Int ->
                 if(!titleET!!.text.equals("") && titleET != null &&
                     !valueET!!.text.equals("") && valueET != null){
 
@@ -69,7 +68,7 @@ class EditDeleteExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel
                 else {
                     // ISSUE:
                     // Doesn't show for some reason
-                    globals.makeAlertDialog(context!!, "Invalid Values", "Please try again!")
+                    globals.makeAlertDialog(activity!!, "Invalid Values", "Please try again!")
                 }
             })
 
