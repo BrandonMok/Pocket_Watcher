@@ -3,6 +3,7 @@ package com.example.pocketwatcher
 import android.content.Context
 import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,10 +16,6 @@ import java.lang.String
  */
 class NoLimitFragment : Fragment() {
 
-    companion object {
-        const val ARG_LIMIT_USED = "0.00"
-        const val ARG_LIMIT = "0.00"
-    }
 
     /**
      * onCreateView
@@ -28,6 +25,11 @@ class NoLimitFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_no_limit, container, false)
+    }
+
+    companion object {
+        const val ARG_LIMIT_USED = "0.00"
+        const val ARG_LIMIT = "0.00"
     }
 
     /**
