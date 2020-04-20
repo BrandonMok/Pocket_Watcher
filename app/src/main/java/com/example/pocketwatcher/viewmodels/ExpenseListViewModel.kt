@@ -127,7 +127,7 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
     }
 
     /**
-     * deleteExpensea
+     * deleteExpense
      */
     fun deleteExpense(expense: Expense){
         doAsync {

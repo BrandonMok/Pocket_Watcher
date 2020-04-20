@@ -2,6 +2,7 @@ package com.example.pocketwatcher
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.ProgressDialog.show
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -16,8 +17,10 @@ import com.example.pocketwatcher.entities.Expense
 import com.example.pocketwatcher.entities.Limitation
 import com.example.pocketwatcher.entities.User
 import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import org.jetbrains.anko.doAsync
+import kotlin.math.exp
 
 /**
  * Globals class to hold global reusable functions
@@ -104,7 +107,7 @@ class Globals: AppCompatActivity() {
     /**
      * setRecyclerViewItemTouchListener
      */
-    fun setRecyclerViewItemTouchListener(adapter: ExpenseListAdapter, recyclerView: RecyclerView, expenseListViewModel: ExpenseListViewModel){
+    fun setRecyclerViewItemTouchListener(v: View, adapter: ExpenseListAdapter, recyclerView: RecyclerView, expenseListViewModel: ExpenseListViewModel){
         val itemTouchCallback = object: ItemTouchHelper.SimpleCallback(0,
             ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
             override fun onMove(
@@ -124,11 +127,24 @@ class Globals: AppCompatActivity() {
 
                 doAsync {
                     expenseListViewModel.deleteExpense(deleteItem)
+
+                    //Display snackbar allowing opportunity to undo the delete of the item
+                    var snackbar = Snackbar.make(v, "Undo", Snackbar.LENGTH_LONG)
+                    snackbar.setAction(R.string.snack_bar_undo, {undoDelete(expenseListViewModel, deleteItem)})
+                    snackbar.show()
                 }
             }//swiped
         }
 
         val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
         itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+
+    /**
+     * undoDelete
+     * Action of onSwiped of deleting expense
+     */
+    fun undoDelete(expenseListViewModel: ExpenseListViewModel, expense: Expense){
+        expenseListViewModel.insertExpense(expense)
     }
 }//class
