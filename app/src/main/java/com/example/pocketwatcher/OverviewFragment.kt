@@ -151,10 +151,10 @@ class OverviewFragment : Fragment() {
         ConstraintLayoutDE.setOnClickListener {
             globals.changeFragment(view, context!!, DailyExpenseFragment())
         }
-//        ConstraintLayoutDE.setOnClickListener {
-//            globals.changeFragment(view, context!!, WeeklyExpenseFragment())
-//        }
-//        ConstraintLayoutDE.setOnClickListener {
+        ConstraintLayoutWE.setOnClickListener {
+            globals.changeFragment(view, context!!, WeeklyExpenseFragment())
+        }
+//        ConstraintLayoutME.setOnClickListener {
 //            globals.changeFragment(view, context!!, MonthlyExpenseFragment())
 //        }
     }//onViewCreated

@@ -1,44 +1,28 @@
-
 package com.example.pocketwatcher
 
-import android.content.Context
 import android.graphics.Color
-import android.graphics.Color.blue
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pocketwatcher.entities.Expense
 import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
-import com.example.pocketwatcher.ExpenseListAdapter
-import com.example.pocketwatcher.entities.Limitation
 import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.charts.PieChart
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_daily_expense.*
-import kotlinx.android.synthetic.main.fragment_no_limit.*
-import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.uiThread
-import kotlin.math.exp
-import java.util.*
-import kotlin.collections.ArrayList
-
+import java.util.HashMap
 
 /**
  * A simple [Fragment] subclass.
  */
-class DailyExpenseFragment : Fragment() {
+class WeeklyExpenseFragment : Fragment() {
 
     lateinit var mAdapter: ExpenseListAdapter                       //Adapter
     private lateinit var recyclerView: RecyclerView                 //RecyclerView
@@ -49,7 +33,6 @@ class DailyExpenseFragment : Fragment() {
     private var localList: MutableList<Expense>? = null
     private var total: Double = 0.0
 
-
     /**
      * onCreate
      */
@@ -59,10 +42,9 @@ class DailyExpenseFragment : Fragment() {
         var currUser = Globals().getCurrentUser(activity!!, Gson())
         var currUsername = currUser!!.username
 
-        //Map for viewmodel to know which timeperiod and which date + how to parse it when finding expenses
         var tpMap = HashMap<String, String>()
-        tpMap.put("Period", "Daily")
-        tpMap.put("Date", TimePeriod().getToday())
+        tpMap.put("Period", "Weekly")
+        tpMap.put("Date", TimePeriod().getWeek())
         expenseListViewModel = ExpenseListViewModel(activity?.application!!, currUsername, tpMap)
         mAdapter = ExpenseListAdapter(mutableListOf(), context!!, expenseListViewModel, activity!!.supportFragmentManager)
 
@@ -88,7 +70,7 @@ class DailyExpenseFragment : Fragment() {
             activity!!.supportFragmentManager.beginTransaction()
                 .replace(R.id.limitFrameLayout, noLimitFragment)
                 .commit()
-        }
+        }//endif limit
     }//onCreate
 
     /**
@@ -98,7 +80,7 @@ class DailyExpenseFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_daily_expense, container, false)  //fragment layout
+        val view = inflater.inflate(R.layout.fragment_weekly_expense, container, false)  //fragment layout
         recyclerView = view.findViewById(R.id.recycler_view) as RecyclerView        // find recyclerView
         recyclerView.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(context)
@@ -113,16 +95,11 @@ class DailyExpenseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //Set FAB's click listener
-        addFab.setOnClickListener{
-            AddExpenseDialogFragment(expenseListViewModel).show(activity!!.supportFragmentManager, "Add")
-        }
-
         setupPieChart() //setup chart
 
         //Add touch listener to recyclerview
         globals.setRecyclerViewItemTouchListener(view, mAdapter, recyclerView, expenseListViewModel)
-    }
+    }//onViewCreated
 
 
     /**
@@ -131,11 +108,10 @@ class DailyExpenseFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-            DailyExpenseFragment().apply {
+            WeeklyExpenseFragment().apply {
 
             }
     }
-
 
     /**
      * setupPieChart
@@ -154,7 +130,6 @@ class DailyExpenseFragment : Fragment() {
         piechart.setNoDataText("No logged expenses!")
         piechart.setNoDataTextColor(Color.BLACK)
     }
-
 
     /**
      * setupPieChartData
@@ -189,8 +164,7 @@ class DailyExpenseFragment : Fragment() {
             }//endif
         }
 
-
-
+        //Colors list
         var colors = ArrayList<Int>()
         colors.add(resources.getColor(R.color.blue))
         colors.add(resources.getColor(R.color.green))
@@ -205,13 +179,12 @@ class DailyExpenseFragment : Fragment() {
         dataSet.selectionShift = 5f
         dataSet.colors = colors
 
-
         //Convert PieDataset to PieData
         var data = PieData(dataSet)
-         data.setValueTextColor(Color.BLACK)
-         data.setValueTextSize(20f)
-         piechart.data = data
-         piechart.invalidate() // refresh
+        data.setValueTextColor(Color.BLACK)
+        data.setValueTextSize(20f)
+        piechart.data = data
+        piechart.invalidate() // refresh
     }//setupPieChartData
 
 

@@ -76,7 +76,7 @@ class LoggedInActivity : AppCompatActivity() {
                     navClickHandler(DailyExpenseFragment())
                 }
                 R.id.weekly_expenses -> {
-
+                    navClickHandler(WeeklyExpenseFragment())
                 }
                 R.id.monthly_expenses -> {
 
