@@ -181,6 +181,5 @@ class OverviewFragment : Fragment() {
             .attach(this)
             .addToBackStack("overview")
             .commitAllowingStateLoss()
-
     }
 }//fragment

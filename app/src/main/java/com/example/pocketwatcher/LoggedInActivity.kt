@@ -27,24 +27,21 @@ class LoggedInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_logged_in)
 
-        if(savedInstanceState != null){
-            // If no fragment in layout, add OverviewFragment() as initial fragment
-            if(supportFragmentManager.findFragmentById(R.id.frame_layout) == null){
-                supportFragmentManager.beginTransaction()
-                    .add(R.id.frame_layout, overviewFragment)
-                    .commit()
-            }//endif
-        }
-        else {
-            // If no fragment in layout, add OverviewFragment() as initial fragment
-            if (supportFragmentManager.findFragmentById(R.id.frame_layout) == null) {
-                supportFragmentManager.beginTransaction()
-                    .add(R.id.frame_layout, OverviewFragment())
-                    .commit()
-            }//endif
+        //Adding fragment to the frame_layout
+        if(supportFragmentManager.findFragmentById(R.id.frame_layout) == null) {
+            var ft = supportFragmentManager.beginTransaction()
+
+            if(savedInstanceState != null){
+                //if savedinstancestate, use the fragment's state that was saved to backstack
+                ft.add(R.id.frame_layout, overviewFragment)
+            }
+            else {
+                ft.add(R.id.frame_layout, OverviewFragment())
+            }
+            ft.commit()
         }
 
-        menuSetup()
+        menuSetup() // menu setup
     }//oncreate
 
 
@@ -54,7 +51,7 @@ class LoggedInActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
 
-//        supportFragmentManager.putFragment(outState, "overview", overviewFragment!!)
+        // Get fragment from overview fragment on saveInstanceState to display that fragment and retaining its state
         overviewFragment = supportFragmentManager.getFragment(outState, "overview")!!
     }
 
