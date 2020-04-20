@@ -79,21 +79,18 @@ class DailyExpenseFragment : Fragment() {
                 calcTotal(localList)
             })
 
-
         //LIMIT
         var limitObj = globals.getLimitFromSharedPref(activity!!, Gson())
         if(limitObj != null){
-            if(activity!!.supportFragmentManager.findFragmentById(R.id.limitFrameLayout) == null){
-                var noLimitFragment = NoLimitFragment()
-                var args = Bundle()
-                args.putString(NoLimitFragment.ARG_LIMIT_USED, total.toString())
-                args.putString(NoLimitFragment.ARG_LIMIT, limitObj.daily)
-                noLimitFragment.arguments = args
+            var noLimitFragment = NoLimitFragment()
+            var args = Bundle()
+            args.putString(NoLimitFragment.ARG_LIMIT_USED, total.toString())
+            args.putString(NoLimitFragment.ARG_LIMIT, limitObj.daily)
+            noLimitFragment.arguments = args
 
-                activity!!.supportFragmentManager.beginTransaction()
-                    .add(R.id.limitFrameLayout, noLimitFragment)
-                    .commit()
-            }//endif
+            activity!!.supportFragmentManager.beginTransaction()
+                .replace(R.id.limitFrameLayout, noLimitFragment)
+                .commit()
         }
     }//onCreate
 
@@ -199,10 +196,11 @@ class DailyExpenseFragment : Fragment() {
 
         var colors = ArrayList<Int>()
         colors.add(resources.getColor(R.color.blue))
-        colors.add(resources.getColor(R.color.red))
-        colors.add(resources.getColor(R.color.yellow))
-        colors.add(resources.getColor(R.color.darkBlue))
         colors.add(resources.getColor(R.color.green))
+        colors.add(resources.getColor(R.color.yellow))
+        colors.add(resources.getColor(R.color.red))
+        colors.add(resources.getColor(R.color.darkBlue))
+        colors.add(resources.getColor(R.color.lightPurple))
 
         //Convert list of PieEntries to PieDataSet
         var dataSet = PieDataSet(pieEntryList, "Expenses")

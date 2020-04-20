@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.os.PersistableBundle
 import android.view.MenuItem
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -17,6 +18,8 @@ class LoggedInActivity : AppCompatActivity() {
     lateinit var toggle: ActionBarDrawerToggle
     private var globals = Globals()
 
+    private var overviewFragment: Fragment = Fragment()
+
     /**
      * onCreate
      */
@@ -24,16 +27,36 @@ class LoggedInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_logged_in)
 
-        // If no fragment in layout, add OverviewFragment() as initial fragment
-        if(supportFragmentManager.findFragmentById(R.id.frame_layout) == null){
-            supportFragmentManager.beginTransaction()
-                .add(R.id.frame_layout, OverviewFragment())
-                .commit()
-        }//endif
+        if(savedInstanceState != null){
+            // If no fragment in layout, add OverviewFragment() as initial fragment
+            if(supportFragmentManager.findFragmentById(R.id.frame_layout) == null){
+                supportFragmentManager.beginTransaction()
+                    .add(R.id.frame_layout, overviewFragment)
+                    .commit()
+            }//endif
+        }
+        else {
+            // If no fragment in layout, add OverviewFragment() as initial fragment
+            if (supportFragmentManager.findFragmentById(R.id.frame_layout) == null) {
+                supportFragmentManager.beginTransaction()
+                    .add(R.id.frame_layout, OverviewFragment())
+                    .commit()
+            }//endif
+        }
 
         menuSetup()
     }//oncreate
 
+
+    /**
+     * onSaveInstanceState
+     */
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        super.onSaveInstanceState(outState, outPersistentState)
+
+//        supportFragmentManager.putFragment(outState, "overview", overviewFragment!!)
+        overviewFragment = supportFragmentManager.getFragment(outState, "overview")!!
+    }
 
     /**
      * menuHandler

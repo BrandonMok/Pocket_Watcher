@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.pocketwatcher.entities.Expense
 import com.example.pocketwatcher.entities.Limitation
+import com.example.pocketwatcher.entities.User
 import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_overview.*
@@ -25,6 +26,8 @@ class OverviewFragment : Fragment() {
     private var globals = Globals() //globals
     private var tp = TimePeriod()   //timeperiod
     private var gson = Gson()
+
+    private var user: User? = null
 
     /**
      * onCreateView
@@ -43,7 +46,7 @@ class OverviewFragment : Fragment() {
         db = PocketWatcherDatabase.getInstance(context!!)   //set instance of db
 
         var sp = activity!!.getSharedPreferences("USER", 0)
-        var user = globals.getCurrentUser(activity!!, gson)
+        user = globals.getCurrentUser(activity!!, gson)
         var username = user!!.username
 
         if(user == null){
@@ -164,5 +167,20 @@ class OverviewFragment : Fragment() {
         dailyExpenseValueTextView.setText("$" + dailyTotal)
         weeklyExpenseValueTextView.setText("$" + weeklyTotal)
         monthlyExpenseValueTextView.setText("$" + monthlyTotal)
+    }
+
+    /**
+     * onSaveInstanceState
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        //onsaveinstancestate - add this fragment (overview) to the backstack so when relaunched and restored
+        //just get from backstack and use that
+        activity!!.supportFragmentManager.beginTransaction()
+            .attach(this)
+            .addToBackStack("overview")
+            .commitAllowingStateLoss()
+
     }
 }//fragment
