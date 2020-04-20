@@ -2,6 +2,7 @@ package com.example.pocketwatcher
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.app.ProgressDialog.show
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -10,8 +11,16 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
+import com.example.pocketwatcher.entities.Expense
+import com.example.pocketwatcher.entities.Limitation
 import com.example.pocketwatcher.entities.User
+import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import org.jetbrains.anko.doAsync
+import kotlin.math.exp
 
 /**
  * Globals class to hold global reusable functions
@@ -37,6 +46,15 @@ class Globals: AppCompatActivity() {
         var sp = activity!!.getSharedPreferences("USERS",0)
         var userString = sp.getString("CURRENT_USER",  "")
         return gson.fromJson(userString, User::class.java)
+    }
+
+    /**
+     * getLimitFromSharedPref
+     */
+    fun getLimitFromSharedPref(activity: Activity, gson: Gson): Limitation? {
+        var sp = activity!!.getSharedPreferences("USERS",0)
+        var limitString = sp.getString("LIMIT", "")
+        return gson.fromJson(limitString, Limitation::class.java)
     }
 
     /**
@@ -83,5 +101,50 @@ class Globals: AppCompatActivity() {
         editor.remove("weeklyTotal")
         editor.remove("monthlyTotal")
         editor.commit()
+    }
+
+
+    /**
+     * setRecyclerViewItemTouchListener
+     */
+    fun setRecyclerViewItemTouchListener(v: View, adapter: ExpenseListAdapter, recyclerView: RecyclerView, expenseListViewModel: ExpenseListViewModel){
+        val itemTouchCallback = object: ItemTouchHelper.SimpleCallback(0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+
+                //Right - DELETE
+                var list = adapter.getExpenseList()
+                var deleteItem = list[position]
+
+                doAsync {
+                    expenseListViewModel.deleteExpense(deleteItem)
+
+                    //Display snackbar allowing opportunity to undo the delete of the item
+                    var snackbar = Snackbar.make(v, "Undo", Snackbar.LENGTH_LONG)
+                    snackbar.setAction(R.string.snack_bar_undo, {undoDelete(expenseListViewModel, deleteItem)})
+                    snackbar.show()
+                }
+            }//swiped
+        }
+
+        val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
+
+    /**
+     * undoDelete
+     * Action of onSwiped of deleting expense
+     */
+    fun undoDelete(expenseListViewModel: ExpenseListViewModel, expense: Expense){
+        expenseListViewModel.insertExpense(expense)
     }
 }//class

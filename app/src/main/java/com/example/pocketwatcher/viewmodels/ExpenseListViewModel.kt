@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.pocketwatcher.PocketWatcherDatabase
 import com.example.pocketwatcher.TimePeriod
 import com.example.pocketwatcher.entities.Expense
+import com.google.gson.Gson
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import java.util.*
@@ -22,6 +23,7 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
     private val database: PocketWatcherDatabase = PocketWatcherDatabase.getInstance(this.getApplication())
     //TimePeriod
     private var tp = TimePeriod()
+    var username = username
 
 
     init {
@@ -37,7 +39,6 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
                     when(period){
                         "Daily" -> {
                             var today = tp.stringToDate(dateStr!!)
-                            // var today = Date(dateStr!!.substring(0,4).toInt(), dateStr!!.substring(5,7).toInt(), dateStr!!.substring(8,10).toInt())
 
                             for(expense in expenseList){
                                 if(tp.stringToDate(expense.date).compareTo(today) == 0){
@@ -93,10 +94,6 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
         doAsync {
             // do in the background
             expense = database.expenseDao().getExpenseById(expID)
-
-            uiThread {
-                return@uiThread
-            }
         }
         return expense
     }//getExpense
@@ -118,20 +115,14 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
      */
     fun updateExpense(expense: Expense){
         doAsync {
-            var expenseToUpdate = getExpense(expense.id)
+            database.expenseDao().updateExpense(expense)
 
-            if(expenseToUpdate != null){
-                // Exists!
-                database.expenseDao().updateExpense(expense)
-
-                // Replace that expense in the list
-                for(exp in allExpenses.indices){
-                    if(allExpenses[exp].id == expense.id){
-                        allExpenses[exp] = expense
-                    }
+            allExpenses.forEachIndexed{index, expense ->
+                if(allExpenses[index].id == expense.id){
+                    allExpenses[index] = expense
                 }
-                mAllExpenses.postValue(allExpenses)
             }
+            mAllExpenses.postValue(allExpenses)
         }
     }
 
@@ -140,13 +131,9 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
      */
     fun deleteExpense(expense: Expense){
         doAsync {
-            var expenseToDelete = getExpense(expense.id)
-
-            if(expenseToDelete != null){
-                database.expenseDao().deleteExpense(expense)
-                allExpenses.remove(expense)
-                mAllExpenses.postValue(allExpenses)
-            }
+            database.expenseDao().deleteExpense(expense)
+            allExpenses.remove(expense)
+            mAllExpenses.postValue(allExpenses)
         }
     }
 

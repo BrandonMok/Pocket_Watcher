@@ -1,19 +1,26 @@
 package com.example.pocketwatcher
 
+import android.app.Activity
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pocketwatcher.entities.Expense
+import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
+import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import kotlin.math.exp
 
 class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
-                          private var context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+                          private var context: Context,
+                          private var expenseListViewModel: ExpenseListViewModel,
+                          private var fragmentManager: FragmentManager) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     /**
      * onCreateViewHolder
@@ -33,7 +40,13 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
         vh.value!!.text = "$" + expense.value.toString()
         vh.date!!.text = expense.date
         vh.tag!!.text = expense.tag
-    }
+
+        //onclick listener for the clicked recyclerview item
+        vh.itemView.setOnClickListener{
+            val expense = expenseList[position]
+            EditDeleteExpenseDialogFragment(expenseListViewModel, expense).show(fragmentManager, "Edit")
+        }
+    }//onBindViewHolder
 
     /**
      * getItemCount
@@ -41,6 +54,10 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
      */
     override fun getItemCount(): Int {
         return expenseList.size
+    }
+
+    fun getExpenseList(): MutableList<Expense> {
+        return this.expenseList
     }
 
     /**
@@ -91,6 +108,6 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
             value = view.findViewById(R.id.valueTextView)
             tag = view.findViewById(R.id.tagValueTextView)
             date = view.findViewById(R.id.dateTextView)
-        }
-    }
+        }//init
+    }//viewholder
 }//class

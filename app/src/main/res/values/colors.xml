@@ -4,4 +4,10 @@
     <color name="colorPrimaryDark">#2ab766</color>
     <color name="colorAccent">#D1D0D1</color>
     <color name="cancel">#E24F4F</color>
+    <color name="red">#e74c3c</color>
+    <color name="blue">#3498db</color>
+    <color name="yellow">#f1c40f</color>
+    <color name="darkBlue">#34495e</color>
+    <color name="green">#2ecc71</color>
+    <color name="lightPurple">#9c88ff</color>
 </resources>

@@ -31,6 +31,7 @@ class LimitFragment : Fragment() {
     private var loginSignUp = LoginSignUp()  //loginSignUp
     private var globals = Globals()         //Globals
     private var currentUser: User? = null
+    private var gson = Gson()
 
     /**
      * onCreateView
@@ -183,6 +184,7 @@ class LimitFragment : Fragment() {
      */
     private fun limitSetOrRemove(action: String){
         var db = PocketWatcherDatabase.getInstance(context!!)
+        var sp = activity!!.getSharedPreferences("USERS",0)
 
         when(action){
             "SET" -> {
@@ -196,7 +198,8 @@ class LimitFragment : Fragment() {
                     db.limitationDao().insertlimit(limit)
 
                     uiThread {
-                        globals.makeToast("Limit set successfully!", context!!).show()
+                        globals.makeToast("Limit set successfully!", context!!).show()  //show Toast
+                        sp.edit().putString("LIMIT", gson.toJson(limit)).commit()       //Add limit to sp
                     }
                 }
             }
@@ -209,6 +212,9 @@ class LimitFragment : Fragment() {
                     uiThread {
                         globals.makeToast("Limit removed successfully!", context!!).show()
                         clearEditTexts()
+
+                        //Remove limit from sp
+                        sp.edit().remove("LIMIT").commit()
                     }
                 }
             }

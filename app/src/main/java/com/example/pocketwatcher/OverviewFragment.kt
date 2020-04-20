@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.pocketwatcher.entities.Expense
 import com.example.pocketwatcher.entities.Limitation
+import com.example.pocketwatcher.entities.User
 import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_overview.*
@@ -24,6 +25,9 @@ class OverviewFragment : Fragment() {
     private var db: PocketWatcherDatabase? = null   //db
     private var globals = Globals() //globals
     private var tp = TimePeriod()   //timeperiod
+    private var gson = Gson()
+
+    private var user: User? = null
 
     /**
      * onCreateView
@@ -39,9 +43,10 @@ class OverviewFragment : Fragment() {
      * onViewCreated
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        var gson = Gson()
+        db = PocketWatcherDatabase.getInstance(context!!)   //set instance of db
+
         var sp = activity!!.getSharedPreferences("USER", 0)
-        var user = globals.getCurrentUser(activity!!, gson)
+        user = globals.getCurrentUser(activity!!, gson)
         var username = user!!.username
 
         if(user == null){
@@ -52,25 +57,17 @@ class OverviewFragment : Fragment() {
         helloTextView.text = "Hello $username!" // Set custom text
 
 
-        // variable to know if limit was set -> used later whether to show dailyLimitUsed value
+        //LIMIT
+        //variable to know if limit was set -> used later whether to show dailyLimitUsed value
         var limitSet: Boolean = false
-
-        // CHECK: if user has a limit set
-        doAsync{
-            db = PocketWatcherDatabase.getInstance(context!!)
-            var limit: Limitation? = db!!.limitationDao().getLimit(username)
-
-            uiThread {
-                if(limit != null ){
-                    // Show limit daily limit for the overview page
-                    limitEditText.setText(limit.daily)
-                    limitSet = true
-                }
-                else {
-                    // No limit set, show textview
-                    noLimitTextView.visibility = View.VISIBLE
-                }
-            }
+        var limitObj = globals.getLimitFromSharedPref(activity!!, gson)
+        if(limitObj != null){
+            limitEditText.setText(limitObj.daily)
+            limitSet = true
+            noLimitTextView.visibility = View.GONE
+        }
+        else {
+            noLimitTextView.visibility = View.VISIBLE
         }
 
 
@@ -81,20 +78,20 @@ class OverviewFragment : Fragment() {
          * Note: not the best method to hold/retain totals and displaying w/o having to check db each time
          * Using this way as to when app is closed, when it's reopened values are entered back in.
          */
-        if(sp.getBoolean("TOTALS", false) && sp.getBoolean("TOTALS", false) != null){
-            //Pass & display total values to reusable function
-            displayExpenseValues(
-                sp.getString("dailyTotal","").toString(),
-                sp.getString("weeklyTotal","").toString(),
-                sp.getString("monthlyTotal","").toString()
-            )
-
-            globals.clearTotals(sp)
-        }
-        else {
+//        if(sp.getBoolean("TOTALS", false) && sp.getBoolean("TOTALS", false) != null){
+////            //Pass & display total values to reusable function
+////            displayExpenseValues(
+////                sp.getString("dailyTotal","").toString(),
+////                sp.getString("weeklyTotal","").toString(),
+////                sp.getString("monthlyTotal","").toString()
+////            )
+////
+//            globals.clearTotals(sp)
+//        }
+//        else {
             // CHECK for expenses
             doAsync {
-                var expenseList: List<Expense> = db!!.expenseDao().getAllExpenses(username)
+                var expenseList: List<Expense>? = db!!.expenseDao()!!.getAllExpenses(username)
 
                 uiThread {
                     if (expenseList != null && expenseList.isNotEmpty()) {
@@ -139,16 +136,16 @@ class OverviewFragment : Fragment() {
                         )  //store totals
 
 
-                        // Set values on UI
+                        //If limit is set, display the total value used for the overview
                         if (limitSet) {
-                            limitUsedEditText.setText("" + dailyTotal)
+                            limitUsedEditText.setText(dailyTotal.toString())
                         }
 
                         displayExpenseValues(dailyTotal.toString(), weeklyTotal.toString(), monthlyTotal.toString())
                     }
                 }
             }
-        }
+//        }
 
         // set onClickListeners
         ConstraintLayoutDE.setOnClickListener {
@@ -166,9 +163,24 @@ class OverviewFragment : Fragment() {
     /**
      * displayExpenseValues
      */
-     private fun displayExpenseValues(dailyTotal: String, weeklyTotal: String, monthlyTotal: String){
+    private fun displayExpenseValues(dailyTotal: String, weeklyTotal: String, monthlyTotal: String){
         dailyExpenseValueTextView.setText("$" + dailyTotal)
         weeklyExpenseValueTextView.setText("$" + weeklyTotal)
         monthlyExpenseValueTextView.setText("$" + monthlyTotal)
+    }
+
+    /**
+     * onSaveInstanceState
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+
+        //onsaveinstancestate - add this fragment (overview) to the backstack so when relaunched and restored
+        //just get from backstack and use that
+        activity!!.supportFragmentManager.beginTransaction()
+            .attach(this)
+            .addToBackStack("overview")
+            .commitAllowingStateLoss()
+
     }
 }//fragment
