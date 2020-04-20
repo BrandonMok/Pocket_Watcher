@@ -75,17 +75,17 @@ class OverviewFragment : Fragment() {
          * Note: not the best method to hold/retain totals and displaying w/o having to check db each time
          * Using this way as to when app is closed, when it's reopened values are entered back in.
          */
-        if(sp.getBoolean("TOTALS", false) && sp.getBoolean("TOTALS", false) != null){
-            //Pass & display total values to reusable function
-            displayExpenseValues(
-                sp.getString("dailyTotal","").toString(),
-                sp.getString("weeklyTotal","").toString(),
-                sp.getString("monthlyTotal","").toString()
-            )
-
-            globals.clearTotals(sp)
-        }
-        else {
+//        if(sp.getBoolean("TOTALS", false) && sp.getBoolean("TOTALS", false) != null){
+////            //Pass & display total values to reusable function
+////            displayExpenseValues(
+////                sp.getString("dailyTotal","").toString(),
+////                sp.getString("weeklyTotal","").toString(),
+////                sp.getString("monthlyTotal","").toString()
+////            )
+////
+//            globals.clearTotals(sp)
+//        }
+//        else {
             // CHECK for expenses
             doAsync {
                 var expenseList: List<Expense>? = db!!.expenseDao()!!.getAllExpenses(username)
@@ -142,7 +142,7 @@ class OverviewFragment : Fragment() {
                     }
                 }
             }
-        }
+//        }
 
         // set onClickListeners
         ConstraintLayoutDE.setOnClickListener {

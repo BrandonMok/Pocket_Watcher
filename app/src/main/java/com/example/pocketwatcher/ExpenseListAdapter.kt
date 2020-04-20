@@ -56,6 +56,10 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
         return expenseList.size
     }
 
+    fun getExpenseList(): MutableList<Expense> {
+        return this.expenseList
+    }
+
     /**
      * addExpense
      */
@@ -104,22 +108,6 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
             value = view.findViewById(R.id.valueTextView)
             tag = view.findViewById(R.id.tagValueTextView)
             date = view.findViewById(R.id.dateTextView)
-
-//            itemView.setOnClickListener {v: View ->     // could just use "it" instead of setting "v"
-//                // get which item tapped on
-//                val position = adapterPosition
-//                //val expenseList = expenseList[position]
-//
-//                //EditDeleteExpenseDialogFragment(expenseListViewModel).show(activity!!.supportFragmentManager, "Add")
-//
-//                /**
-//                 * TODO
-//                 * Show alertDialog to edit + delete
-//                 */
-//                Snackbar.make(v, "Click detected on item ${position+1}", Snackbar.LENGTH_LONG)
-//                    .setAction("Action", null)
-//                    .show()
-//            }//onClickListener
         }//init
     }//viewholder
 }//class

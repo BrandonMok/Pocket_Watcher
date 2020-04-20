@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pocketwatcher.entities.Expense
 import com.example.pocketwatcher.entities.Limitation
 import com.example.pocketwatcher.entities.User
+import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
 import com.google.gson.Gson
 import org.jetbrains.anko.doAsync
 
@@ -103,52 +104,31 @@ class Globals: AppCompatActivity() {
     /**
      * setRecyclerViewItemTouchListener
      */
-//    fun setRecyclerViewItemTouchListener(activity: Activity, recyclerView: RecyclerView, expenseList: MutableList<Expense>){
-//        val itemTouchCallback = object: ItemTouchHelper.SimpleCallback(0,
-//            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
-//            override fun onMove(
-//                recyclerView: RecyclerView,
-//                viewHolder: RecyclerView.ViewHolder,
-//                target: RecyclerView.ViewHolder
-//            ): Boolean {
-//                return false
-//            }
-//
-//            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-//                val position = viewHolder.adapterPosition
-//
-//                if(direction == 8){
-//                    //Right - DELETE
-//                    /**
-//                     * TODO
-//                     * Delete
-//                     * show undo snack just in case
-//                     */
-//                    var deleteItem = expenseList.get(position)
-//                    Log.d("POS", deleteItem.toString())
-//
-//
-//                    doAsync {
-//                        PocketWatcherDatabase.getInstance(activity!!).expenseDao().deleteExpense(deleteItem)
-//                    }
-//
-//
-//
-//                }
-////                else if(direction == 4){
-////                    //Left - EDIT
-////                    Toast.makeText(activity!!, "LEFT", Toast.LENGTH_SHORT).show()
-////                    /**
-////                     * TODO
-////                     * EDIT
-////                     * Display alertdialog like adding to allow edit
-////                     */
-////
-////                }
-//            }
-//        }
-//
-//        val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
-//        itemTouchHelper.attachToRecyclerView(recyclerView)
-//    }
+    fun setRecyclerViewItemTouchListener(adapter: ExpenseListAdapter, recyclerView: RecyclerView, expenseListViewModel: ExpenseListViewModel){
+        val itemTouchCallback = object: ItemTouchHelper.SimpleCallback(0,
+            ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT){
+            override fun onMove(
+                recyclerView: RecyclerView,
+                viewHolder: RecyclerView.ViewHolder,
+                target: RecyclerView.ViewHolder
+            ): Boolean {
+                return false
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val position = viewHolder.adapterPosition
+
+                //Right - DELETE
+                var list = adapter.getExpenseList()
+                var deleteItem = list[position]
+
+                doAsync {
+                    expenseListViewModel.deleteExpense(deleteItem)
+                }
+            }//swiped
+        }
+
+        val itemTouchHelper = ItemTouchHelper(itemTouchCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+    }
 }//class

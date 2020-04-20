@@ -117,21 +117,17 @@ class ExpenseListViewModel (application: Application, username: String, timeMap:
         doAsync {
             database.expenseDao().updateExpense(expense)
 
-            uiThread {
-                for(exp in allExpenses){
-                    if(exp.id == expense.id){
-                        allExpenses.remove(exp)
-                        allExpenses.add(expense)
-                    }
+            allExpenses.forEachIndexed{index, expense ->
+                if(allExpenses[index].id == expense.id){
+                    allExpenses[index] = expense
                 }
             }
-            allExpenses = database.expenseDao().getAllExpenses(username).toMutableList()
             mAllExpenses.postValue(allExpenses)
         }
     }
 
     /**
-     * deleteExpense
+     * deleteExpensea
      */
     fun deleteExpense(expense: Expense){
         doAsync {
