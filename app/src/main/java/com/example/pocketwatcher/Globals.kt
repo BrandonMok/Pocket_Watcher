@@ -20,7 +20,6 @@ import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import org.jetbrains.anko.doAsync
-import kotlin.math.exp
 
 /**
  * Globals class to hold global reusable functions
@@ -77,32 +76,6 @@ class Globals: AppCompatActivity() {
             .setIcon(android.R.drawable.ic_dialog_alert)
             .show()
     }
-
-
-    /**
-     * storeTotals
-     */
-    fun storeTotals(sp: SharedPreferences, dailyTotal: Double, weeklyTotal: Double, monthlyTotal: Double){
-        var editor = sp.edit()
-        editor.putBoolean("TOTALS", true)
-        editor.putString("dailyTotal", dailyTotal.toString())
-        editor.putString("weeklyTotal", weeklyTotal.toString())
-        editor.putString("monthlyTotal", monthlyTotal.toString())
-        editor.commit()
-    }
-
-    /**
-     * clearTotals
-     */
-    fun clearTotals(sp: SharedPreferences){
-        var editor = sp.edit()
-        editor.remove("TOTALS")
-        editor.remove("dailyTotal")
-        editor.remove("weeklyTotal")
-        editor.remove("monthlyTotal")
-        editor.commit()
-    }
-
 
     /**
      * setRecyclerViewItemTouchListener

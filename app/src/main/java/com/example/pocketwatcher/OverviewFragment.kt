@@ -45,9 +45,8 @@ class OverviewFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         db = PocketWatcherDatabase.getInstance(context!!)   //set instance of db
 
-        var sp = activity!!.getSharedPreferences("USER", 0)
-        user = globals.getCurrentUser(activity!!, gson)
-        var username = user!!.username
+        user = globals.getCurrentUser(activity!!, gson) //get current user's object
+        var username = user!!.username          // get username of current user
 
         if(user == null){
             // user'sl username wasn't set on login - redirect back to login
@@ -72,80 +71,54 @@ class OverviewFragment : Fragment() {
 
 
         //EXPENSES:
-        //If SP doesn't hold values, then go else to go through db and calc
-        //If SP does hold values as through "TOTALS" boolean key-value, then did store totals so use stored values instead of having to run through db
-        /**
-         * Note: not the best method to hold/retain totals and displaying w/o having to check db each time
-         * Using this way as to when app is closed, when it's reopened values are entered back in.
-         */
-//        if(sp.getBoolean("TOTALS", false) && sp.getBoolean("TOTALS", false) != null){
-////            //Pass & display total values to reusable function
-////            displayExpenseValues(
-////                sp.getString("dailyTotal","").toString(),
-////                sp.getString("weeklyTotal","").toString(),
-////                sp.getString("monthlyTotal","").toString()
-////            )
-////
-//            globals.clearTotals(sp)
-//        }
-//        else {
-            // CHECK for expenses
-            doAsync {
-                var expenseList: List<Expense>? = db!!.expenseDao()!!.getAllExpenses(username)
+        // CHECK for expenses
+        doAsync {
+            var expenseList: List<Expense>? = db!!.expenseDao()!!.getAllExpenses(username)
 
-                uiThread {
-                    if (expenseList != null && expenseList.isNotEmpty()) {
-                        // There are expenses made from user
-                        // Calculate all totals
-                        var today = tp.stringToDate(tp.getToday())
+            uiThread {
+                if (expenseList != null && expenseList.isNotEmpty()) {
+                    // There are expenses made from user
+                    // Calculate all totals
+                    var today = tp.stringToDate(tp.getToday())
 
-                        var entireWeekString = tp.getWeek()
-                        var startWeek = tp.stringToDate(entireWeekString.substring(0, 10))
-                        var endWeek = tp.stringToDate(entireWeekString.substring(11, 21))
+                    var entireWeekString = tp.getWeek()
+                    var startWeek = tp.stringToDate(entireWeekString.substring(0, 10))
+                    var endWeek = tp.stringToDate(entireWeekString.substring(11, 21))
 
-                        var entireMonthString = tp.getMonth()
-                        var startMonth = tp.stringToDate(entireMonthString.substring(0, 10))
-                        var endMonth = tp.stringToDate(entireMonthString.substring(11, 21))
+                    var entireMonthString = tp.getMonth()
+                    var startMonth = tp.stringToDate(entireMonthString.substring(0, 10))
+                    var endMonth = tp.stringToDate(entireMonthString.substring(11, 21))
 
-                        var dailyTotal: Double = 0.0
-                        var weeklyTotal: Double = 0.0
-                        var monthlyTotal: Double = 0.0
+                    var dailyTotal: Double = 0.0
+                    var weeklyTotal: Double = 0.0
+                    var monthlyTotal: Double = 0.0
 
-                        for (exp in expenseList) {
-                            var expDate = tp.stringToDate(exp.date)
+                    for (exp in expenseList) {
+                        var expDate = tp.stringToDate(exp.date)
 
-                            if (expDate.equals(today)) {
-                                // Today
-                                dailyTotal += exp.value
-                            }
-                            if (expDate.compareTo(startWeek) >= 0 && expDate.compareTo(endWeek) <= 0) {
-                                // Week
-                                weeklyTotal += exp.value
-                            }
-                            if (expDate.compareTo(startMonth) >= 0 && expDate.compareTo(endMonth) <= 0) {
-                                // month
-                                monthlyTotal += exp.value
-                            }
+                        if (expDate.equals(today)) {
+                            // Today
+                            dailyTotal += exp.value
                         }
-
-                        globals.storeTotals(
-                            sp,
-                            dailyTotal,
-                            weeklyTotal,
-                            monthlyTotal
-                        )  //store totals
-
-
-                        //If limit is set, display the total value used for the overview
-                        if (limitSet) {
-                            limitUsedEditText.setText(dailyTotal.toString())
+                        if (expDate.compareTo(startWeek) >= 0 && expDate.compareTo(endWeek) <= 0) {
+                            // Week
+                            weeklyTotal += exp.value
                         }
-
-                        displayExpenseValues(dailyTotal.toString(), weeklyTotal.toString(), monthlyTotal.toString())
+                        if (expDate.compareTo(startMonth) >= 0 && expDate.compareTo(endMonth) <= 0) {
+                            // month
+                            monthlyTotal += exp.value
+                        }
                     }
+
+                    //If limit is set, display the total value used for the overview
+                    if (limitSet) {
+                        limitUsedEditText.setText(dailyTotal.toString())
+                    }
+
+                    displayExpenseValues(dailyTotal.toString(), weeklyTotal.toString(), monthlyTotal.toString())
                 }
             }
-//        }
+        }
 
         // set onClickListeners
         ConstraintLayoutDE.setOnClickListener {
