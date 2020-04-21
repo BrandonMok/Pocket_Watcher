@@ -79,7 +79,7 @@ class LoggedInActivity : AppCompatActivity() {
                     navClickHandler(WeeklyExpenseFragment())
                 }
                 R.id.monthly_expenses -> {
-
+                    navClickHandler(MonthlyExpenseFragment())
                 }
                 R.id.limitation -> {
                     navClickHandler(LimitFragment())
