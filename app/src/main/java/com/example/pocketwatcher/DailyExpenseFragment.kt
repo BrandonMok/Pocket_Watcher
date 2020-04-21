@@ -33,7 +33,6 @@ class DailyExpenseFragment : Fragment() {
     private lateinit var expenseListViewModel: ExpenseListViewModel //ExpenseListViewModel
     private var globals = Globals()
     private var chartHandler = ChartHandler()
-
     private var localList: MutableList<Expense>? = null
     private var total: Double = 0.0
 
@@ -44,13 +43,13 @@ class DailyExpenseFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        var currUser = Globals().getCurrentUser(activity!!, Gson())
+        var currUser = globals.getCurrentUser(activity!!, Gson())
         var currUsername = currUser!!.username
 
         //Map for viewmodel to know which timeperiod and which date + how to parse it when finding expenses
         var tpMap = HashMap<String, String>()
-        tpMap.put("Period", "Daily")
-        tpMap.put("Date", TimePeriod().getToday())
+        tpMap.put("Period", "Daily")                //TimePeriod -> Daily
+        tpMap.put("Date", TimePeriod().getToday())  //Get && pass in dateString of Today
         expenseListViewModel = ExpenseListViewModel(activity?.application!!, currUsername, tpMap)
         mAdapter = ExpenseListAdapter(mutableListOf(), context!!, expenseListViewModel, activity!!.supportFragmentManager)
 

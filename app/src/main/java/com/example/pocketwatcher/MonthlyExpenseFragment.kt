@@ -11,12 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.pocketwatcher.entities.Expense
 import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_daily_expense.*
 import java.util.HashMap
 
 /**
  * A simple [Fragment] subclass.
  */
-class WeeklyExpenseFragment : Fragment() {
+class MonthlyExpenseFragment : Fragment() {
 
     lateinit var mAdapter: ExpenseListAdapter                       //Adapter
     private lateinit var recyclerView: RecyclerView                 //RecyclerView
@@ -36,9 +37,10 @@ class WeeklyExpenseFragment : Fragment() {
         var currUser = globals.getCurrentUser(activity!!, Gson())
         var currUsername = currUser!!.username
 
+        //Map for viewmodel to know which timeperiod and which date + how to parse it when finding expenses
         var tpMap = HashMap<String, String>()
-        tpMap.put("Period", "Weekly")               //TimePeriod -> Weekly
-        tpMap.put("Date", TimePeriod().getWeek())   //Get && pass the dateString for this week (i.e. 2020-04-19:2020-04-25)
+        tpMap.put("Period", "Monthly")                 //TimePeriod -> Monthly
+        tpMap.put("Date", TimePeriod().getMonth())     //Get && pass in this month's dateString (e.g. 2020-04-01:2020-04-30)
         expenseListViewModel = ExpenseListViewModel(activity?.application!!, currUsername, tpMap)
         mAdapter = ExpenseListAdapter(mutableListOf(), context!!, expenseListViewModel, activity!!.supportFragmentManager)
 
@@ -48,7 +50,7 @@ class WeeklyExpenseFragment : Fragment() {
                 mAdapter.addExpenses(expense!!)
 
                 localList = expense!!
-                chartHandler.setupPieChartData(view!!, activity!!, localList)//Have the created ChartHandler class setup Piechart's data
+                chartHandler.setupPieChartData(view!!, activity!!, localList)   //Have the created ChartHandler class setup Piechart's data
                 calcTotal(localList)
             })
 
@@ -64,7 +66,7 @@ class WeeklyExpenseFragment : Fragment() {
             activity!!.supportFragmentManager.beginTransaction()
                 .replace(R.id.limitFrameLayout, noLimitFragment)
                 .commit()
-        }//endif limit
+        }
     }//onCreate
 
     /**
@@ -74,7 +76,7 @@ class WeeklyExpenseFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_weekly_expense, container, false)  //fragment layout
+        val view = inflater.inflate(R.layout.fragment_monthly_expense, container, false)  //fragment layout
         recyclerView = view.findViewById(R.id.recycler_view) as RecyclerView        // find recyclerView
         recyclerView.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(context)
@@ -88,13 +90,9 @@ class WeeklyExpenseFragment : Fragment() {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        chartHandler.setupPieChart(view)  //Have the created ChartHandler class setup Piechart's styling
-
-        //Add touch listener to recyclerview
+        chartHandler.setupPieChart(view) //Have the created ChartHandler class setup Piechart's styling
         globals.setRecyclerViewItemTouchListener(view, mAdapter, recyclerView, expenseListViewModel)
-    }//onViewCreated
-
+    }
 
     /**
      * companion object
@@ -102,7 +100,7 @@ class WeeklyExpenseFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() =
-            WeeklyExpenseFragment().apply {
+            MonthlyExpenseFragment().apply {
 
             }
     }
@@ -117,4 +115,6 @@ class WeeklyExpenseFragment : Fragment() {
             }
         }
     }
+
+
 }//fragment

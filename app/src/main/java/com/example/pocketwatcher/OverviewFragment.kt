@@ -125,9 +125,9 @@ class OverviewFragment : Fragment() {
         ConstraintLayoutWE.setOnClickListener {
             globals.changeFragment(view, context!!, WeeklyExpenseFragment())
         }
-//        ConstraintLayoutME.setOnClickListener {
-//            globals.changeFragment(view, context!!, MonthlyExpenseFragment())
-//        }
+        ConstraintLayoutME.setOnClickListener {
+            globals.changeFragment(view, context!!, MonthlyExpenseFragment())
+        }
     }//onViewCreated
 
 
