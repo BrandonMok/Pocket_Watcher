@@ -2,7 +2,6 @@ package com.example.pocketwatcher
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_overview.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
-import java.util.*
 
 /**
  * A simple [Fragment] subclass.

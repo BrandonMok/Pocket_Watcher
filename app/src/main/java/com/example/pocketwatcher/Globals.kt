@@ -4,9 +4,8 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog.show
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import android.util.Log
+import android.os.Build
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +18,7 @@ import com.example.pocketwatcher.entities.User
 import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_daily_expense.*
 import org.jetbrains.anko.doAsync
 
 /**
