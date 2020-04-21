@@ -58,7 +58,7 @@ class WeeklyExpenseFragment : Fragment() {
             var noLimitFragment = NoLimitFragment()
             var args = Bundle()
             args.putString(NoLimitFragment.ARG_LIMIT_USED, total.toString())
-            args.putString(NoLimitFragment.ARG_LIMIT, limitObj.daily)
+            args.putString(NoLimitFragment.ARG_LIMIT, limitObj.weekly)
             noLimitFragment.arguments = args
 
             activity!!.supportFragmentManager.beginTransaction()
