@@ -3,6 +3,7 @@ package com.example.pocketwatcher
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -35,6 +36,7 @@ class DailyExpenseFragment : Fragment() {
     private var chartHandler = ChartHandler()
     private var localList: MutableList<Expense>? = null
     private var total: Double = 0.0
+    private var limitUsed: MutableLiveData<Double> = MutableLiveData()
 
 
     /**
@@ -63,17 +65,27 @@ class DailyExpenseFragment : Fragment() {
                 calcTotal(localList)
             })
 
+        //Observer - calculating total of limit used for daily
+        //Using a fragment on this fragment that'll display depending if limit is set (removes need for this limit view part if no limit was set)
+        //Fragment would be added already to the view, so use instance of it from finding fragment by tag "limit_fragment" and use function to pass info
+        limitUsed.observe(this,
+            Observer<Double> {value ->
+                total += value
+                var fragment: NoLimitFragment = activity?.supportFragmentManager!!.findFragmentByTag("limit_fragment") as NoLimitFragment
+                fragment.setLimitUsedValue(total.toString())
+            })
+
+
         //LIMIT
         var limitObj = globals.getLimitFromSharedPref(activity!!, Gson())
         if(limitObj != null){
             var noLimitFragment = NoLimitFragment()
             var args = Bundle()
-            args.putString(NoLimitFragment.ARG_LIMIT_USED, total.toString())
             args.putString(NoLimitFragment.ARG_LIMIT, limitObj.daily)
             noLimitFragment.arguments = args
 
             activity!!.supportFragmentManager.beginTransaction()
-                .replace(R.id.limitFrameLayout, noLimitFragment)
+                .replace(R.id.limitFrameLayout, noLimitFragment, "limit_fragment")
                 .commit()
         }
     }//onCreate
@@ -129,7 +141,7 @@ class DailyExpenseFragment : Fragment() {
     private fun calcTotal(expList: MutableList<Expense>?){
         if(expList != null && expList.size != 0) {
             for(exp in expList){
-                total = total?.plus(exp.value)
+                limitUsed.value = exp.value
             }
         }
     }

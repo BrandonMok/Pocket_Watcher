@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import kotlinx.android.synthetic.main.fragment_no_limit.*
 import java.lang.String
 
@@ -28,7 +29,6 @@ class NoLimitFragment : Fragment() {
     }
 
     companion object {
-        const val ARG_LIMIT_USED = "0.00"
         const val ARG_LIMIT = "0.00"
     }
 
@@ -37,7 +37,16 @@ class NoLimitFragment : Fragment() {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        limitUsedEditText.setText(arguments!!.getString(ARG_LIMIT_USED))
         limitEditText.setText(arguments!!.getString(ARG_LIMIT))
+    }
+
+
+    /**
+     * setLimitUsedValue
+     * Limit Used value passed in via instance of fragment
+     */
+    fun setLimitUsedValue(value: kotlin.String){
+        var et = view!!.findViewById<EditText>(R.id.limitUsedEditText)
+        et.setText(value)
     }
 }//fragment

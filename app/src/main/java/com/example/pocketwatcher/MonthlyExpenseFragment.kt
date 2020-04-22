@@ -1,10 +1,12 @@
 package com.example.pocketwatcher
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -27,6 +29,7 @@ class MonthlyExpenseFragment : Fragment() {
     private var chartHandler = ChartHandler()
     private var localList: MutableList<Expense>? = null
     private var total: Double = 0.0
+    private var limitUsed: MutableLiveData<Double> = MutableLiveData()
 
     /**
      * onCreate
@@ -54,17 +57,27 @@ class MonthlyExpenseFragment : Fragment() {
                 calcTotal(localList)
             })
 
+        //Observer - calculating total of limit used for monthly
+        //Using a fragment on this fragment that'll display depending if limit is set (removes need for this limit view part if no limit was set)
+        //Fragment would be added already to the view, so use instance of it from finding fragment by tag "limit_fragment" and use function to pass info
+        limitUsed.observe(this,
+            Observer<Double> {value ->
+                total = total.plus(value)
+                var fragment: NoLimitFragment = activity?.supportFragmentManager!!.findFragmentByTag("limit_fragment") as NoLimitFragment
+                fragment.setLimitUsedValue(total.toString())
+            })
+
+
         //LIMIT
         var limitObj = globals.getLimitFromSharedPref(activity!!, Gson())
         if(limitObj != null){
             var noLimitFragment = NoLimitFragment()
             var args = Bundle()
-            args.putString(NoLimitFragment.ARG_LIMIT_USED, total.toString())
-            args.putString(NoLimitFragment.ARG_LIMIT, limitObj.daily)
+            args.putString(NoLimitFragment.ARG_LIMIT, limitObj.monthly)
             noLimitFragment.arguments = args
 
             activity!!.supportFragmentManager.beginTransaction()
-                .replace(R.id.limitFrameLayout, noLimitFragment)
+                .replace(R.id.limitFrameLayout, noLimitFragment, "limit_fragment")
                 .commit()
         }
     }//onCreate
@@ -111,7 +124,7 @@ class MonthlyExpenseFragment : Fragment() {
     private fun calcTotal(expList: MutableList<Expense>?){
         if(expList != null && expList.size != 0) {
             for(exp in expList){
-                total = total?.plus(exp.value)
+                limitUsed.value = exp.value
             }
         }
     }
