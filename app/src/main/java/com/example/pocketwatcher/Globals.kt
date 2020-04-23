@@ -6,6 +6,7 @@ import android.app.ProgressDialog.show
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Build
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity

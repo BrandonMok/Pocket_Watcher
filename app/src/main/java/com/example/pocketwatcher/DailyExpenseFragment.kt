@@ -137,12 +137,17 @@ class DailyExpenseFragment : Fragment() {
 
     /**
      * calcTotal
+     * Same function in all periods as it updates local values, so couldn't move to one class and reuse
      */
     private fun calcTotal(expList: MutableList<Expense>?){
         if(expList != null && expList.size != 0) {
             for(exp in expList){
                 limitUsed.value = exp.value
             }
+            total = 0.0
+        }
+        else {
+            limitUsed.value = 0.0
         }
     }
 }//fragment

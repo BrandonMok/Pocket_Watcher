@@ -126,8 +126,10 @@ class MonthlyExpenseFragment : Fragment() {
             for(exp in expList){
                 limitUsed.value = exp.value
             }
+            total = 0.0
+        }
+        else {
+            limitUsed.value = 0.0
         }
     }
-
-
 }//fragment
