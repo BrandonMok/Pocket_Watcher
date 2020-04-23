@@ -8,6 +8,7 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -38,6 +39,15 @@ class Globals: AppCompatActivity() {
         ft.addToBackStack(null)
         ft.commit()
     }//changeFragment
+
+    /**
+     * hideKeyboard
+     * @param v
+     */
+    fun hideKeyboard(v: View, context: Context){
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS)
+    }
 
     /**
      * getCurrentUser

@@ -45,10 +45,10 @@ class LoginFragment : Fragment() {
 
         // Clicked outside of textviews
         usernameTextView.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
-            if(!hasFocus){ loginSignUp.hideKeyboard(v, context!!) }
+            if(!hasFocus){ globals.hideKeyboard(v, context!!) }
         })
         passwordTextView.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
-            if(!hasFocus){ loginSignUp.hideKeyboard(v, context!!) }
+            if(!hasFocus){ globals.hideKeyboard(v, context!!) }
         })
     }//onViewCreated
 

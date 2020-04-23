@@ -68,7 +68,7 @@ class LimitFragment : Fragment() {
         //Didn't use ontextchange as setting of one would affect trigger ontextchange of others
         dailyEditText.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
             if(!hasFocus){
-                loginSignUp.hideKeyboard(v, context!!)
+                globals.hideKeyboard(v, context!!)
                 calculateLimits(dailyEditText.text.toString(), "DAILY")
             }
             else {
@@ -77,7 +77,7 @@ class LimitFragment : Fragment() {
         })
         weeklyEditText.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
             if(!hasFocus){
-                loginSignUp.hideKeyboard(v, context!!)
+                globals.hideKeyboard(v, context!!)
                 calculateLimits(weeklyEditText.text.toString(), "WEEKLY")
             }
             else {
@@ -86,7 +86,7 @@ class LimitFragment : Fragment() {
         })
         monthlyEditText.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
             if(!hasFocus){
-                loginSignUp.hideKeyboard(v, context!!)
+                globals.hideKeyboard(v, context!!)
                 calculateLimits(monthlyEditText.text.toString(), "MONTHLY")
             }
             else {
