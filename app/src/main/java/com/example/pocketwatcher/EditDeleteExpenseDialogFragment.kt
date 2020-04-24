@@ -16,6 +16,7 @@ import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_edit_delete_expense_dialog.view.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
+import java.lang.NumberFormatException
 import java.util.regex.Pattern
 
 /**
@@ -52,8 +53,8 @@ class EditDeleteExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel
                 if(!titleET!!.text.equals("") && titleET != null &&
                     !valueET!!.text.equals("") && valueET != null){
 
-                    if(Pattern.compile( "[0-9]" ).matcher( valueET!!.text.toString() ).find()){
-                        // Set values to ones changed/entered on dialog
+
+                    try{
                         expense.title = titleET!!.text.toString()
                         expense.value = valueET!!.text.toString().toDouble()
                         expense.tag = tagET!!.text.toString()
@@ -66,11 +67,9 @@ class EditDeleteExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel
                             }
                         }
                     }
-                }
-                else {
-                    // ISSUE:
-                    // Doesn't show for some reason
-                    globals.makeAlertDialog(activity!!, "Invalid Values", "Please try again!")
+                    catch(e: NumberFormatException){
+                        globals.makeAlertDialog(activity!!, "Invalid Values", "Please try again!")
+                    }
                 }
             })
 
@@ -78,15 +77,5 @@ class EditDeleteExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel
         valueET = view.findViewById(R.id.valueEditText)
         tagET = view.findViewById(R.id.tagEditText)
         return builder.create()
-    }
-
-
-    /**
-     * deleteExpense
-     */
-    fun deleteExpense(){
-        /**
-         * TODO
-         */
     }
 }//fragment

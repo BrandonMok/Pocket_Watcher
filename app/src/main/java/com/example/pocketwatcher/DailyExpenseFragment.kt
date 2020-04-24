@@ -65,17 +65,6 @@ class DailyExpenseFragment : Fragment() {
                 calcTotal(localList)
             })
 
-        //Observer - calculating total of limit used for daily
-        //Using a fragment on this fragment that'll display depending if limit is set (removes need for this limit view part if no limit was set)
-        //Fragment would be added already to the view, so use instance of it from finding fragment by tag "limit_fragment" and use function to pass info
-        limitUsed.observe(this,
-            Observer<Double> {value ->
-                total += value
-                var fragment: NoLimitFragment = activity?.supportFragmentManager!!.findFragmentByTag("limit_fragment") as NoLimitFragment
-                fragment.setLimitUsedValue(total.toString())
-            })
-
-
         //LIMIT
         var limitObj = globals.getLimitFromSharedPref(activity!!, Gson())
         if(limitObj != null){
@@ -87,6 +76,19 @@ class DailyExpenseFragment : Fragment() {
             activity!!.supportFragmentManager.beginTransaction()
                 .replace(R.id.limitFrameLayout, noLimitFragment, "limit_fragment")
                 .commit()
+
+
+            //Observer - calculating total of limit used for daily
+            //Using a fragment on this fragment that'll display depending if limit is set (removes need for this limit view part if no limit was set)
+            //Fragment would be added already to the view, so use instance of it from finding fragment by tag "limit_fragment" and use function to pass info
+            limitUsed.observe(this,
+                Observer<Double> {value ->
+                    total += value
+                    var fragment: NoLimitFragment? = activity?.supportFragmentManager!!.findFragmentByTag("limit_fragment") as NoLimitFragment
+                    if(fragment != null){
+                        fragment?.setLimitUsedValue(total.toString())
+                    }
+                })
         }
     }//onCreate
 
