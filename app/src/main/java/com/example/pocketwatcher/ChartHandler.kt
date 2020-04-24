@@ -7,10 +7,24 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.pocketwatcher.entities.Expense
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
-import java.util.HashMap
+import com.github.mikephil.charting.formatter.IValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.utils.ViewPortHandler
+import java.text.DecimalFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.Map
+import kotlin.collections.MutableList
+import kotlin.collections.MutableMap
+import kotlin.collections.component1
+import kotlin.collections.component2
+import kotlin.collections.forEach
+import kotlin.collections.set
+
 
 class ChartHandler: AppCompatActivity() {
     /**
@@ -25,7 +39,6 @@ class ChartHandler: AppCompatActivity() {
      */
     fun setupPieChart(v: View){
         var chart = v.findViewById<PieChart>(R.id.piechart)
-
         chart.setUsePercentValues(true)
         chart.description.isEnabled = false
         chart.dragDecelerationFrictionCoef = 0.95f
