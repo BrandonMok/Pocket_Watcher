@@ -83,6 +83,7 @@ class ChartHandler: AppCompatActivity() {
         colors.add(activity.resources.getColor(R.color.red))
         colors.add(activity.resources.getColor(R.color.darkBlue))
         colors.add(activity.resources.getColor(R.color.lightPurple))
+        colors.add(activity.resources.getColor(R.color.pink))
 
         //Convert list of PieEntries to PieDataSet
         var dataSet = PieDataSet(pieEntryList, "Expenses")

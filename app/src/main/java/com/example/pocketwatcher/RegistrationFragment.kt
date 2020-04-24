@@ -96,6 +96,6 @@ class RegistrationFragment : Fragment() {
      * redirectToLogin
      */
     private fun redirectToLogin(v: View){
-        Globals().changeFragment(v, context!!, LoginFragment())
+        globals.changeFragment(v, context!!, LoginFragment())
     }
 }//fragment
