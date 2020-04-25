@@ -69,6 +69,12 @@ class OverviewFragment : Fragment() {
                 var limitObj = db!!.limitationDao().getLimit(username)
                 if(limitObj != null){
                     uiThread {
+                        //put it in sp and retrieve from there rather than having to query db each time
+                        activity!!.getSharedPreferences("USERS",0)
+                            .edit()
+                            .putString("LIMIT", gson.toJson(limitObj))
+                            .apply()
+
                         limitEditText.setText(limitObj.daily)
                         noLimitTextView.visibility = View.GONE
                         limitSet = true
