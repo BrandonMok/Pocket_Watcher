@@ -52,8 +52,8 @@ class RegistrationFragment : Fragment() {
      * signUp
      */
     private fun signUp(v: View){
-        var username = usernameTextView.text.toString()
-        var password = passwordTextView.text.toString()
+        var username = usernameTextView.text.toString().trim()
+        var password = passwordTextView.text.toString().trim()
 
         // CHECK: That both inputs have values
         if(username != "" && username != null && password != "" && password != null) {

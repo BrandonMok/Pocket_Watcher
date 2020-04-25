@@ -109,48 +109,67 @@ class LimitFragment : Fragment() {
      */
     private fun calculateLimits(value: String, period: String){
         try {
-            var numVal = parseDouble(value)         // value entered, either daily, weekly, or monthly
-            var totalDaysInMonth = getTotalDaysInMonth()// get Total # of days in current month for calculations
-            var totalWeeks = getTotalWeeks()    // get total # of weeks
+            if(value.isNotEmpty() && value.isNotBlank()) {
+                var numVal =
+                    parseDouble(value)         // value entered, either daily, weekly, or monthly
+                var totalDaysInMonth =
+                    getTotalDaysInMonth()// get Total # of days in current month for calculations
+                var totalWeeks = getTotalWeeks()    // get total # of weeks
 
-            when (period) {
-                "DAILY" -> {
-                    //given daily - just format to have $ symbol
-                    dailyEditText.setText("$" + String.format("%.2f", dailyEditText.text.toString().toDouble()))
+                when (period) {
+                    "DAILY" -> {
+                        //given daily - just format to have $ symbol
+                        dailyEditText.setText(
+                            "$" + String.format(
+                                "%.2f",
+                                dailyEditText.text.toString().toDouble()
+                            )
+                        )
 
-                    // weekly
-                    var weeklyCalcLimit = numVal * 7.0
-                    weeklyEditText.setText("$" + String.format("%.2f", weeklyCalcLimit))
+                        // weekly
+                        var weeklyCalcLimit = numVal * 7.0
+                        weeklyEditText.setText("$" + String.format("%.2f", weeklyCalcLimit))
 
-                    // month
-                    var monthlyCalcLimit = totalDaysInMonth * numVal
-                    monthlyEditText.setText("$" +  String.format("%.2f", monthlyCalcLimit))
+                        // month
+                        var monthlyCalcLimit = totalDaysInMonth * numVal
+                        monthlyEditText.setText("$" + String.format("%.2f", monthlyCalcLimit))
+                    }
+                    "WEEKLY" -> {
+                        // given weekly
+                        weeklyEditText.setText(
+                            "$" + String.format(
+                                "%.2f",
+                                weeklyEditText.text.toString().toDouble()
+                            )
+                        )
+
+                        // daily
+                        var dailyCalcLimit = numVal / 7.0
+                        dailyEditText.setText("$" + String.format("%.2f", dailyCalcLimit))
+
+                        //monthly
+                        var monthlyCalcLimit = totalDaysInMonth * dailyCalcLimit
+                        monthlyEditText.setText("$" + String.format("%.2f", monthlyCalcLimit))
+                    }
+                    "MONTHLY" -> {
+                        //given monthly
+                        monthlyEditText.setText(
+                            "$" + String.format(
+                                "%.2f",
+                                monthlyEditText.text.toString().toDouble()
+                            )
+                        )
+
+                        // weekly
+                        var weeklyCalcLimit = numVal / totalWeeks
+                        weeklyEditText.setText("$" + String.format("%.2f", weeklyCalcLimit))
+
+                        // daily
+                        var dailyCalcLimit = numVal / totalDaysInMonth
+                        dailyEditText.setText("$" + String.format("%.2f", dailyCalcLimit))
+                    }
                 }
-                "WEEKLY" -> {
-                    // given weekly
-                    weeklyEditText.setText("$" + String.format("%.2f", weeklyEditText.text.toString().toDouble()))
-
-                    // daily
-                    var dailyCalcLimit = numVal / 7.0
-                    dailyEditText.setText("$" + String.format("%.2f", dailyCalcLimit))
-
-                    //monthly
-                    var monthlyCalcLimit = totalDaysInMonth * dailyCalcLimit
-                    monthlyEditText.setText("$" + String.format("%.2f",monthlyCalcLimit))
-                }
-                "MONTHLY" -> {
-                    //given monthly
-                    monthlyEditText.setText("$" + String.format("%.2f", monthlyEditText.text.toString().toDouble()))
-
-                    // weekly
-                    var weeklyCalcLimit =  numVal / totalWeeks
-                    weeklyEditText.setText("$" + String.format("%.2f",weeklyCalcLimit))
-
-                    // daily
-                    var dailyCalcLimit = numVal / totalDaysInMonth
-                    dailyEditText.setText("$" + String.format("%.2f", dailyCalcLimit))
-                }
-            }
+            }//endif
         } catch (e: NumberFormatException) {
             globals.makeAlertDialog(context!!, "Invalid value", "Please enter a valid numerical limit value")
         }
@@ -188,6 +207,16 @@ class LimitFragment : Fragment() {
 
         when(action){
             "SET" -> {
+                doAsync {
+                    var limitation = db.limitationDao().getLimit(currentUser!!.username)
+
+                    if(limitation != null){
+                        //limitation already exists when trying to set, so remove old and keep new one
+                        db.limitationDao().deleteLimit(limitation)
+                    }
+                }
+
+
                 //ADD/make new LIMIT obj to room db
                 var limit = Limitation(currentUser!!.username,
                                 dailyEditText.text.toString().substring(1, dailyEditText.text.toString().length),
@@ -201,7 +230,7 @@ class LimitFragment : Fragment() {
                         globals.makeToast("Limit set successfully!", context!!).show()  //show Toast
                         sp.edit().putString("LIMIT", gson.toJson(limit)).commit()       //Add limit to sp
                     }
-                }
+                }//doAsync
             }
             "REMOVE" -> {
                 //get current limit

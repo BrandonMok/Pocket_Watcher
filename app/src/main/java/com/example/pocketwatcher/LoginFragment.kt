@@ -58,8 +58,8 @@ class LoginFragment : Fragment() {
      */
     private fun loginOnClick(v: View){
         // Grab the info from textInputs!!
-        var username = usernameTextView.text.toString()
-        var password = passwordTextView.text.toString()
+        var username = usernameTextView.text.toString().trim()
+        var password = passwordTextView.text.toString().trim()
 
         // CHECK: That both inputs have values
         if(!username.equals("") && username != null && !password.equals("") && password != null) {
