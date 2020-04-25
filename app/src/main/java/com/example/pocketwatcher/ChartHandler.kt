@@ -2,6 +2,7 @@ package com.example.pocketwatcher
 
 import android.app.Activity
 import android.graphics.Color
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pocketwatcher.entities.Expense
@@ -85,6 +86,10 @@ class ChartHandler: AppCompatActivity() {
                     pieEntryList.add(PieEntry(value,key))
                 }
             }//endif
+        }
+        else {
+            //make chart gone so it's invisible and not taking space
+            chart.visibility = View.GONE
         }
 
 
