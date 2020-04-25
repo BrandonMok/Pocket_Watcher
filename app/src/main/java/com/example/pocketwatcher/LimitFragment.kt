@@ -207,16 +207,6 @@ class LimitFragment : Fragment() {
 
         when(action){
             "SET" -> {
-                doAsync {
-                    var limitation = db.limitationDao().getLimit(currentUser!!.username)
-
-                    if(limitation != null){
-                        //limitation already exists when trying to set, so remove old and keep new one
-                        db.limitationDao().deleteLimit(limitation)
-                    }
-                }
-
-
                 //ADD/make new LIMIT obj to room db
                 var limit = Limitation(currentUser!!.username,
                                 dailyEditText.text.toString().substring(1, dailyEditText.text.toString().length),

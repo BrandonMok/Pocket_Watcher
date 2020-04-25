@@ -1,10 +1,12 @@
 package com.example.pocketwatcher
 
 import android.content.Intent
+import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import com.example.pocketwatcher.entities.Expense
 import com.example.pocketwatcher.entities.Limitation
@@ -53,10 +55,8 @@ class OverviewFragment : Fragment() {
 
         helloTextView.text = "Hello $username!" // Set custom text
 
-
         //LIMIT
-        //variable to know if limit was set -> used later whether to show dailyLimitUsed value
-        var limitSet: Boolean = false
+        var limitSet = false
         var limitObj = globals.getLimitFromSharedPref(activity!!, gson)
         if(limitObj != null){
             limitEditText.setText(limitObj.daily)
@@ -64,9 +64,18 @@ class OverviewFragment : Fragment() {
             noLimitTextView.visibility = View.GONE
         }
         else {
-            noLimitTextView.visibility = View.VISIBLE
+            //Not in sp, so get it from DB && store it in sp to prevent further having to keep getting from db
+            doAsync {
+                var limitObj = db!!.limitationDao().getLimit(username)
+                if(limitObj != null){
+                    uiThread {
+                        limitEditText.setText(limitObj.daily)
+                        noLimitTextView.visibility = View.GONE
+                        limitSet = true
+                    }
+                }
+            }
         }
-
 
         //EXPENSES:
         // CHECK for expenses
