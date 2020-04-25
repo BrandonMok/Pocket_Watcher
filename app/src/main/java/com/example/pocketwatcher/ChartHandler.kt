@@ -64,6 +64,8 @@ class ChartHandler: AppCompatActivity() {
         var expenseMapTypes: MutableMap<String, Float>? = HashMap()
 
         if(expList != null && expList.size != 0){
+            chart.visibility = View.VISIBLE //display chart if wasn't already
+
             //Iterate through all expenses passed in to consolidate all data for piechart (e.g. "dinner", value && "dinner", value => "Dinner", value + value)
             //This way avoids having two entries for the same thing
             for(exp in expList){
