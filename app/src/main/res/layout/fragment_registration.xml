@@ -27,7 +27,7 @@
             android:id="@+id/titleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/pocket_watcher"
+            android:text="@string/sign_up"
             android:textColor="@android:color/black"
             android:textSize="30sp"
             app:layout_constraintBottom_toTopOf="@+id/loginSubTextView"
