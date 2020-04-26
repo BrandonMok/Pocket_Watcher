@@ -3,6 +3,7 @@ package com.example.pocketwatcher
 import android.content.Intent
 import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -98,9 +99,10 @@ class OverviewFragment : Fragment() {
                     var startWeek = tp.stringToDate(entireWeekString.substring(0, 10))
                     var endWeek = tp.stringToDate(entireWeekString.substring(11, 21))
 
-                    var entireMonthString = tp.getMonth()
+                    var entireMonthString =  TimePeriod().getMonth()    //use another instance of TimePeriod, bc for some reason had issue with getting wrong time
                     var startMonth = tp.stringToDate(entireMonthString.substring(0, 10))
                     var endMonth = tp.stringToDate(entireMonthString.substring(11, 21))
+
 
                     var dailyTotal: Double = 0.0
                     var weeklyTotal: Double = 0.0
