@@ -39,7 +39,7 @@ class SettingsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         // keyboard hide when touch out of focus
         passwordTextView.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
-            if(!hasFocus){ lsu.hideKeyboard(v, context!!) }
+            if(!hasFocus){ globals.hideKeyboard(v, context!!) }
         })
 
         logoutButton.setOnClickListener {

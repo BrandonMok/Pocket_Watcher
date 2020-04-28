@@ -28,8 +28,7 @@ import java.util.*
  * A simple [Fragment] subclass.
  */
 class LimitFragment : Fragment() {
-    private var loginSignUp = LoginSignUp()  //loginSignUp
-    private var globals = Globals()         //Globals
+    private var globals = Globals()
     private var currentUser: User? = null
     private var gson = Gson()
 
@@ -68,7 +67,7 @@ class LimitFragment : Fragment() {
         //Didn't use ontextchange as setting of one would affect trigger ontextchange of others
         dailyEditText.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
             if(!hasFocus){
-                loginSignUp.hideKeyboard(v, context!!)
+                globals.hideKeyboard(v, context!!)
                 calculateLimits(dailyEditText.text.toString(), "DAILY")
             }
             else {
@@ -77,7 +76,7 @@ class LimitFragment : Fragment() {
         })
         weeklyEditText.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
             if(!hasFocus){
-                loginSignUp.hideKeyboard(v, context!!)
+                globals.hideKeyboard(v, context!!)
                 calculateLimits(weeklyEditText.text.toString(), "WEEKLY")
             }
             else {
@@ -86,7 +85,7 @@ class LimitFragment : Fragment() {
         })
         monthlyEditText.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
             if(!hasFocus){
-                loginSignUp.hideKeyboard(v, context!!)
+                globals.hideKeyboard(v, context!!)
                 calculateLimits(monthlyEditText.text.toString(), "MONTHLY")
             }
             else {
@@ -100,7 +99,6 @@ class LimitFragment : Fragment() {
 
         //RemoveLimit
         removeBtn.setOnClickListener { limitSetOrRemove("REMOVE") }
-
     }//onViewCreated
 
 
@@ -109,48 +107,67 @@ class LimitFragment : Fragment() {
      */
     private fun calculateLimits(value: String, period: String){
         try {
-            var numVal = parseDouble(value)         // value entered, either daily, weekly, or monthly
-            var totalDaysInMonth = getTotalDaysInMonth()// get Total # of days in current month for calculations
-            var totalWeeks = getTotalWeeks()    // get total # of weeks
+            if(value.isNotEmpty() && value.isNotBlank()) {
+                var numVal =
+                    parseDouble(value)         // value entered, either daily, weekly, or monthly
+                var totalDaysInMonth =
+                    getTotalDaysInMonth()// get Total # of days in current month for calculations
+                var totalWeeks = getTotalWeeks()    // get total # of weeks
 
-            when (period) {
-                "DAILY" -> {
-                    //given daily - just format to have $ symbol
-                    dailyEditText.setText("$" + String.format("%.2f", dailyEditText.text.toString().toDouble()))
+                when (period) {
+                    "DAILY" -> {
+                        //given daily - just format to have $ symbol
+                        dailyEditText.setText(
+                            "$" + String.format(
+                                "%.2f",
+                                dailyEditText.text.toString().toDouble()
+                            )
+                        )
 
-                    // weekly
-                    var weeklyCalcLimit = numVal * 7.0
-                    weeklyEditText.setText("$" + String.format("%.2f", weeklyCalcLimit))
+                        // weekly
+                        var weeklyCalcLimit = numVal * 7.0
+                        weeklyEditText.setText("$" + String.format("%.2f", weeklyCalcLimit))
 
-                    // month
-                    var monthlyCalcLimit = totalDaysInMonth * numVal
-                    monthlyEditText.setText("$" +  String.format("%.2f", monthlyCalcLimit))
+                        // month
+                        var monthlyCalcLimit = totalDaysInMonth * numVal
+                        monthlyEditText.setText("$" + String.format("%.2f", monthlyCalcLimit))
+                    }
+                    "WEEKLY" -> {
+                        // given weekly
+                        weeklyEditText.setText(
+                            "$" + String.format(
+                                "%.2f",
+                                weeklyEditText.text.toString().toDouble()
+                            )
+                        )
+
+                        // daily
+                        var dailyCalcLimit = numVal / 7.0
+                        dailyEditText.setText("$" + String.format("%.2f", dailyCalcLimit))
+
+                        //monthly
+                        var monthlyCalcLimit = totalDaysInMonth * dailyCalcLimit
+                        monthlyEditText.setText("$" + String.format("%.2f", monthlyCalcLimit))
+                    }
+                    "MONTHLY" -> {
+                        //given monthly
+                        monthlyEditText.setText(
+                            "$" + String.format(
+                                "%.2f",
+                                monthlyEditText.text.toString().toDouble()
+                            )
+                        )
+
+                        // weekly
+                        var weeklyCalcLimit = numVal / totalWeeks
+                        weeklyEditText.setText("$" + String.format("%.2f", weeklyCalcLimit))
+
+                        // daily
+                        var dailyCalcLimit = numVal / totalDaysInMonth
+                        dailyEditText.setText("$" + String.format("%.2f", dailyCalcLimit))
+                    }
                 }
-                "WEEKLY" -> {
-                    // given weekly
-                    weeklyEditText.setText("$" + String.format("%.2f", weeklyEditText.text.toString().toDouble()))
-
-                    // daily
-                    var dailyCalcLimit = numVal / 7.0
-                    dailyEditText.setText("$" + String.format("%.2f", dailyCalcLimit))
-
-                    //monthly
-                    var monthlyCalcLimit = totalDaysInMonth * dailyCalcLimit
-                    monthlyEditText.setText("$" + String.format("%.2f",monthlyCalcLimit))
-                }
-                "MONTHLY" -> {
-                    //given monthly
-                    monthlyEditText.setText("$" + String.format("%.2f", monthlyEditText.text.toString().toDouble()))
-
-                    // weekly
-                    var weeklyCalcLimit =  numVal / totalWeeks
-                    weeklyEditText.setText("$" + String.format("%.2f",weeklyCalcLimit))
-
-                    // daily
-                    var dailyCalcLimit = numVal / totalDaysInMonth
-                    dailyEditText.setText("$" + String.format("%.2f", dailyCalcLimit))
-                }
-            }
+            }//endif
         } catch (e: NumberFormatException) {
             globals.makeAlertDialog(context!!, "Invalid value", "Please enter a valid numerical limit value")
         }
@@ -178,7 +195,6 @@ class LimitFragment : Fragment() {
         return (end - start + 1)
     }
 
-
     /**
      * limitSetOrRemove
      */
@@ -201,7 +217,7 @@ class LimitFragment : Fragment() {
                         globals.makeToast("Limit set successfully!", context!!).show()  //show Toast
                         sp.edit().putString("LIMIT", gson.toJson(limit)).commit()       //Add limit to sp
                     }
-                }
+                }//doAsync
             }
             "REMOVE" -> {
                 //get current limit

@@ -4,10 +4,11 @@ import android.app.Activity
 import android.app.AlertDialog
 import android.app.ProgressDialog.show
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
+import android.os.Build
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -19,8 +20,8 @@ import com.example.pocketwatcher.entities.User
 import com.example.pocketwatcher.viewmodels.ExpenseListViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.fragment_daily_expense.*
 import org.jetbrains.anko.doAsync
-import kotlin.math.exp
 
 /**
  * Globals class to hold global reusable functions
@@ -29,6 +30,7 @@ class Globals: AppCompatActivity() {
 
     /**
      * changeFragment
+     * @param view, context, fragment
      */
     fun changeFragment(v: View, context: Context, fragment: Fragment){
         var activity = context as AppCompatActivity
@@ -40,7 +42,17 @@ class Globals: AppCompatActivity() {
     }//changeFragment
 
     /**
+     * hideKeyboard
+     * @param view, context
+     */
+    fun hideKeyboard(v: View, context: Context){
+        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(v.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS)
+    }
+
+    /**
      * getCurrentUser
+     * @param activity, gson instance
      */
     fun getCurrentUser(activity: Activity, gson: Gson): User? {
         var sp = activity!!.getSharedPreferences("USERS",0)
@@ -50,6 +62,7 @@ class Globals: AppCompatActivity() {
 
     /**
      * getLimitFromSharedPref
+     * @param activity, gson instance
      */
     fun getLimitFromSharedPref(activity: Activity, gson: Gson): Limitation? {
         var sp = activity!!.getSharedPreferences("USERS",0)
@@ -59,7 +72,7 @@ class Globals: AppCompatActivity() {
 
     /**
      * makeToast
-     * @param msg
+     * @param string, context
      * Reusable function to make & show a toast
      */
     fun makeToast(msg: String, context: Context): Toast {
@@ -68,6 +81,7 @@ class Globals: AppCompatActivity() {
 
     /**
      * makeAlertDialog
+     * @param context, string(title), string(msg)
      */
     fun makeAlertDialog(context: Context, title: String, msg: String){
         AlertDialog.Builder(context)
@@ -78,34 +92,9 @@ class Globals: AppCompatActivity() {
             .show()
     }
 
-
-    /**
-     * storeTotals
-     */
-    fun storeTotals(sp: SharedPreferences, dailyTotal: Double, weeklyTotal: Double, monthlyTotal: Double){
-        var editor = sp.edit()
-        editor.putBoolean("TOTALS", true)
-        editor.putString("dailyTotal", dailyTotal.toString())
-        editor.putString("weeklyTotal", weeklyTotal.toString())
-        editor.putString("monthlyTotal", monthlyTotal.toString())
-        editor.commit()
-    }
-
-    /**
-     * clearTotals
-     */
-    fun clearTotals(sp: SharedPreferences){
-        var editor = sp.edit()
-        editor.remove("TOTALS")
-        editor.remove("dailyTotal")
-        editor.remove("weeklyTotal")
-        editor.remove("monthlyTotal")
-        editor.commit()
-    }
-
-
     /**
      * setRecyclerViewItemTouchListener
+     * @param view, adapter, recyclerview, expenseListViewModel
      */
     fun setRecyclerViewItemTouchListener(v: View, adapter: ExpenseListAdapter, recyclerView: RecyclerView, expenseListViewModel: ExpenseListViewModel){
         val itemTouchCallback = object: ItemTouchHelper.SimpleCallback(0,
@@ -143,6 +132,7 @@ class Globals: AppCompatActivity() {
     /**
      * undoDelete
      * Action of onSwiped of deleting expense
+     * @param expenseListViewModel, expense obj
      */
     fun undoDelete(expenseListViewModel: ExpenseListViewModel, expense: Expense){
         expenseListViewModel.insertExpense(expense)

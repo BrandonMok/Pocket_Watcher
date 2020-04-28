@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_add_expense_dialog.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.find
 import org.jetbrains.anko.uiThread
+import java.lang.NumberFormatException
 import java.util.regex.Pattern
 
 /**
@@ -53,8 +54,8 @@ class AddExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel) : Dia
                 if(!titleET!!.text.equals("") && titleET != null &&
                     !valueET!!.text.equals("") && valueET != null){
 
-                    if(Pattern.compile( "[0-9]" ).matcher( valueET!!.text.toString() ).find()){
-                        // Expense object
+                    //try-catch, throw error if value contains letters, only want digits
+                    try{
                         var expense = Expense(
                             titleET!!.text.toString(),
                             valueET!!.text.toString().toDouble(),
@@ -67,11 +68,9 @@ class AddExpenseDialogFragment(expenseListViewModel: ExpenseListViewModel) : Dia
                             expenseListViewModel.insertExpense(expense)
                         }
                     }
-                }
-                else {
-                    // ISSUE:
-                    // Doesn't show for some reason
-                    globals.makeAlertDialog(activity!!, "Invalid Values", "Please try again!")
+                    catch (e: NumberFormatException){
+                        globals.makeAlertDialog(activity!!, "Invalid Value(s)", "Please try again!")
+                    }
                 }
             })
 

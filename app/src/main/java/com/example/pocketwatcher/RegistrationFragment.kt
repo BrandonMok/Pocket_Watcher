@@ -41,10 +41,10 @@ class RegistrationFragment : Fragment() {
 
         // Clicked outside of textviews
         usernameTextView.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
-            if(!hasFocus){ loginSignUp.hideKeyboard(v, context!!) }
+            if(!hasFocus){ globals.hideKeyboard(v, context!!) }
         })
         passwordTextView.setOnFocusChangeListener(View.OnFocusChangeListener(){ v, hasFocus ->
-            if(!hasFocus){ loginSignUp.hideKeyboard(v, context!!) }
+            if(!hasFocus){ globals.hideKeyboard(v, context!!) }
         })
     }//onViewCreated
 
@@ -52,8 +52,8 @@ class RegistrationFragment : Fragment() {
      * signUp
      */
     private fun signUp(v: View){
-        var username = usernameTextView.text.toString()
-        var password = passwordTextView.text.toString()
+        var username = usernameTextView.text.toString().trim()
+        var password = passwordTextView.text.toString().trim()
 
         // CHECK: That both inputs have values
         if(username != "" && username != null && password != "" && password != null) {
@@ -96,6 +96,6 @@ class RegistrationFragment : Fragment() {
      * redirectToLogin
      */
     private fun redirectToLogin(v: View){
-        Globals().changeFragment(v, context!!, LoginFragment())
+        globals.changeFragment(v, context!!, LoginFragment())
     }
 }//fragment

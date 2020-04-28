@@ -11,8 +11,7 @@ import java.util.*
 class TimePeriod {
     // Calendar
     private var calendar = Calendar.getInstance()
-
-    // Formatters
+    // Formatter
     private val formatter = SimpleDateFormat("yyyy-MM-dd")
 
 

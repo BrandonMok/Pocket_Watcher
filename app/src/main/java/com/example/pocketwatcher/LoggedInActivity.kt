@@ -13,11 +13,15 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_logged_in.*
 
+/**
+ * LoggedInActivity
+ * Activity that will show all other fragment views AFTER logged in
+ * Contains navigation and frame_layout to swap fragments
+ */
 class LoggedInActivity : AppCompatActivity() {
 
     lateinit var toggle: ActionBarDrawerToggle
     private var globals = Globals()
-
     private var overviewFragment: Fragment = Fragment()
 
     /**
@@ -27,24 +31,21 @@ class LoggedInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_logged_in)
 
-        if(savedInstanceState != null){
-            // If no fragment in layout, add OverviewFragment() as initial fragment
-            if(supportFragmentManager.findFragmentById(R.id.frame_layout) == null){
-                supportFragmentManager.beginTransaction()
-                    .add(R.id.frame_layout, overviewFragment)
-                    .commit()
-            }//endif
-        }
-        else {
-            // If no fragment in layout, add OverviewFragment() as initial fragment
-            if (supportFragmentManager.findFragmentById(R.id.frame_layout) == null) {
-                supportFragmentManager.beginTransaction()
-                    .add(R.id.frame_layout, OverviewFragment())
-                    .commit()
-            }//endif
+        //Adding fragment to the frame_layout
+        if(supportFragmentManager.findFragmentById(R.id.frame_layout) == null) {
+            var ft = supportFragmentManager.beginTransaction()
+
+            if(savedInstanceState != null){
+                //if savedinstancestate, use the fragment's state that was saved to backstack
+                ft.add(R.id.frame_layout, overviewFragment)
+            }
+            else {
+                ft.add(R.id.frame_layout, OverviewFragment())
+            }
+            ft.commit()
         }
 
-        menuSetup()
+        menuSetup() // menu setup
     }//oncreate
 
 
@@ -54,7 +55,7 @@ class LoggedInActivity : AppCompatActivity() {
     override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
         super.onSaveInstanceState(outState, outPersistentState)
 
-//        supportFragmentManager.putFragment(outState, "overview", overviewFragment!!)
+        // Get fragment from overview fragment on saveInstanceState to display that fragment and retaining its state
         overviewFragment = supportFragmentManager.getFragment(outState, "overview")!!
     }
 
@@ -79,10 +80,10 @@ class LoggedInActivity : AppCompatActivity() {
                     navClickHandler(DailyExpenseFragment())
                 }
                 R.id.weekly_expenses -> {
-
+                    navClickHandler(WeeklyExpenseFragment())
                 }
                 R.id.monthly_expenses -> {
-
+                    navClickHandler(MonthlyExpenseFragment())
                 }
                 R.id.limitation -> {
                     navClickHandler(LimitFragment())
@@ -118,6 +119,8 @@ class LoggedInActivity : AppCompatActivity() {
 
     /**
      * logout
+     * @param context
+     * Redirect to MainActivity to logout && clear sharedPreferences
      */
     fun logout(context: Context){
         var activity = context as AppCompatActivity
