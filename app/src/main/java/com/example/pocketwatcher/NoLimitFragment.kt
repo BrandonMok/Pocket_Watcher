@@ -17,7 +17,6 @@ import java.lang.String
  */
 class NoLimitFragment : Fragment() {
 
-
     /**
      * onCreateView
      */

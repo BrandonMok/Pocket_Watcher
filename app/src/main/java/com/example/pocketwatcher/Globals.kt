@@ -30,6 +30,7 @@ class Globals: AppCompatActivity() {
 
     /**
      * changeFragment
+     * @param view, context, fragment
      */
     fun changeFragment(v: View, context: Context, fragment: Fragment){
         var activity = context as AppCompatActivity
@@ -42,7 +43,7 @@ class Globals: AppCompatActivity() {
 
     /**
      * hideKeyboard
-     * @param v
+     * @param view, context
      */
     fun hideKeyboard(v: View, context: Context){
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -51,6 +52,7 @@ class Globals: AppCompatActivity() {
 
     /**
      * getCurrentUser
+     * @param activity, gson instance
      */
     fun getCurrentUser(activity: Activity, gson: Gson): User? {
         var sp = activity!!.getSharedPreferences("USERS",0)
@@ -60,6 +62,7 @@ class Globals: AppCompatActivity() {
 
     /**
      * getLimitFromSharedPref
+     * @param activity, gson instance
      */
     fun getLimitFromSharedPref(activity: Activity, gson: Gson): Limitation? {
         var sp = activity!!.getSharedPreferences("USERS",0)
@@ -69,7 +72,7 @@ class Globals: AppCompatActivity() {
 
     /**
      * makeToast
-     * @param msg
+     * @param string, context
      * Reusable function to make & show a toast
      */
     fun makeToast(msg: String, context: Context): Toast {
@@ -78,6 +81,7 @@ class Globals: AppCompatActivity() {
 
     /**
      * makeAlertDialog
+     * @param context, string(title), string(msg)
      */
     fun makeAlertDialog(context: Context, title: String, msg: String){
         AlertDialog.Builder(context)
@@ -90,6 +94,7 @@ class Globals: AppCompatActivity() {
 
     /**
      * setRecyclerViewItemTouchListener
+     * @param view, adapter, recyclerview, expenseListViewModel
      */
     fun setRecyclerViewItemTouchListener(v: View, adapter: ExpenseListAdapter, recyclerView: RecyclerView, expenseListViewModel: ExpenseListViewModel){
         val itemTouchCallback = object: ItemTouchHelper.SimpleCallback(0,
@@ -127,6 +132,7 @@ class Globals: AppCompatActivity() {
     /**
      * undoDelete
      * Action of onSwiped of deleting expense
+     * @param expenseListViewModel, expense obj
      */
     fun undoDelete(expenseListViewModel: ExpenseListViewModel, expense: Expense){
         expenseListViewModel.insertExpense(expense)

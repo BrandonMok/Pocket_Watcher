@@ -38,7 +38,6 @@ class DailyExpenseFragment : Fragment() {
     private var total: Double = 0.0
     private var limitUsed: MutableLiveData<Double> = MutableLiveData()
 
-
     /**
      * onCreate
      */
@@ -73,10 +72,10 @@ class DailyExpenseFragment : Fragment() {
             args.putString(NoLimitFragment.ARG_LIMIT, limitObj.daily)
             noLimitFragment.arguments = args
 
+            //insert limit display fragment into framelayout that's in this fragment
             activity!!.supportFragmentManager.beginTransaction()
                 .replace(R.id.limitFrameLayout, noLimitFragment, "limit_fragment")
                 .commit()
-
 
             //Observer - calculating total of limit used for daily
             //Using a fragment on this fragment that'll display depending if limit is set (removes need for this limit view part if no limit was set)
@@ -139,7 +138,8 @@ class DailyExpenseFragment : Fragment() {
 
     /**
      * calcTotal
-     * Same function in all periods as it updates local values, so couldn't move to one class and reuse
+     * Same function in all periods as it updates local values,
+     * but couldn't move to one class and reuse as changing local values
      */
     private fun calcTotal(expList: MutableList<Expense>?){
         if(expList != null && expList.size != 0) {

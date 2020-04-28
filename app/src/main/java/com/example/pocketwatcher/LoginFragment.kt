@@ -111,7 +111,6 @@ class LoginFragment : Fragment() {
      * Redirects to sign up fragment
      */
     fun signUpOnClick(v: View){
-        // Change fragments
-        Globals().changeFragment(v, context!!, RegistrationFragment())
+        globals.changeFragment(v, context!!, RegistrationFragment())    //swap to LoginFragment
     }
 }//fragment

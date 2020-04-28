@@ -12,7 +12,6 @@ import kotlinx.android.synthetic.main.activity_main.*
  * @author Brandon Mok
  */
 class MainActivity : AppCompatActivity() {
-
     /**
      * onCreate
      */

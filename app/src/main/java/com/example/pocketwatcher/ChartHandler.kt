@@ -26,7 +26,10 @@ import kotlin.collections.component2
 import kotlin.collections.forEach
 import kotlin.collections.set
 
-
+/**
+ * ChartHandler
+ * Handles the setup, styling, and data entry of chart
+ */
 class ChartHandler: AppCompatActivity() {
     /**
      * CHART STUFF
@@ -95,7 +98,7 @@ class ChartHandler: AppCompatActivity() {
         }
 
 
-        //List of colors for chart to use
+        //List of colors for chart to use - couldn't find a better way as other attempts wouldn't use colors correctly
         var colors = ArrayList<Int>()
         colors.add(activity.resources.getColor(R.color.blue))
         colors.add(activity.resources.getColor(R.color.green))
@@ -110,7 +113,6 @@ class ChartHandler: AppCompatActivity() {
         dataSet.sliceSpace = 3f
         dataSet.selectionShift = 5f
         dataSet.colors = colors
-
 
         //Convert PieDataset to PieData
         var data = PieData(dataSet)

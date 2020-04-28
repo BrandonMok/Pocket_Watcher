@@ -13,11 +13,15 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_logged_in.*
 
+/**
+ * LoggedInActivity
+ * Activity that will show all other fragment views AFTER logged in
+ * Contains navigation and frame_layout to swap fragments
+ */
 class LoggedInActivity : AppCompatActivity() {
 
     lateinit var toggle: ActionBarDrawerToggle
     private var globals = Globals()
-
     private var overviewFragment: Fragment = Fragment()
 
     /**
@@ -115,6 +119,8 @@ class LoggedInActivity : AppCompatActivity() {
 
     /**
      * logout
+     * @param context
+     * Redirect to MainActivity to logout && clear sharedPreferences
      */
     fun logout(context: Context){
         var activity = context as AppCompatActivity

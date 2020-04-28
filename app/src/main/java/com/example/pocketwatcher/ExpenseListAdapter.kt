@@ -56,6 +56,9 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
         return expenseList.size
     }
 
+    /**
+     * getExpenseList
+     */
     fun getExpenseList(): MutableList<Expense> {
         return this.expenseList
     }
@@ -69,7 +72,7 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
     }
 
     /**
-     * addExpenses
+     * addExpense
      */
     fun addExpense(expense: Expense){
         doAsync {
@@ -91,7 +94,6 @@ class ExpenseListAdapter (private var expenseList: MutableList<Expense>,
             }
         }
     }
-
 
 
     /**

@@ -28,8 +28,7 @@ import java.util.*
  * A simple [Fragment] subclass.
  */
 class LimitFragment : Fragment() {
-    private var loginSignUp = LoginSignUp()  //loginSignUp
-    private var globals = Globals()         //Globals
+    private var globals = Globals()
     private var currentUser: User? = null
     private var gson = Gson()
 
@@ -100,7 +99,6 @@ class LimitFragment : Fragment() {
 
         //RemoveLimit
         removeBtn.setOnClickListener { limitSetOrRemove("REMOVE") }
-
     }//onViewCreated
 
 
@@ -196,7 +194,6 @@ class LimitFragment : Fragment() {
 
         return (end - start + 1)
     }
-
 
     /**
      * limitSetOrRemove
